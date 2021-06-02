@@ -1,0 +1,59 @@
+---------SM_UNIT_TYPE(机构类别)----------------------
+create table SM_UNIT_TYPE 
+(
+   ID                   INTEGER              not null,
+   NAME                 VARCHAR2(128),
+   REMARK               VARCHAR2(512),
+   CREATE_UID           INTEGER,
+   UPDATE_UID           INTEGER,
+   CREATE_TIME          TIMESTAMP,
+   UPDATE_TIME          TIMESTAMP,
+   constraint PK_SM_UNIT_TYPE primary key (ID)
+);
+CREATE SEQUENCE SQ_SM_UNIT_TYPE;
+
+---------SM_UNIT_NATURE(机构性质)----------------------
+create table SM_UNIT_NATURE 
+(
+   ID                   INTEGER              not null,
+   NAME                 VARCHAR2(128),
+   REMARK               VARCHAR2(512),
+   CREATE_UID           INTEGER,
+   UPDATE_UID           INTEGER,
+   CREATE_TIME          TIMESTAMP,
+   UPDATE_TIME          TIMESTAMP,
+   constraint PK_SM_UNIT_NATURE primary key (ID)
+);
+CREATE SEQUENCE SQ_SM_UNIT_NATURE;
+
+---------SM_UNIT_LEVEL(机构级别)----------------------
+create table SM_UNIT_LEVEL 
+(
+   ID                   INTEGER              not null,
+   NAME                 VARCHAR2(128),
+   REMARK               VARCHAR2(512),
+   CREATE_UID           INTEGER,
+   UPDATE_UID           INTEGER,
+   CREATE_TIME          TIMESTAMP,
+   UPDATE_TIME          TIMESTAMP,
+   constraint PK_SM_UNIT_LEVEL primary key (ID)
+);
+CREATE SEQUENCE SQ_SM_UNIT_LEVEL;
+
+---------SM_OUTLAY_TYPE(经费种类)----------------------
+create table SM_OUTLAY_TYPE 
+(
+   ID                   INTEGER              not null,
+   NAME                 VARCHAR2(128),
+   REMARK               VARCHAR2(512),
+   CREATE_UID           INTEGER,
+   UPDATE_UID           INTEGER,
+   CREATE_TIME          TIMESTAMP,
+   UPDATE_TIME          TIMESTAMP,
+   constraint PK_SM_OUTLAY_TYPE primary key (ID)
+);
+CREATE SEQUENCE SQ_SM_OUTLAY_TYPE;
+
+
+
+
