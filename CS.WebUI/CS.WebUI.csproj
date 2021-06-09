@@ -26,6 +26,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TypeScriptToolsVersion>2.1</TypeScriptToolsVersion>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -1597,6 +1598,7 @@
     <Content Include="Views\AfTableReport\JS\Show.js" />
     <Content Include="Views\AfUser\JS\Edit.js" />
     <Content Include="Views\AfUser\JS\Index.js" />
+    <Content Include="Views\AjtmUnit\JS\Edit.js" />
     <Content Include="Views\FormulaHelp.html" />
     <Content Include="Views\Home\CSS\default.css" />
     <Content Include="Views\Home\CSS\manager.css" />
@@ -1634,6 +1636,7 @@
     <Compile Include="Controllers\FW\AfRdlcReportController.cs" />
     <Compile Include="Controllers\ImportApprovalController.cs" />
     <Compile Include="Controllers\ShowFileController.cs" />
+    <Compile Include="Controllers\AJTM\AjtmUnitController.cs" />
     <Compile Include="Controllers\UpFileController.cs" />
     <Compile Include="Controllers\FW\ABaseController.cs" />
     <Compile Include="Controllers\FW\AfBulletinController.cs" />
@@ -1837,6 +1840,7 @@
     <Content Include="Views\AfBulletin\Edit.cshtml" />
     <Content Include="Views\AfBulletin\Index.cshtml" />
     <Content Include="Views\AfBulletin\Show.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\QSS.pubxml" />
     <Content Include="Views\Shared\PVUpFile.cshtml" />
     <Content Include="Views\Shared\PVTree.cshtml" />
@@ -1849,6 +1853,7 @@
     <Content Include="Views\AfRdlcReport\Show.cshtml" />
     <Content Include="Views\AfRdlcReport\Index.cshtml" />
     <None Include="Properties\PublishProfiles\SMS.pubxml" />
+    <Content Include="Views\AjtmUnit\Detail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

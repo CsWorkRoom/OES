@@ -3,7 +3,7 @@
 *.lo
 *.o
 *.obj
-
+.vs
 #dir
 packages/
 logs/

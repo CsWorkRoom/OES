@@ -107,6 +107,7 @@
     <Compile Include="FW\BF_USER.cs" />
     <Compile Include="FW\BF_FIELD.cs" />
     <Compile Include="FW\SystemSession.cs" />
+    <Compile Include="Model\AJTM_UNIT.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
