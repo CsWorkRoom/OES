@@ -10,21 +10,21 @@ using CS.BLL.FW;
 
 namespace CS.BLL.Model
 {
-    public class AJTM_SETUP_TYPE:BBaseQuery
+    public class AJTM_SETUP_RANGE:BBaseQuery
     {
         /// <summary>
         /// 单例
         /// </summary>
-        public static AJTM_SETUP_TYPE Instance = new AJTM_SETUP_TYPE();
+        public static AJTM_SETUP_RANGE Instance = new AJTM_SETUP_RANGE();
         #region 构造函数
         /// <summary>
         /// 构造函数
         /// </summary>
-        public AJTM_SETUP_TYPE()
+        public AJTM_SETUP_RANGE()
         {
             this.IsAddIntoCache = true;
-            this.TableName = "AJTM_SETUP_TYPE";
-            this.ItemName = "机构类别";
+            this.TableName = "AJTM_SETUP_RANGE";
+            this.ItemName = "机构划属";
             this.KeyField = "ID";
             this.OrderbyFields = "ID";
         }

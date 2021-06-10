@@ -83,5 +83,14 @@ namespace CS.BLL.Model
 
         }
         #endregion
+
+        /// <summary>
+        /// 获取下拉
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<int, string> GetDropDown()
+        {
+            return GetDictionary("ID", "NAME");
+        }
     }
 }

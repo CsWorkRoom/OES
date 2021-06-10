@@ -7,6 +7,7 @@ using CS.Base.DBHelper;
 using CS.Library.BaseQuery;
 using CS.Common.FW;
 using CS.BLL.FW;
+using System.Data;
 
 namespace CS.BLL.Model
 {
@@ -71,22 +72,22 @@ namespace CS.BLL.Model
             [Field(IsNotNull = true, DefaultValue = "0", Comment = "机构级别")]
             public int SETUP_LEVEL_ID { get; set; }
             /// <summary>
-            /// 机构级别
+            /// 经费形式
             /// </summary>
             [Field(IsNotNull = true, DefaultValue = "0", Comment = "经费形式")]
             public int OUTLAY_MODE_ID { get; set; }
             /// <summary>
-            /// 机构级别
+            /// 机构划属
             /// </summary>
             [Field(IsNotNull = true, DefaultValue = "0", Comment = "机构划属")]
             public int SETUP_RANGE_ID { get; set; }
             /// <summary>
-            /// 机构级别
+            /// 参公情况
             /// </summary>
             [Field(IsNotNull = true, DefaultValue = "0", Comment = "参公情况")]
             public int IS_PUBLIC { get; set; }
             /// <summary>
-            /// 机构级别
+            /// 内设机构数
             /// </summary>
             [Field(IsNotNull = true, DefaultValue = "0", Comment = "内设机构数")]
             public int DEP_NUM { get; set; }
@@ -187,7 +188,7 @@ namespace CS.BLL.Model
         }
         #endregion
 
-        #region
+        #region 启用
         /// <summary>
         /// 启用
         /// </summary>
@@ -219,8 +220,25 @@ namespace CS.BLL.Model
             return UpdateByKey(dic, id);
         }
         #endregion
-
-
-
+        /// <summary>
+        /// 下拉树
+        /// </summary>
+        /// <returns></returns>
+        public List<object> GetDropTree()
+        {
+            var dt = GetTableFields("ID,PARENT_ID,NAME");
+            List<object> list = new List<object>();
+            foreach (DataRow dr in dt.Rows)
+            {
+                list.Add(new
+                {
+                    id = dr["ID"],
+                    pId = dr["PARENT_ID"],
+                    name = dr["NAME"],
+                    value = dr["ID"]
+                });
+            }
+            return list;
+        }
     }
 }

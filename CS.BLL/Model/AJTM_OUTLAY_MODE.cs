@@ -10,21 +10,21 @@ using CS.BLL.FW;
 
 namespace CS.BLL.Model
 {
-    public class AJTM_SETUP_TYPE:BBaseQuery
+    public class AJTM_OUTLAY_MODE:BBaseQuery
     {
         /// <summary>
         /// 单例
         /// </summary>
-        public static AJTM_SETUP_TYPE Instance = new AJTM_SETUP_TYPE();
+        public static AJTM_OUTLAY_MODE Instance = new AJTM_OUTLAY_MODE();
         #region 构造函数
         /// <summary>
         /// 构造函数
         /// </summary>
-        public AJTM_SETUP_TYPE()
+        public AJTM_OUTLAY_MODE()
         {
             this.IsAddIntoCache = true;
-            this.TableName = "AJTM_SETUP_TYPE";
-            this.ItemName = "机构类别";
+            this.TableName = "AJTM_OUTLAY_MODE";
+            this.ItemName = "经费形式";
             this.KeyField = "ID";
             this.OrderbyFields = "ID";
         }

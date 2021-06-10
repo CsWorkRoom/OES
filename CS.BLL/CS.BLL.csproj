@@ -107,7 +107,14 @@
     <Compile Include="FW\BF_USER.cs" />
     <Compile Include="FW\BF_FIELD.cs" />
     <Compile Include="FW\SystemSession.cs" />
+    <Compile Include="Model\AJTM_AS_TYPE.cs" />
+    <Compile Include="Model\AJTM_OUTLAY_MODE.cs" />
+    <Compile Include="Model\AJTM_SETUP_LEVEL.cs" />
+    <Compile Include="Model\AJTM_SETUP_NATRUE.cs" />
+    <Compile Include="Model\AJTM_SETUP_TYPE.cs" />
     <Compile Include="Model\AJTM_UNIT.cs" />
+    <Compile Include="Model\AJTM_UNIT_AS.cs" />
+    <Compile Include="Model\AJTM_SETUP_RANGE.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
