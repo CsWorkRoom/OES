@@ -1,7 +1,13 @@
 ﻿layui.use(['form', 'layer', 'jquery'], function () {
     var form = layui.form, layer = layui.layer, $ = layui.jquery;
-
-
+    form.verify({
+        name: function (value) {
+            console.log("verify:" + value);
+            if (value.length <= 0) {
+                return '单位名称不能为空！';
+            }
+        }
+    });
 });
 $(function () {
     setTimeout(function () {
@@ -22,6 +28,7 @@ $(function () {
         if (trArr.length === 0) add();
     }, 0);
 });
+
 
 function add(e) {
     var r = { AS_TYPE_ID: 0, VERIFICATION_NUM: 0, BEGIN_NUM: 0 };
@@ -55,21 +62,7 @@ function remove() {
     $(this).closest("tr").remove();
 }
 
-function unitAsArr() {
-    var trArr = $("#AsUnit").find("tr");
-    var rArr = [];
-    for (var i = 0; i < trArr.length; i++) {
-        var tr = $(trArr[i]);
-        tr.find("td").eq(0).find("input").val();
-        var r = {
-            AS_TYPE_ID: tr.find("td").eq(0).find("input").val(),
-            VERIFICATION_NUM: tr.find("td").eq(1).find("input").val(),
-            BEGIN_NUM: tr.find("td").eq(2).find("input").val()
-        };
-        rArr.push(r);
-    }
-    $("#AsUnitJson").val(JSON.stringify(rArr));
-}
+
 
 function getRandomString(len) {
     len = len | 8;
@@ -83,11 +76,42 @@ function getRandomString(len) {
 
 
 function save() {
-    unitAsArr();
     layui.use(['form', 'layer', 'jquery'], function () {
         var form = layui.form, layer = layui.layer, $ = layui.$;
+        let r = unitAsArr();
+        if (r.isErr) {
+            layer.alert(r.Msg);
+            return;
+        }
         var url = "../AjtmUnit/Detail";
         SaveForm('form', url);
         return;
+        function unitAsArr() {
+            //let name = $("#NAME").val();
+            //if (name..length === 0) {
+            //    return { isErr: true, Msg: "提交失败,单位名称不能为空" };
+            //}
+            //
+            var trArr = $("#AsUnit").find("tr");
+            var rArr = [];
+            for (var i = 0; i < trArr.length; i++) {
+                var tr = $(trArr[i]);
+                tr.find("td").eq(0).find("input").val();
+                let AS_TYPE_ID = parseInt(tr.find("td").eq(0).find("input").val());
+                if (isNaN(AS_TYPE_ID) || AS_TYPE_ID === 0) {
+                    return { isErr: true, Msg: "未选择第" + (i + 1) + "行编制类型" };
+                }
+                let VERIFICATION_NUM = tr.find("td").eq(1).find("input").val();
+                let BEGIN_NUM = tr.find("td").eq(2).find("input").val();
+                var r = {
+                    AS_TYPE_ID: AS_TYPE_ID,
+                    VERIFICATION_NUM: VERIFICATION_NUM,
+                    BEGIN_NUM: BEGIN_NUM
+                };
+                rArr.push(r);
+            }
+            $("#AsUnitJson").val(JSON.stringify(rArr));
+            return { isErr: false };
+        }
     });
 }

@@ -40,6 +40,13 @@ namespace CS.WebUI.Controllers.AJTM
         [HttpPost]
         public ActionResult Detail(Model.Unit entity)
         {
+            JsonResultData result = new JsonResultData();
+            if (string.IsNullOrEmpty(entity.NAME))
+            {
+                result.IsSuccess = false;
+                result.Message = "提交失败,单位名称不能为空";
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
             Dictionary<string, object> dic = new Dictionary<string, object>();
             dic.Add("NAME", entity.NAME);
             dic.Add("PARENT_ID", entity.PARENT_ID);
@@ -65,7 +72,6 @@ namespace CS.WebUI.Controllers.AJTM
             dic.Add("VILLAGE_MIAN_MR", entity.VILLAGE_MIAN_MR);
             dic.Add("VILLAGE_VICE_MR", entity.VILLAGE_VICE_MR);
             //
-            JsonResultData result = new JsonResultData();
             if (entity.ID > 0)
             {
 
@@ -91,14 +97,11 @@ namespace CS.WebUI.Controllers.AJTM
                 unitAsDic.Add("UNIT_ID", entity.ID);
                 unitAsDic.Add("VERIFICATION_NUM", item.VERIFICATION_NUM);
                 unitAsDic.Add("BEGIN_NUM", item.BEGIN_NUM);
-                unitAsDic.Add("CREATE_UID", SystemSession.UserID);
-                unitAsDic.Add("UPDATE_UID", SystemSession.UserID);
-                unitAsDic.Add("CREATE_TIME", DateTime.Now);
-                unitAsDic.Add("UPDATE_TIME", DateTime.Now);
                 AJTM_UNIT_AS.Instance.Add(unitAsDic);
             }
 
-
+            result.IsSuccess = true;
+            result.Message = "数据提交成功";
             return Json(result, JsonRequestBehavior.AllowGet);
         }
     }
