@@ -1,0 +1,71 @@
+﻿@model CS.WebUI.Controllers.Model.AsApply
+@{
+    Layout = "~/Views/Shared/_Content.cshtml";
+}
+<form id="form" class="layui-form" action="" method="post">
+    <script src="~/Content/FW/LayuiZtree.js?v=20210609"></script>
+    <input hidden="hidden" id="AsApplyDetailJson" name="AsApplyDetailJson" value="@Model.AsApplyDetailJson" />
+    <input hidden="hidden" id="AsType" name="AsType" value="@ViewBag.AsType" />
+    <input hidden="hidden" id="ID" name="ID" value="@Model.ID" />
+    <input hidden="hidden" id="AsPurpose" name="AsPurpose" value="@ViewBag.AsPurpose" />
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>待上编信息</legend>
+    </fieldset>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">编制使用通知单</label>
+            <div class="layui-input-inline">
+                <input type="text" name="AS_APPLY_NO" id="AS_APPLY_NO" value="@Model.AS_APPLY_NO" autocomplete="off" class="layui-input" readonly="readonly" />
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">批复时间(必填)</label>
+            <div class="layui-input-inline">
+                <input type="text" name="AS_APPROVAL_TIME" id="AS_APPROVAL_TIME" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">会议名称</label>
+            <div class="layui-input-inline">
+                <input type="tel" name="MEETING" id="MEETING" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>申报编制明细</legend>
+    </fieldset>
+    <div class="layui-form-item">
+        <table class="layui-table" lay-even style="margin:0 auto">
+            <colgroup>
+                <col width="200">
+                <col width="100">
+                <col width="100">
+                <col width="100">
+                <col width="100">
+                <col width="100">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>用编类型</th>
+                    <th>编制用途</th>
+                    <th>编制详细用途</th>
+                    <th>申报数量</th>
+                    <th>批准数</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="AsApplyDetail"></tbody>
+        </table>
+    </div>
+</form>
+<div class="form-bottom-submit" style="text-align:center;">
+    <input type="hidden" id="msg" value="@ViewBag.Message" />
+    <div class="layui-inline">
+        <button type="button" class="layui-btn" onclick="save();">确定</button>
+        <button type="reset" class="layui-btn layui-btn-primary" onclick="CloseForm();">关闭</button>
+    </div>
+</div>
+<script src="~/Views/AjtmAsApply/JS/Approval.js?v=20210610"></script>
+
