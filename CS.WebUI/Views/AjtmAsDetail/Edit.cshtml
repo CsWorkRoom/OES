@@ -1,10 +1,9 @@
-﻿@model CS.WebUI.Controllers.Model.AsApply
+﻿@model CS.WebUI.Controllers.Model.AsDetail
 @{
     Layout = "~/Views/Shared/_Content.cshtml";
 }
 <form id="form" class="layui-form" action="" method="post">
     <script src="~/Content/FW/LayuiZtree.js?v=20210609"></script>
-    <input hidden="hidden" id="AsApplyDetailJson" name="AsApplyDetailJson" value="@Model.AsApplyDetailJson" />
     <input hidden="hidden" id="AsType" name="AsType" value="@ViewBag.AsType" />
     <input hidden="hidden" id="Unit" name="Unit" value="@ViewBag.Unit" />
     <input hidden="hidden" id="ID" name="ID" value="@Model.ID" />
@@ -12,6 +11,20 @@
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
         <legend>单位基本信息</legend>
     </fieldset>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">批复时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="APPROVAL_TIME" id="APPROVAL_TIME" value="@Model.APPROVAL_TIME" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">会议名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="MEETING" value="@Model.MEETING" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
     <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label">用编单位</label>
@@ -30,23 +43,20 @@
     </div>
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">来文时间</label>
+            <label class="layui-form-label">编制使用通知单</label>
             <div class="layui-input-inline">
-                <input type="tel" name="APPLY_TIME" value='@Model.APPLY_TIME.ToString("yyyy-MM-dd")' id="APPLY_TIME" autocomplete="off" class="layui-input">
+                <input type="text" name="AS_APPLY_NO" value="@Model.AS_APPLY_NO" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
-            <label class="layui-form-label">是否为年度用编</label>
+            <label class="layui-form-label">编制用途</label>
             <div class="layui-input-inline">
-                @{
-                    Dictionary<int, string> dic = new Dictionary<int, string>();
-                    dic.Add(0, "否");
-                    dic.Add(1, "是");
-                }
-                <select name="IS_YEAR" lay-verify="required">
-                    @foreach (var item in dic)
+                <input hidden="hidden" name="AS_PURPOSE" id="AS_PURPOSE" value="@Model.UNIT_PARENT" />
+                <select name="AS_PURPOSE_ID">
+                    <option value=""></option>
+                    @foreach (var item in ViewBag.AsPurpose)
                     {
-                        if (Model.IS_YEAR == item.Key)
+                        if (Model.AS_PURPOSE_ID == item.Key)
                         {
                             <option value="@item.Key" selected="selected">@item.Value</option>
                         }
@@ -61,41 +71,32 @@
     </div>
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">联系人</label>
+            <label class="layui-form-label">编制详细用途</label>
             <div class="layui-input-inline">
-                <input type="tel" name="ACCOUNT_PEOPLE" value="@Model.ACCOUNT_PEOPLE" autocomplete="off" class="layui-input">
+                <input type="text" name="AS_PURPOSE_REMARK" value="@Model.AS_PURPOSE_REMARK" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
-            <label class="layui-form-label">联系方式</label>
+            <label class="layui-form-label">编制类型</label>
             <div class="layui-input-inline">
-                <input type="tel" name="ACCOUNT_PHONE" value="@Model.ACCOUNT_PHONE" autocomplete="off" class="layui-input">
+                <input hidden="hidden" name="AS_TYPE" id="AS_TYPE" value="@Model.AS_TYPE" />
+                <input type="text" name="AS_TYPE_ID" id="AS_TYPE_ID" value="@Model.AS_TYPE_ID">
             </div>
         </div>
     </div>
-    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-        <legend>申报编制明细</legend>
-    </fieldset>
     <div class="layui-form-item">
-        <table class="layui-table" lay-even style="margin:0 auto">
-            <colgroup>
-                <col width="200">
-                <col width="100">
-                <col width="100">
-                <col width="100">
-                <col width="100">
-            </colgroup>
-            <thead>
-                <tr>
-                    <th>用编类型</th>
-                    <th>编制用途</th>
-                    <th>编制详细用途</th>
-                    <th>申报数量</th>
-                    <th>操作</th>
-                </tr>
-            </thead>
-            <tbody id="AsApplyDetail"></tbody>
-        </table>
+        <div class="layui-inline">
+            <label class="layui-form-label">用编号码</label>
+            <div class="layui-input-inline">
+                <input type="text" name="AS_NO" value="@Model.AS_NO" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">批准数</label>
+            <div class="layui-input-inline">
+                <input type="text" name="APPROVAL_NUM" value="@Model.APPROVAL_NUM" autocomplete="off" class="layui-input">
+            </div>
+        </div>
     </div>
 </form>
 <div class="form-bottom-submit" style="text-align:center;">
@@ -105,4 +106,4 @@
         <button type="reset" class="layui-btn layui-btn-primary" onclick="CloseForm();">关闭</button>
     </div>
 </div>
-<script src="~/Views/AjtmAsApply/JS/Edit.js?v=20210610"></script>
+<script src="~/Views/AjtmAsDetail/JS/Edit.js?v=20210610"></script>

@@ -3,30 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CS.Base.DBHelper;
 using CS.Library.BaseQuery;
 using CS.Common.FW;
 using CS.BLL.FW;
-using System.Data;
 
 namespace CS.BLL.Model
 {
-
-    public class AJTM_AS_PURPOSE : BBaseQuery
+    class AJTM_ACCESS_MODE : BBaseQuery
     {
         /// <summary>
         /// 单例
         /// </summary>
-        public static AJTM_AS_PURPOSE Instance = new AJTM_AS_PURPOSE();
+        public static AJTM_ACCESS_MODE Instance = new AJTM_ACCESS_MODE();
         #region 构造函数
         /// <summary>
         /// 构造函数
         /// </summary>
-        public AJTM_AS_PURPOSE()
+        public AJTM_ACCESS_MODE()
         {
             this.IsAddIntoCache = true;
-            this.TableName = "AJTM_AS_PURPOSE";
-            this.ItemName = "编制用途";
+            this.TableName = "AJTM_ACCESS_MODE";
+            this.ItemName = "进出方式";
             this.KeyField = "ID";
             this.OrderbyFields = "ID";
         }
@@ -45,9 +42,9 @@ namespace CS.BLL.Model
             public int ID { get; set; }
 
             /// <summary>
-            /// 单位名称
+            /// 进出方式名称
             /// </summary>
-            [Field(IsNotNull = true, Length = 128, IsIndex = true, IsIndexUnique = true, Comment = "编制用途名称")]
+            [Field(IsNotNull = true, Length = 128, IsIndex = true, IsIndexUnique = true, Comment = "单位名称")]
             public string NAME { get; set; }
             /// <summary>
             /// 备注
@@ -85,16 +82,7 @@ namespace CS.BLL.Model
         /// 获取下拉
         /// </summary>
         /// <returns></returns>
-        public DataTable GetDropDown()
-        {
-            return GetTableFields("ID,NAME");
-        }
-
-        /// <summary>
-        /// 获取下拉
-        /// </summary>
-        /// <returns></returns>
-        public Dictionary<int, string> GetDicDropDown()
+        public Dictionary<int, string> GetDropDown()
         {
             return GetDictionary("ID", "NAME");
         }
