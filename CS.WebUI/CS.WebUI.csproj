@@ -1601,6 +1601,7 @@
     <Content Include="Views\AjtmAsApply\JS\Approval.js" />
     <Content Include="Views\AjtmAsApply\JS\Edit.js" />
     <Content Include="Views\AjtmAsDetail\JS\Edit.js" />
+    <Content Include="Views\AjtmAsPersonnel\JS\Edit.js" />
     <Content Include="Views\AjtmUnit\JS\Edit.js" />
     <Content Include="Views\FormulaHelp.html" />
     <Content Include="Views\Home\CSS\default.css" />
