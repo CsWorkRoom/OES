@@ -201,7 +201,61 @@ namespace CS.BLL.Model
 
         }
         #endregion
+        /// <summary>
+        /// 办理状态
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, string> GetDropdownForHandlng()
+        {
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            dic.Add("1.已登记", "1.已登记");
+            dic.Add("2.已领取", "2.已领取");
+            dic.Add("3.已交回", "3.已交回");
+            dic.Add("4.已更新", "4.已更新");
+            return dic;
+        }
 
+        /// <summary>
+        /// 上/下编
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, string> GetDropdownForAction()
+        {
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            dic.Add("上编", "上编");
+            dic.Add("下编", "下编");
+            return dic;
+        }
+
+        /// <summary>
+        /// 学历
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, string> GetDropdownForEducation()
+        {
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            dic.Add("初中", "初中");
+            dic.Add("高中", "高中");
+            dic.Add("中专", "中专");
+            dic.Add("大专", "大专");
+            dic.Add("大学", "大学");
+            dic.Add("研究生", "研究生");
+            dic.Add("博士", "博士");
+            return dic;
+        }
+
+        /// <summary>
+        /// 岗位类别
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, string> GetDropdownForPostType()
+        {
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            dic.Add("专业技术", "专业技术");
+            dic.Add("行政管理", "行政管理");
+            dic.Add("工勤技能", "工勤技能");
+            return dic;
+        }
     }
 
 }

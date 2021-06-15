@@ -1,0 +1,256 @@
+﻿@model CS.WebUI.Controllers.Model.AsPersonnel
+@{
+    Layout = "~/Views/Shared/_Content.cshtml";
+}
+<form id="form" class="layui-form" action="" method="post">
+    <script src="~/Content/FW/LayuiZtree.js?v=20210609"></script>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>单位基本信息</legend>
+    </fieldset>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">办理状态</label>
+            <div class="layui-input-inline">
+                <select name="HANDLNG">
+                    <option value=""></option>
+                    @foreach (var item in ViewBag.Handlng)
+                    {
+                        if (Model.HANDLNG == item.Key)
+                        {
+                            <option value="@item.Key" selected="selected">@item.Value</option>
+                        }
+                        else
+                        {
+                            <option value="@item.Key">@item.Value</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">增加减少审批单号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="ACTION_NO" id="ACTION_NO" value="">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">上编/下编</label>
+            <div class="layui-input-inline">
+                <select name="ACTION">
+                    <option value=""></option>
+                    @foreach (var item in ViewBag.Action)
+                    {
+                        if (Model.ACTION == item.Key)
+                        {
+                            <option value="@item.Key" selected="selected">@item.Value</option>
+                        }
+                        else
+                        {
+                            <option value="@item.Key">@item.Value</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>人员信息</legend>
+    </fieldset>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">姓名</label>
+            <div class="layui-input-inline">
+                <input type="text" name="ACCOUNT_NAME" value="" lay-verify="required|name" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">年龄</label>
+            <div class="layui-input-inline">
+                <input type="text" name="ACCOUNT_AGE" id="ACTION_NO" value="">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">学历</label>
+            <div class="layui-input-inline">
+                <select name="ACCOUNT_EDUCATION">
+                    <option value=""></option>
+                    @foreach (var item in ViewBag.Education)
+                    {
+                        if (Model.ACTION == item.Key)
+                        {
+                            <option value="@item.Key" selected="selected">@item.Value</option>
+                        }
+                        else
+                        {
+                            <option value="@item.Key">@item.Value</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">岗位类别</label>
+            <div class="layui-input-inline">
+                <select name="POST_TYPE">
+                    <option value=""></option>
+                    @foreach (var item in ViewBag.PostType)
+                    {
+                        if (Model.ACTION == item.Key)
+                        {
+                            <option value="@item.Key" selected="selected">@item.Value</option>
+                        }
+                        else
+                        {
+                            <option value="@item.Key">@item.Value</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>编制信息</legend>
+    </fieldset>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">编制使用通知单号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="ACTION_NO" id="ACTION_NO" value="">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">用编序号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="ACTION_NO" id="ACTION_NO" value="">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">编制类型</label>
+            <div class="layui-input-inline">
+                <input type="text" name="NAME" value="" lay-verify="required|name" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">进出方式</label>
+            <div class="layui-input-inline">
+                <input type="text" name="NAME" value="" lay-verify="required|name" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">人员增减文件依据</label>
+            <div class="layui-input-inline">
+                <input type="text" name="NAME" value="" lay-verify="required|name" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">发文时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="ACTION_NO" id="ACTION_NO" value="">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">人员增减情况</label>
+            <div class="layui-input-inline">
+                <input type="text" name="NAME" value="" lay-verify="required|name" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">同意上下编时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="ACTION_NO" id="ACTION_NO" value="">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">实名制信息入库登记时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="NAME" value="" lay-verify="required|name" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">去(来）向</label>
+            <div class="layui-input-inline">
+                <input type="text" name="ACTION_NO" id="ACTION_NO" value="">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">单位经办人</label>
+            <div class="layui-input-inline">
+                <input type="text" name="NAME" value="" lay-verify="required|name" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">联系电话</label>
+            <div class="layui-input-inline">
+                <input type="text" name="ACTION_NO" id="ACTION_NO" value="">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">上下编未完成原因</label>
+            <div class="layui-input-inline">
+                <input type="text" name="NAME" value="" lay-verify="required|name" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">编制单位</label>
+            <div class="layui-input-inline">
+                <input type="text" name="NAME" value="" lay-verify="required|name" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">主管部门</label>
+            <div class="layui-input-inline">
+                <input type="text" name="ACTION_NO" id="ACTION_NO" value="">
+            </div>
+        </div>
+    </div>
+
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>单位编制信息</legend>
+    </fieldset>
+    <div class="layui-form-item">
+        <table class="layui-table" style="margin:0 auto">
+            <colgroup>
+                <col width="200">
+                <col width="100">
+                <col width="100">
+                <col width="100">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>编制类型</th>
+                    <th>核定数</th>
+                    <th>期初数</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="AsUnit"></tbody>
+        </table>
+    </div>
+</form>
+<div class="form-bottom-submit" style="text-align:right;">
+    <input type="hidden" id="msg" value="@ViewBag.Message" />
+    <div class="layui-inline">
+        <button type="button" class="layui-btn" onclick="save();">确定</button>
+        <button type="reset" class="layui-btn layui-btn-primary" onclick="CloseForm();">关闭</button>
+    </div>
+</div>
+<script src="~/Views/AjtmUnit/JS/Edit.js?v=20210610"></script>
