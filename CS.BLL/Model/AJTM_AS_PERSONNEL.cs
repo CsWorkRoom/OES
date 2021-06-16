@@ -153,7 +153,7 @@ namespace CS.BLL.Model
             /// <summary>
             /// 实名制信息入库登记时
             /// </summary>
-            [Field(IsNotNull = true, DefaultValue = "NOW", Comment = "同意上下编时间")]
+            [Field(IsNotNull = true, DefaultValue = "NOW", Comment = "实名制信息入库登记时")]
             public DateTime CHECKIN_TIME { get; set; }
             /// <summary>
             /// 去(来）向

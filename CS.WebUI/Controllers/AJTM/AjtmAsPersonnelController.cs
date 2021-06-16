@@ -9,7 +9,7 @@ using CS.BLL.Model;
 
 namespace CS.WebUI.Controllers.AJTM
 {
-    public class AjtmAsPersonnelController :  FW.ABaseController
+    public class AjtmAsPersonnelController : FW.ABaseController
     {
         // GET: AjtmAsPersonnel
         public ActionResult Edit(int id = 0)
