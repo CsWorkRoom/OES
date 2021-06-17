@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -68,6 +69,47 @@ namespace CS.WebUI.Controllers.AJTM
             result.IsSuccess = true;
             result.Message = "数据提交成功";
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public string GetAsDetail(int unitId = 0, int op = 0)
+        {
+            DataTable dt;
+            if(op == 0)
+            {
+                dt = AJTM_AS_DETAIL.Instance.GetCrateAsDetail(unitId);
+            }
+            else
+            {
+                dt = AJTM_AS_DETAIL.Instance.GetCancelAsDetail(unitId);
+            }
+            if(dt != null)
+            {
+                List<string> dstr = new List<string>();
+                List<object> AsApplyD = new List<object>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    var id = dr["AS_APPLY_ID"].ToString() + dr["AS_APPLY_NO"].ToString();
+                    if (!dstr.Contains(id))
+                    {
+                        AsApplyD.Add(new
+                        {
+                            AS_APPLY_ID = dr["AS_APPLY_ID"].ToString(),
+                            AS_APPLY_NO = dr["AS_APPLY_NO"].ToString()
+                        });
+                        dstr.Add(id);
+                    }
+                   
+                }
+                return SerializeObject(new
+                {
+                    AsApply = AsApplyD,
+                    AsDetail = dt
+                });
+            }
+            return "{AsApply:[],AsDetail:[]}";
         }
     }
 }

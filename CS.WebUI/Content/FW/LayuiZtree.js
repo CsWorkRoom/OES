@@ -21,6 +21,7 @@
             this.initControl();
             this.init_ztree();
             this.init_value();
+            return this;
         },
         initstyle: function () {
             var stylecss = [
@@ -247,11 +248,15 @@
                 //$("#" + id).attr("value", $("#" + id).attr("value") + "," + s.values);
                 $("#" + ztreehideId).attr("value", s.ids);
             }
+        },
+        setValue: function (value) {
+            this.obj.attr("value", value);
+            this.init_value();
         }
     },
     comboztree: function (id, s) {
         s = jQuery.extend({}, jQuery.LayuizTree, s);
-        s.init(id);
+        return s.init(id);
     },
     zTreeFunc: {
         FuncAssignment: function (treeId, nodes) {

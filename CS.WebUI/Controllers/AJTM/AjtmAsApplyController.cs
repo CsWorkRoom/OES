@@ -235,6 +235,20 @@ namespace CS.WebUI.Controllers.AJTM
             result.Message = "数据提交成功";
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+        /// <summary>
+        /// 编制使用通知单
+        /// </summary>
+        /// <param name="UnitId"></param>
+        /// <returns></returns>
+        public string GetApplyNo(int UnitId=0)
+        {
+            if (UnitId > 0)
+            {
+                var r = AJTM_AS_APPLY.Instance.GetTableFields("AS_APPLY_NO,ID", "UNIT_ID=? AND APPROVAL_NUM > 0", new object[] { UnitId });
+                return SerializeObject(r);
+            }
+            return "{}";
+        }
     }
 }
 

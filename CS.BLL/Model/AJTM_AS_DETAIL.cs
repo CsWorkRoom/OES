@@ -7,6 +7,7 @@ using CS.Base.DBHelper;
 using CS.Library.BaseQuery;
 using CS.Common.FW;
 using CS.BLL.FW;
+using System.Data;
 
 namespace CS.BLL.Model
 {
@@ -137,6 +138,24 @@ namespace CS.BLL.Model
         }
         #endregion
 
+        /// <summary>
+        /// 获取刚创建得待上编
+        /// </summary>
+        /// <param name="UnitId"></param>
+        /// <returns></returns>
+        public DataTable GetCrateAsDetail(int UnitId)
+        {
+            return GetTableFields("ID,AS_APPLY_ID,AS_APPLY_NO,AS_TYPE_ID,AS_TYPE,AS_NO", " UNIT_ID=? AND USE_TIME IS NULL AND CANCEL_TIME IS NULL", new object[] { UnitId });
+        }
+        /// <summary>
+        /// 获取正在使用得带上编
+        /// </summary>
+        /// <param name="UnitId"></param>
+        /// <returns></returns>
+        public DataTable GetCancelAsDetail(int UnitId)
+        {
+            return GetTableFields("ID,AS_APPLY_ID,AS_APPLY_NO,AS_TYPE_ID,AS_TYPE,AS_NO", " UNIT_ID=? AND USE_TIME IS NOT NULL AND CANCEL_TIME IS NULL", new object[] { UnitId });
+        }
 
         public string GetAsNo(int i)
         {
