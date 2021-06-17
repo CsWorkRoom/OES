@@ -142,6 +142,7 @@
         <div class="layui-inline">
             <label class="layui-form-label">编制使用通知单号</label>
             <div class="layui-input-inline">
+                <input hidden="hidden" name="AS_APPLY_ID" id="AS_APPLY_ID" />
                 <input type="text" name="AS_APPLY_NO" id="AS_APPLY_NO" value="" autocomplete="off" class="layui-input">
             </div>
         </div>
@@ -156,7 +157,8 @@
         <div class="layui-inline">
             <label class="layui-form-label">编制类型</label>
             <div class="layui-input-inline">
-                <input type="text" name="AS_TYPE" id="AS_TYPE" value="" />
+                <input hidden="hidden" name="AS_TYPE" value="AS_TYPE" />
+                <input type="text" name="AS_TYPE_ID" id="AS_TYPE_ID" value="" />
             </div>
         </div>
         <div class="layui-inline">
@@ -227,18 +229,21 @@
         </div>
     </div>
     <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">上下编未完成原因</label>
-            <textarea type="text" name="NAME" value="" lay-verify="required|name" autocomplete="off" class="layui-input">
-                </textarea>
+        <label class="layui-form-label">上下编未完成原因</label>
+        <div class="layui-input-block">
+            <textarea type="text" name="REMARKS" value="" lay-verify="required|name" autocomplete="off" class="layui-textarea">
+            </textarea>
         </div>
     </div>
 
-    <div id="ActionUp">
+    <div id="ActionUp" hidden="hidden">
         <div class="layui-row">
             <div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
                 <div class="layui-card">
-                    <div class="layui-card-header">编制单位</div>
+                    <div class="layui-card-header">
+                        <input hidden="hidden" id="AupUnit" />
+                        <button type="button" class="layui-btn" onclick="AupSumbit()">确定</button>
+                    </div>
                     <div class="layui-card-body">
                         <div id="AupUnitTree" class="ztree"></div>
                     </div>
@@ -248,33 +253,21 @@
                 <div class="layui-card">
                     <div class="layui-card-header">
                         <div class="layui-input-inline">
-                            <input type="text" autocomplete="off" class="layui-input">
+                            <input type="text" placeholder="请搜索编制通知" autocomplete="off" class="layui-input">
                         </div>
                     </div>
-                    <div class="layui-card-body">
-                        卡片式面板面板通常用于非白色背景色的主体内<br>
-                        从而映衬出边框投影
-                        卡片式面板面板通常用于非白色背景色的主体内<br>
-                        从而映衬出边框投影
-                        卡片式面板面板通常用于非白色背景色的主体内<br>
-                        从而映衬出边框投影
-                        卡片式面板面板通常用于非白色背景色的主体内<br>
-                        从而映衬出边框投影
-                        卡片式面板面板通常用于非白色背景色的主体内<br>
-                        从而映衬出边框投影
-                        卡片式面板面板通常用于非白色背景色的主体内<br>
-                        从而映衬出边框投影
+                    <div class="layui-card-body" id="AupAsApply">
                     </div>
                 </div>
             </div>
             <div class="layui-col-xs4 layui-col-sm12 layui-col-md4">
                 <div class="layui-card">
                     <div class="layui-card-header">
-                        <input type="text" autocomplete="off" class="layui-input">
+                        <div class="layui-input-inline">
+                            <input type="text" placeholder="请用编编号" autocomplete="off" class="layui-input">
+                        </div>
                     </div>
-                    <div class="layui-card-body">
-                        卡片式面板面板通常用于非白色背景色的主体内<br>
-                        从而映衬出边框投影
+                    <div class="layui-card-body" id="AupAsDetail">
                     </div>
                 </div>
             </div>

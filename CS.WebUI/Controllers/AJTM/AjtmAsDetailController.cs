@@ -42,6 +42,7 @@ namespace CS.WebUI.Controllers.AJTM
             dic.Add("AS_PURPOSE", entity.AS_PURPOSE);
             dic.Add("AS_PURPOSE_REMARK", entity.AS_PURPOSE_REMARK);
             dic.Add("AS_TYPE_ID", entity.AS_TYPE_ID);
+            dic.Add("AS_NO", entity.AS_NO);
             dic.Add("AS_TYPE", entity.AS_TYPE);
             dic.Add("APPROVAL_NUM", entity.APPROVAL_NUM);
             if (entity.ID > 0)
@@ -94,10 +95,17 @@ namespace CS.WebUI.Controllers.AJTM
                     var id = dr["AS_APPLY_ID"].ToString() + dr["AS_APPLY_NO"].ToString();
                     if (!dstr.Contains(id))
                     {
+                        long AS_APPLY_ID = Convert.ToInt64(dr["AS_APPLY_ID"]);
+                        string AS_APPLY_NO = dr["AS_APPLY_NO"].ToString();
+                        var AsDetail = dt.AsEnumerable().Where(
+                            x => x.Field<long>("AS_APPLY_ID") == AS_APPLY_ID
+                        && x.Field<string>("AS_APPLY_NO") == AS_APPLY_NO).CopyToDataTable();
+        
                         AsApplyD.Add(new
                         {
                             AS_APPLY_ID = dr["AS_APPLY_ID"].ToString(),
-                            AS_APPLY_NO = dr["AS_APPLY_NO"].ToString()
+                            AS_APPLY_NO = dr["AS_APPLY_NO"].ToString(),
+                            AS_DETAIL = AsDetail
                         });
                         dstr.Add(id);
                     }
