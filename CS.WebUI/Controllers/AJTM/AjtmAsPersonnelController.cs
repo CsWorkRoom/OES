@@ -22,6 +22,7 @@ namespace CS.WebUI.Controllers.AJTM
             ViewBag.AsType = SerializeObject(AJTM_AS_TYPE.Instance.GetDropTree());
             return View(new Model.AsPersonnel());
         }
+
     }
 }
 

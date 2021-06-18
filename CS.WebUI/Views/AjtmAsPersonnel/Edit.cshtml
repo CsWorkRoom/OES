@@ -235,7 +235,6 @@
             </textarea>
         </div>
     </div>
-
     <div id="ActionUp" hidden="hidden">
         <div class="layui-row">
             <div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
@@ -271,6 +270,38 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div id="ActionDown">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">用户姓名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="ADownAccountName" id="ADwonAccountName" value="" placeholder="请输入上编用户姓名" autocomplete="off" class="layui-input">
+                    <button type="button" class="layui-btn" onclick="onSearch()">搜索</button>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item" id="ADownInfo">
+            <table class="layui-table" lay-even style="margin:0 auto">
+                <colgroup>
+                    <col width="200">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>用编类型</th>
+                        <th>编制用途</th>
+                        <th>编制详细用途</th>
+                        <th>申报数量</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="AsApplyDetail"></tbody>
+            </table>
         </div>
     </div>
 </form>

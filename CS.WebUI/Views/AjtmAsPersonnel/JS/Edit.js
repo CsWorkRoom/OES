@@ -198,6 +198,12 @@ function Close() {
     });
 }
 
+
+function onSearch() {
+    
+}
+
+
 function add(e) {
     var r = { AS_TYPE_ID: 0, VERIFICATION_NUM: 0, BEGIN_NUM: 0 };
     if (e) {

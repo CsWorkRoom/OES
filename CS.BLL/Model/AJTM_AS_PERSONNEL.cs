@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CS.Library.BaseQuery;
 using CS.Common.FW;
 using CS.BLL.FW;
+using System.Data;
 
 namespace CS.BLL.Model
 {
@@ -53,7 +54,7 @@ namespace CS.BLL.Model
             /// <summary>
             /// 上编/下编
             /// </summary>
-            [Field(IsNotNull = false, Length = 128, Comment = "增加减少审批单号")]
+            [Field(IsNotNull = false, Length = 128, Comment = "上编/下编")]
             public string ACTION { get; set; }
             /// <summary>
             /// 用编单位
@@ -255,6 +256,17 @@ namespace CS.BLL.Model
             dic.Add("行政管理", "行政管理");
             dic.Add("工勤技能", "工勤技能");
             return dic;
+        }
+
+
+        /// <summary>
+        /// 获取上编的用户信息
+        /// </summary>
+        /// <param name="AccountName"></param>
+        /// <returns></returns>
+        public DataTable GetTableByAccountName(string AccountName)
+        {
+            return GetTable("Order by ID desc", "ACCOUNT_NAME like %?% AND ACTION='上编'", new object[] { AccountName });
         }
     }
 
