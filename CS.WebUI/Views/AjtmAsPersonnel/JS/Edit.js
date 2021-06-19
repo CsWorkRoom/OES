@@ -26,6 +26,7 @@ $(function () {
                     $("#UNIT_PARENT_ID").val(0);
                 }
             });
+            initTree("Unit", "ADownUnitId");
             //验证
             form.verify({
                 name: function (value) {
@@ -44,8 +45,29 @@ $(function () {
                         $("#ACTION").val("上编");
                     }
                     form.render();
+                    ActionChange();
                 }
             });
+            ActionChange();
+            form.on('select(sACTION)', function (data) {
+                ActionChange();
+            });
+
+            function ActionChange() {
+                var ACTION = $("#ACTION").val();
+                $(".btnAction").hide();
+                switch (ACTION) {
+                    case "上编":
+                        $(".btnActionUp").show();
+                        break;
+                    case "下编":
+                        $(".btnActionDown").show();
+                        break;
+                    default:
+                        break;
+                }
+            }
+
             //通用方法
             function initTree(inputId, treeId, onClick) {
                 if (typeof onClick !== "function") onClick = function (event, treeId, treeNode) { };
@@ -184,7 +206,7 @@ function Open() {
             closeBtn: true,  //关闭按钮
             type: 1,
             title:"上编信息",
-            area: ['800px', '350px'],
+            area: ['1000px', '500px'],
             shade: 0,       //不显示遮罩
             content: $("#ActionUp"),
         });
@@ -198,42 +220,124 @@ function Close() {
     });
 }
 
-
 function onSearch() {
-    
+    layui.use(['form', 'layer', 'jquery', 'laydate'], function () {
+        var form = layui.form, layer = layui.layer, $ = layui.$, laydate = layui.laydate;
+        //正文
+        var data = {};
+        var UnitId = $("#ADownUnitId").val();
+        if (UnitId.length !== 0) {
+            data.UnitId = UnitId;
+        }
+        var AccountName = $("#ADwonAccountName").val();
+        if (AccountName.trim().length === 0) {
+            return layer.alert("请输入用户名称，也可以只输入姓氏");
+        }
+        data.AccountName = AccountName;
+        $.get("../AjtmAsPersonnel/GetPersonnel", data, function (r) {
+            if (r.length) return layer.alert("未搜索出对应的信息");
+            var temp = TempTableForAsDown();
+            var temptbody = temp.find("tbody");
+            for (var i = 0; i < r.length; i++) {
+                var item = r[i];
+                temptbody.append(TempTableByRow(item));
+            }
+            $("#ADownInfo").html(temp);
+        }, "json");
+
+        function TempTableForAsDown() {
+            return $(`
+       <table class="layui-table" lay-even style="margin:0 auto">
+                <colgroup>
+                    <col width="80">
+                    <col width="150">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>姓名</th>
+                        <th>编制单位</th>
+                        <th>主管部门</th>
+                        <th>编制使用通知单号</th>
+                        <th>用编序号</th>
+                        <th>学历</th>
+                        <th>岗位类别</th>
+                        <th>编制类型</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+   `);
+        }
+
+        function TempTableByRow(item) {
+            var temp = $(`
+           <tr>
+               <td>`+ item.ACCOUNT_NAME + `</td>
+               <td>`+ item.UNIT_NAME + `</td>
+               <td>`+ item.UNIT_PARENT + `</td>
+               <td>`+ item.AS_APPLY_NO + `</td>
+               <td>`+ item.AS_NO + `</td>
+               <td>`+ item.ACCOUNT_EDUCATION + `</td>
+               <td>`+ item.POST_TYPE + `</td>
+               <td>`+ item.AS_TYPE + `</td>
+               <td>
+                   <button type="button" class="layui-btn" onclick="">确定</button>
+               </td>
+            </tr>
+    `);
+            temp.find("button").data("item", item);
+            temp.find("button").bind("click", TempButtonClick);
+            return temp;
+        }
+
+        function TempButtonClick() {
+            var t = $(this);
+            var d = t.data("item");
+            //用户信息
+            $("#ACCOUNT_NAME").val(d.ACCOUNT_NAME);
+            $("#ACCOUNT_EDUCATION").val(d.ACCOUNT_EDUCATION);
+            //岗位类型
+            $("#POST_TYPE").val(d.POST_TYPE);
+            //编制单位
+            $("#UNIT_ID").data("ztree").setValue(d.UNIT_ID);
+            $("#UNIT_NAME").val(d.UNIT_NAME);
+            $("#UNIT_PARENT").val(d.UNIT_PARENT);
+            $("#UNIT_PARENT_ID").val(d.UNIT_PARENT_ID);
+            //编制通知单
+            $("#AS_APPLY_ID").val(d.AS_APPLY_ID);
+            $("#AS_APPLY_NO").val(d.AS_APPLY_NO);
+            //用编号码
+            $("#AS_NO").val(d.AS_NO);
+            //编制类型
+            $("#AS_TYPE_ID").data("ztree").setValue(d.AS_TYPE_ID);
+            $("#AS_TYPE").val(d.AS_TYPE);
+
+        }
+    });
 }
 
 
-function add(e) {
-    var r = { AS_TYPE_ID: 0, VERIFICATION_NUM: 0, BEGIN_NUM: 0 };
-    if (e) {
-        r = $.extend(r, e);
-    }
-    var id = getRandomString();
-    var zNodes = JSON.parse($("#AsType").val());
-    var temp = $(`
-             <tr>
-                  <td>
-                       <input type="text" id="`+ id + `" value="` + r.AS_TYPE_ID + `" class="AsType" >
-                  </td>
-                  <td><input type="text" autocomplete="off" value="` + r.VERIFICATION_NUM + `" class="layui-input"></td>
-                  <td><input type="text" autocomplete="off" value="` + r.BEGIN_NUM + `" class="layui-input"></td>
-                  <td>
-                       <button type="button" class="layui-btn add">增加</button>
-                       <button type="button" class="layui-btn remove">删除</button>
-                  </td>
-             </tr>     
-        `);
-    temp.find(".add").bind("click", add);
-    temp.find(".remove").bind("click", remove);
-    $("#AsUnit").append(temp);
-    $.comboztree(id, { ztreenode: zNodes });
-}
-
-function remove() {
-    var trArr = $("#AsUnit").find("tr");
-    if (trArr.length <= 1) return;
-    $(this).closest("tr").remove();
+function OpenDown() {
+    layui.use(['layer'], function () {
+        var layer = layui.layer;
+        layer.open({
+            id: "ADown",
+            closeBtn: true,  //关闭按钮
+            type: 1,
+            title: "上编信息",
+            area: ['1000px', '500px'],
+            shade: 0,       //不显示遮罩
+            content: $("#ActionDown"),
+        });
+    });
 }
 
 function getRandomString(len) {

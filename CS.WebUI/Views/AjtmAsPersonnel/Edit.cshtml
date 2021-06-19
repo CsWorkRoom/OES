@@ -40,7 +40,7 @@
         <div class="layui-inline">
             <label class="layui-form-label">上编/下编</label>
             <div class="layui-input-inline">
-                <select name="ACTION" id="ACTION">
+                <select name="ACTION" id="ACTION" lay-filter="sACTION">
                     <option value=""></option>
                     @foreach (var item in ViewBag.Action)
                     {
@@ -60,6 +60,7 @@
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
         <legend>
             <span>人员信息</span>
+            <button type="reset" class="layui-btn layui-btn-primary btnAction btnActionDown" onclick="OpenDown()">下编</button>
         </legend>
     </fieldset>
     <div class="layui-form-item">
@@ -119,7 +120,7 @@
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
         <legend>
             <span>编制信息</span>
-            <button type="reset" class="layui-btn layui-btn-primary" onclick="Open('ActionUp')">上编</button>
+            <button type="reset"  class="layui-btn layui-btn-primary btnAction btnActionUp" onclick="Open('ActionUp')">上编</button>
         </legend>
     </fieldset>
     <div class="layui-form-item">
@@ -272,20 +273,27 @@
             </div>
         </div>
     </div>
-    <div id="ActionDown">
+    <div id="ActionDown" hidden="hidden">
         <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">用户姓名</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="ADownAccountName" id="ADwonAccountName" value="" placeholder="请输入上编用户姓名" autocomplete="off" class="layui-input">
-                    <button type="button" class="layui-btn" onclick="onSearch()">搜索</button>
-                </div>
+
+            <label class="layui-form-label"></label>
+            <div class="layui-input-inline">
+                <input type="text" name="ADownUnitId" id="ADownUnitId" value="">
             </div>
+            <div class="layui-input-inline">
+                <input type="text" name="ADwonAccountName"  id="ADwonAccountName" value="" placeholder="请输入上编用户姓名" autocomplete="off" class="layui-input">
+            </div>
+            <button type="button" class="layui-btn" onclick="onSearch()">搜索</button>
         </div>
         <div class="layui-form-item" id="ADownInfo">
             <table class="layui-table" lay-even style="margin:0 auto">
                 <colgroup>
-                    <col width="200">
+                    <col width="80">
+                    <col width="150">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
                     <col width="100">
                     <col width="100">
                     <col width="100">
@@ -293,14 +301,34 @@
                 </colgroup>
                 <thead>
                     <tr>
-                        <th>用编类型</th>
-                        <th>编制用途</th>
-                        <th>编制详细用途</th>
-                        <th>申报数量</th>
+                        <th>姓名</th>
+                        <th>编制单位</th>
+                        <th>主管部门</th>
+                        <th>编制使用通知单号</th>
+                        <th>用编序号</th>
+                        <th>学历</th>
+                        <th>学历</th>
+                        <th>岗位类别</th>
+                        <th>编制类型</th>
                         <th>操作</th>
                     </tr>
                 </thead>
-                <tbody id="AsApplyDetail"></tbody>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <button type="button" class="layui-btn" onclick="">确定</button>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>
@@ -312,4 +340,4 @@
         <button type="reset" class="layui-btn layui-btn-primary" onclick="CloseForm();">关闭</button>
     </div>
 </div>
-<script src="~/Views/AjtmAsPersonnel/JS/Edit.js?v=20210610"></script>
+<script src="~/Views/AjtmAsPersonnel/JS/Edit.js?v=20210614"></script>
