@@ -1,0 +1,48 @@
+﻿@model CS.WebUI.Controllers.Model.AsPersonnel
+@{
+    Layout = "~/Views/Shared/_Content.cshtml";
+}
+<form id="form" class="layui-form" action="" method="post">
+    <input hidden="hidden" id="Unit" name="Unit" />
+    <input hidden="hidden" id="LeaderType" name="LeaderType" />
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>选择单位</legend>
+    </fieldset>
+    <div class="layui-form-item" id="LeaderStart">
+        <div class="layui-inline">
+            <label class="layui-form-label">编制单位</label>
+            <div class="layui-input-inline">
+                <input hidden="hidden" name="UNIT_NAME" id="UNIT_NAME" value="" />
+                <input type="text" name="UNIT_ID" id="UNIT_ID" value="">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">主管单位</label>
+            <div class="layui-input-inline">
+                <input hidden="hidden" name="UNIT_PARENT_ID" id="UNIT_PARENT_ID" value="" />
+                <input type="text" name="UNIT_PARENT" id="UNIT_PARENT" value="" autocomplete="off" class="layui-input" readonly="readonly">
+            </div>
+        </div>
+    </div>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>单位领导核定信息</legend>
+    </fieldset>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">办理状态</label>
+            <div class="layui-input-inline">
+                <input type="text" name="HANDLER" id="HANDLER" value="" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">办理状态</label>
+            <div class="layui-input-inline">
+                <input type="text" name="HANDLER" id="HANDLER" value="" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>领导信息操作</legend>
+    </fieldset>
+</form>

@@ -9,21 +9,21 @@ using CS.BLL.FW;
 
 namespace CS.BLL.Model
 {
-    public class AJTM_LEADER : BBaseQuery
+    public class AJTM_LEADER_UNIT : BBaseQuery
     {
         /// <summary>
         /// 单例
         /// </summary>
-        public static AJTM_LEADER Instance = new AJTM_LEADER();
+        public static AJTM_LEADER_UNIT Instance = new AJTM_LEADER_UNIT();
         #region 构造函数
         /// <summary>
         /// 构造函数
         /// </summary>
-        public AJTM_LEADER()
+        public AJTM_LEADER_UNIT()
         {
             this.IsAddIntoCache = true;
-            this.TableName = "AJTM_LEADER";
-            this.ItemName = "领导信息";
+            this.TableName = "AJTM_LEADER_UNIT";
+            this.ItemName = "单位领导信息";
             this.KeyField = "ID";
             this.OrderbyFields = "ID";
         }
@@ -66,31 +66,10 @@ namespace CS.BLL.Model
             [Field(IsNotNull = true, Length = 128, Comment = "申报单位")]
             public string UNIT_PARENT { get; set; }
             /// <summary>
-            /// 领导级别ID
+            /// 数量
             /// </summary>
-            [Field(IsNotNull = true, DefaultValue = "0", Comment = "领导级别ID")]
-            public int LAEDER_LEVEL_ID { get; set; }
-            /// <summary>
-            /// 领导级别
-            /// </summary>
-            [Field(IsNotNull = true, Length = 128, Comment = "领导级别")]
-            public string LEADER_LEVEL { get; set; }
-            /// <summary>
-            /// 领导职务
-            /// </summary>
-            [Field(IsNotNull = true, Length = 128, IsIndex = true, IsIndexUnique = true, Comment = "领导职务")]
-            public string LEADER_JOB { get; set; }
-
-            /// <summary>
-            /// 是否占编
-            /// </summary>
-            [Field(IsNotNull = true, DefaultValue = "0", Comment = "是否占编")]
-            public short IS_AS { get; set; }
-            /// <summary>
-            /// 是否在职
-            /// </summary>
-            [Field(IsNotNull = true, DefaultValue = "0", Comment = "是否在职")]
-            public short IS_USE { get; set; }
+            [Field(IsNotNull = true, DefaultValue = "0", Comment = "数量")]
+            public int NUM { get; set; }
             /// <summary>
             /// 创建者ID
             /// </summary>
@@ -106,7 +85,6 @@ namespace CS.BLL.Model
             /// </summary>
             [Field(IsNotNull = true, DefaultValue = "NOW", Comment = "创建时间")]
             public DateTime CREATE_TIME { get; set; }
-
             /// <summary>
             /// 修改时间
             /// </summary>
