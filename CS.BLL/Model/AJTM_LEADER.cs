@@ -80,6 +80,11 @@ namespace CS.BLL.Model
             /// </summary>
             [Field(IsNotNull = true, Length = 128, IsIndex = true, IsIndexUnique = true, Comment = "领导职务")]
             public string LEADER_JOB { get; set; }
+            /// <summary>
+            /// 领导名称
+            /// </summary>
+            [Field(IsNotNull = true, Length = 128, IsIndex = true, IsIndexUnique = true, Comment = "领导职务")]
+            public string LEADER_NAME { get; set; }
 
             /// <summary>
             /// 是否占编

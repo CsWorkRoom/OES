@@ -78,5 +78,28 @@ namespace CS.BLL.Model
         }
         #endregion
 
+        public List<Entity> GetListEntity()
+        {
+            var arr = GetDictionary("ID", "NAME");
+            List<Entity> entity = new List<Entity>();
+            foreach(var item in arr)
+            {
+                entity.Add(new Entity()
+                {
+                    ID = item.Key,
+                    NAME = item.Value
+                });
+            }
+           
+            return entity;
+        }
+        /// <summary>
+        /// 获取加载模板
+        /// </summary>
+        /// <returns></returns>
+        public object GetTemplate()
+        {
+            return GetTableFields("ID,NAME");
+        }
     }
 }

@@ -7,6 +7,7 @@ using CS.Base.DBHelper;
 using CS.Library.BaseQuery;
 using CS.Common.FW;
 using CS.BLL.FW;
+using System.Data;
 
 namespace CS.BLL.Model
 {
@@ -91,6 +92,14 @@ namespace CS.BLL.Model
         public Dictionary<int, string> GetDropDown()
         {
             return GetDictionary("ID", "NAME");
+        }
+        /// <summary>
+        /// 获取下拉
+        /// </summary>
+        /// <returns></returns>
+        public DataTable GetDropDownForDt()
+        {
+            return GetTableFields("ID,NAME");
         }
     }
 }
