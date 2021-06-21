@@ -104,6 +104,16 @@ namespace CS.WebUI.Controllers.AJTM
             result.Message = "数据提交成功";
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+
+        /// <summary>
+        /// 首页
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Index()
+        {
+            ViewBag.Unit = SerializeObject(CS.BLL.Model.AJTM_UNIT.Instance.GetDropTree());
+            return View();
+        }
     }
 }
 

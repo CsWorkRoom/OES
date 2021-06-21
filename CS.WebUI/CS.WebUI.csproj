@@ -1630,6 +1630,7 @@
     <Content Include="Views\Home\JS\Default.js" />
     <Content Include="Views\Home\JS\echarts.min.js" />
     <Content Include="Views\Home\JS\flow.js" />
+    <Content Include="Views\AjtmUnit\JS\Index.js" />
     <Content Include="Views\Home\JS\Login.js" />
     <Content Include="Views\Home\JS\manager.js" />
     <Content Include="Views\ImportApproval\JS\Approval.js" />
@@ -1865,6 +1866,7 @@
     <Content Include="Views\AjtmAsApply\Approval.cshtml" />
     <Content Include="Views\AjtmAsDetail\Edit.cshtml" />
     <Content Include="Views\AjtmAsPersonnel\Edit.cshtml" />
+    <Content Include="Views\AjtmUnit\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

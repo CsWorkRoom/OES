@@ -1,0 +1,36 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Content.cshtml";
+}
+
+<form id="form" class="layui-form" action="" method="post" style="height:100%">
+    <script src="~/Content/FW/LayuiZtree.js?v=20210609"></script>
+    <input hidden="hidden" value="@ViewBag.Unit" id="Unit" />
+    <input hidden="hidden" value="0" />
+    <div class="layui-row" style="height:100%">
+        <div class="layui-col-md2" style="height:100%;display: inline-block;  padding: 10px; border: 1px solid #ddd; overflow: auto;">
+            <ul id="unitId" class="ztree"></ul>
+        </div>
+        <div class="layui-col-md10" style="height:100%">
+            <div class="layui-tab larryms-tab" lay-filter="AsUrl" style="height:98%">
+                <ul class="layui-tab-title larryms-tab-title">
+                    <li class="layui-this" lay-id="AsUnit" id="tabAsUnit">单位信息</li>
+                    <li lay-id="AsDetail" id="tabAsDetail">待上编信息</li>
+                    <li lay-id="AsLeader" id="tabAsLeader">领导信息</li>
+                </ul>
+                <div class="layui-tab-content larryms-tab-content" style="height:93%">
+                    <div class="layui-tab-item layui-show" style="height:100%">
+                        <iframe class="larry-iframe" id="iframeAsUnit" src="" border="0" frameborder="0" style="width:100%;height:100%"></iframe>
+                    </div>
+                    <div class="layui-tab-item" style="height:100%">
+                        <iframe class="larry-iframe" id="iframeAsDetail" src="" border="0" frameborder="0" style="width:100%;height:100%"></iframe>
+                    </div>
+                    <div class="layui-tab-item" style="height:100%">
+                        <iframe class="larry-iframe" id="iframeAsLeader" src=" " border="0" frameborder="0" style="width:100%;height:100%"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script src="~/Views/AjtmUnit/JS/Index.js?v=20210610"></script>
