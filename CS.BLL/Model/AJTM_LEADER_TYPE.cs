@@ -3,29 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CS.Base.DBHelper;
 using CS.Library.BaseQuery;
 using CS.Common.FW;
 using CS.BLL.FW;
-using System.Data;
 
 namespace CS.BLL.Model
 {
-    public class AJTM_SETUP_LEVEL:BBaseQuery
+    public class AJTM_LEADER_TYPE : BBaseQuery
     {
         /// <summary>
         /// 单例
         /// </summary>
-        public static AJTM_SETUP_LEVEL Instance = new AJTM_SETUP_LEVEL();
+        public static AJTM_LEADER_TYPE Instance = new AJTM_LEADER_TYPE();
         #region 构造函数
         /// <summary>
         /// 构造函数
         /// </summary>
-        public AJTM_SETUP_LEVEL()
+        public AJTM_LEADER_TYPE()
         {
             this.IsAddIntoCache = true;
-            this.TableName = "AJTM_SETUP_LEVEL";
-            this.ItemName = "机构级别";
+            this.TableName = "AJTM_LEADER_TYPE";
+            this.ItemName = "领导类型";
             this.KeyField = "ID";
             this.OrderbyFields = "ID";
         }
@@ -48,11 +46,6 @@ namespace CS.BLL.Model
             /// </summary>
             [Field(IsNotNull = true, Length = 128, IsIndex = true, IsIndexUnique = true, Comment = "单位名称")]
             public string NAME { get; set; }
-            /// <summary>
-            /// 创建者ID
-            /// </summary>
-            [Field(IsNotNull = true, DefaultValue = "0", Comment = "创建者ID")]
-            public int LEVEL_ID { get; set; }
             /// <summary>
             /// 备注
             /// </summary>
@@ -85,19 +78,26 @@ namespace CS.BLL.Model
         }
         #endregion
 
-        /// <summary>
-        /// 获取下拉
-        /// </summary>
-        /// <returns></returns>
-        public Dictionary<int, string> GetDropDown()
+        public List<Entity> GetListEntity()
         {
-            return GetDictionary("ID", "NAME");
+            var arr = GetDictionary("ID", "NAME");
+            List<Entity> entity = new List<Entity>();
+            foreach(var item in arr)
+            {
+                entity.Add(new Entity()
+                {
+                    ID = item.Key,
+                    NAME = item.Value
+                });
+            }
+           
+            return entity;
         }
         /// <summary>
-        /// 获取下拉
+        /// 获取加载模板
         /// </summary>
         /// <returns></returns>
-        public DataTable GetDropDownForDt()
+        public object GetTemplate()
         {
             return GetTableFields("ID,NAME");
         }
