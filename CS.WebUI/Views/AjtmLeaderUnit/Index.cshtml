@@ -36,16 +36,23 @@
             <div class="layui-col-xs6 layui-col-sm6 layui-col-md4" style="margin-top:10px">
                 <label class="layui-form-label">@item.NAME</label>
                 <div class="layui-input-inline">
-                    <input type="text" data-index="@item.ID" value="" autocomplete="off" class="layui-input">
+                    <input type="text" data-index="@item.ID" data-text="@item.NAME" value="" autocomplete="off" class="layui-input inputLeaderType">
                 </div>
             </div>
         }
         <div class="layui-col-xs6 layui-col-sm6 layui-col-md4" style="margin-top:10px">
-            <button type="button" class="layui-btn" onclick="">初始化数量</button>
+            <button type="button" id="btnInit" class="layui-btn">初始化数量</button>
         </div>
     </div>
     <div id="LeaderInfo">
 
+    </div>
+    <div class="form-bottom-submit" style="text-align:right;">
+        <input type="hidden" id="msg" value="@ViewBag.Message" />
+        <div class="layui-inline">
+            <button type="button" class="layui-btn" onclick="save();">确定</button>
+            <button type="reset" class="layui-btn layui-btn-primary" onclick="CloseForm();">关闭</button>
+        </div>
     </div>
 </form>
 <script src="~/Views/AjtmLeaderUnit/JS/Index.js?v=20210614"></script>

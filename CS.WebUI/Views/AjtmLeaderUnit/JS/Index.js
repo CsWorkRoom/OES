@@ -9,6 +9,11 @@
             $("#UNIT_PARENT").val("");
             $("#UNIT_PARENT_ID").val(0);
         }
+
+        $.get("../AjtmLeaderUnit/GetLeaderInfoByUnit", { UnitID: treeNode.id }, function (r) {
+            AjaxGetLeaderType(r.Leader);
+            AjaxGetLeader(r.Leader);
+        },"json");
     });
     //通用方法
     function initTree(inputId, treeId, onClick) {
@@ -20,13 +25,71 @@
             $("#" + treeId).data("ztree", obj);
         }
     }
+
+    $("#btnInit").bind("click", init);
 });
 
-
-function UrlForGetLeader(id) {
-
+function init() {
+    var temp = TempLeaderInfo();
+   
+    var temptbody = temp.find("tbody");
+    var num = 0;
+    var list = $(".inputLeaderType");
+    for (var i = 0; i < list.length; i++) {
+        var e = $(list[i]);
+        if (e.val().length > 0) {
+            var n = parseFloat(e.val());
+            if (isNaN(n)) continue;
+            num += n;
+            var leaderTypeID = e.attr("data-index");
+            var leaderType = e.attr("data-text");
+            for (var j = 0; j < n; j++) {
+                var tr = TempLeaderByRow(initData({ LEADER_TYPE: leaderType, LEADER_TYPE_ID: leaderTypeID }));
+                temptbody.append(tr);
+            }
+        }
+    }
+    if (num > 0) {
+        $("#LeaderInfo").html(temp);
+    }
+    else {
+        layer.alert("请输入初始化的数量");
+    }
+}
+function AjaxGetLeaderType(r) {
+    for (var i = 0; i < r.length; i++) {
+        var reslut = r[i];
+        $(".inputLeaderType[data-index='" + reslut.LEADER_TYPE_ID + "']").val(reslut.NUM);
+    }
+}
+function AjaxGetLeader(r) {
+    var temp = TempLeaderInfo();
+    var temptbody = temp.find("tbody");
+    for (var i = 0; i < r.length; i++) {
+        var result = r[i];
+        var tr = TempLeaderByRow(initData(result));
+        temptbody.append(tr);
+    }
+    $("#LeaderInfo").html(temp);
 }
 
+function initData(obj) {
+    return $.extend({
+        ID: 0,
+        LEADER_TYPE: "",
+        LEADER_TYPE_ID: 0,
+        UNIT_ID: 0,
+        UNIT_NAME: "",
+        UNIT_PARENT_ID: 0,
+        UNIT_PARENT: "",
+        LAEDER_LEVEL_ID: 0,
+        LEADER_LEVEL: "",
+        LEADER_JOB: "",
+        LEADER_NAME: "",
+        IS_AS: 1,
+        IS_USE: 1
+    }, obj);
+}
 
 function TempLeaderInfo() {
     var temp = $(`
@@ -34,7 +97,7 @@ function TempLeaderInfo() {
             <legend>领导配置信息</legend>
         </fieldset>
         <div class="layui-form-item">
-            <table class="layui-table" style="margin:0 auto">
+            <table class="layui-table" style="margin:0 auto;width:80%">
                 <colgroup>
                     <col width="100">
                     <col width="100">
@@ -59,6 +122,7 @@ function TempLeaderInfo() {
             </table>
         </div>
     `);
+    return temp;
 }
 
 function TempLeaderByRow(r) {
@@ -73,20 +137,20 @@ function TempLeaderByRow(r) {
         <td></td>
     </tr>`);
     var tds = temp.find("td");
-    tds.eq(0).append(r.LEADER_TYPE);
-    tds.eq(1).append(tempSelectSetupLevel());
-    tds.eq(2).append(`<input type="text" value="" autocomplete="off" class="layui-input">`);
-    tds.eq(3).append(tempSelectByIF());
-    tds.eq(4).append(tempSelectByIF());
-    tds.eq(5).append(`<input type="text" value="" autocomplete="off" class="layui-input">`);
+    tds.eq(0).append("<span>" + r.LEADER_TYPE + "</span>");
+    tds.eq(1).append(`<input type="text" value="` + r.LEADER_JOB+`" autocomplete="off" class="layui-input">`);
+    tds.eq(2).append(tempSelectSetupLevel(r.LAEDER_LEVEL_ID));
+    tds.eq(3).append(tempSelectByIF(r.IS_AS));
+    tds.eq(4).append(tempSelectByIF(r.IS_USE));
+    tds.eq(5).append(`<input type="text" value="` + r.LEADER_NAME+`" autocomplete="off" class="layui-input">`);
     var tr = temp.find("tr").data("item", r);
-    return tds;
+    return temp;
 }
 
-function tempSelectSetupLevel() {
+function tempSelectSetupLevel(currValue) {
     var temp = $(`
-     <select>
-        <option value=""></option>
+     <select lay-ignore style="width:80%;height:30px">
+        <option value="">请选择级别</option>
      </select>
     `);
     var sl = $("#SetupLevel").val();
@@ -94,19 +158,104 @@ function tempSelectSetupLevel() {
         var objlist = JSON.parse(sl);
         for (var i = 0; i < objlist.length; i++) {
             var obj = objlist[i];
-            temp.append(`
+            if (obj.ID === currValue) {
+                temp.append(`
                <option value="`+ obj.ID + `">` + obj.NAME + `</option>
             `);
+            } else {
+                temp.append(`
+               <option value="`+ obj.ID + `" checked="checked">` + obj.NAME + `</option>
+            `);
+            }
         }
     }
     return temp;
 }
 
-function tempSelectByIF() {
-    return $(`
-      <select>
+function getRandomString(len) {
+    len = len | 8;
+    var str = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    var strRan = "";
+    for (var i = 0; i < len; i++) { //len为随机字符串长度
+        strRan += str.charAt(Math.floor(Math.random() * str.length));
+    }
+    return strRan;
+}
+
+function tempSelectByIF(currValue) {
+     
+    var temp = $(`
+      <select lay-ignore style="width:80%;height:30px">
             <option value='1'>是</option>
             <option value='0'>否</option>
       </select>
    `);
+    temp.find("option[value='" + currValue + "']").attr("checked", "checked");
+    return temp;
+}
+
+function save() {
+    if (saveBefore()) return;
+    if (saveBeforeByLeader()) return;
+    //
+    layui.use(['form', 'layer', 'jquery'], function () {
+        var form = layui.form, layer = layui.layer, $ = layui.$;
+        var url = "../AjtmAsDetail/Edit";
+        SaveForm('form', url);
+        return;
+    });
+}
+
+function saveBeforeByLeader() {
+    var trs = $("#LeaderInfo").find("tbody").find("tr");
+    let arr = [];
+    for (var i = 0; i < trs.length; i++) {
+        var tr = trs.eq(i);
+        var item = tr.data("item");
+        var tds = tr.find("td");
+        var LEADER_JOB = tds.eq(1).find("input").val();
+        if (LEADER_JOB.trim().length === 0) {
+            layer.alert("请填写第" + (i + 1) + "行的领导职务");
+            return true;
+        }
+        var LAEDER_LEVEL_ID = tds.eq(2).find("select").val();
+        if (LAEDER_LEVEL_ID.length === 0) {
+             layer.alert("请选择第" + (i + 1) + "行的领导级别");
+            return true;
+        }
+        var LEADER_LEVEL = tds.eq(2).find("option:selected").text();
+        var IS_AS = tds.eq(3).find("select").val();
+        var IS_USE = tds.eq(4).find("select").val();
+        var LEADER_NAME = tds.eq(5).find("input").val();
+
+        item = $.extend(item, { LEADER_JOB, LAEDER_LEVEL_ID, LEADER_LEVEL, IS_AS, IS_USE, LEADER_NAME });
+    }
+    arr.push(item);
+    $("#Leader").val(JSON.stringify(arr));
+
+
+
+    return false;
+}
+
+function saveBefore() {
+    let arr = [];
+    for (var i = 0; i < list.length; i++) {
+        var e = $(list[i]);
+        if (e.val().length > 0) {
+            var n = parseFloat(e.val());
+            if (isNaN(n)) continue;
+            var leaderTypeID = e.attr("data-index");
+            var leaderType = e.attr("data-text");
+            arr.push({ LEADER_TYPE: leaderType, LEADER_TYPE_ID: leaderTypeID, NUM: n });
+        }
+    }
+    $("#LeaderTypeUnit").val(JSON.stringify(arr));
+
+    var unitId = $("#UNIT_ID").val();
+    if (unitId.length === 0) {
+        layer.alert("请选择单位");
+        return true;
+    }
+    return false;
 }
