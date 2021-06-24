@@ -11,7 +11,7 @@
         }
 
         $.get("../AjtmLeaderUnit/GetLeaderInfoByUnit", { UnitID: treeNode.id }, function (r) {
-            AjaxGetLeaderType(r.Leader);
+            AjaxGetLeaderType(r.LeaderUnit);
             AjaxGetLeader(r.Leader);
         },"json");
     });
@@ -57,8 +57,10 @@ function init() {
     }
 }
 function AjaxGetLeaderType(r) {
+    if (!r) return;
     for (var i = 0; i < r.length; i++) {
         var reslut = r[i];
+        console.log(reslut)
         $(".inputLeaderType[data-index='" + reslut.LEADER_TYPE_ID + "']").val(reslut.NUM);
     }
 }
@@ -143,7 +145,7 @@ function TempLeaderByRow(r) {
     tds.eq(3).append(tempSelectByIF(r.IS_AS));
     tds.eq(4).append(tempSelectByIF(r.IS_USE));
     tds.eq(5).append(`<input type="text" value="` + r.LEADER_NAME+`" autocomplete="off" class="layui-input">`);
-    var tr = temp.find("tr").data("item", r);
+    var tr = temp.data("item", r);
     return temp;
 }
 
@@ -153,22 +155,18 @@ function tempSelectSetupLevel(currValue) {
         <option value="">请选择级别</option>
      </select>
     `);
+    console.log(currValue);
     var sl = $("#SetupLevel").val();
     if (sl.length > 0) {
         var objlist = JSON.parse(sl);
         for (var i = 0; i < objlist.length; i++) {
             var obj = objlist[i];
-            if (obj.ID === currValue) {
-                temp.append(`
+            temp.append(`
                <option value="`+ obj.ID + `">` + obj.NAME + `</option>
             `);
-            } else {
-                temp.append(`
-               <option value="`+ obj.ID + `" checked="checked">` + obj.NAME + `</option>
-            `);
-            }
         }
     }
+    temp.find("option[value='" + currValue + "']").attr("selected", "selected");
     return temp;
 }
 
@@ -190,7 +188,7 @@ function tempSelectByIF(currValue) {
             <option value='0'>否</option>
       </select>
    `);
-    temp.find("option[value='" + currValue + "']").attr("checked", "checked");
+    temp.find("option[value='" + currValue + "']").attr("selected", "selected");
     return temp;
 }
 
@@ -200,7 +198,7 @@ function save() {
     //
     layui.use(['form', 'layer', 'jquery'], function () {
         var form = layui.form, layer = layui.layer, $ = layui.$;
-        var url = "../AjtmAsDetail/Edit";
+        var url = "../AjtmLeaderUnit/Index";
         SaveForm('form', url);
         return;
     });
@@ -212,6 +210,7 @@ function saveBeforeByLeader() {
     for (var i = 0; i < trs.length; i++) {
         var tr = trs.eq(i);
         var item = tr.data("item");
+        console.log(item);
         var tds = tr.find("td");
         var LEADER_JOB = tds.eq(1).find("input").val();
         if (LEADER_JOB.trim().length === 0) {
@@ -229,16 +228,14 @@ function saveBeforeByLeader() {
         var LEADER_NAME = tds.eq(5).find("input").val();
 
         item = $.extend(item, { LEADER_JOB, LAEDER_LEVEL_ID, LEADER_LEVEL, IS_AS, IS_USE, LEADER_NAME });
+        arr.push(item);
     }
-    arr.push(item);
     $("#Leader").val(JSON.stringify(arr));
-
-
-
     return false;
 }
 
 function saveBefore() {
+    let list = $(".inputLeaderType");
     let arr = [];
     for (var i = 0; i < list.length; i++) {
         var e = $(list[i]);

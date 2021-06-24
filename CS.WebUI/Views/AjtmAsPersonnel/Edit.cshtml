@@ -6,6 +6,7 @@
     <script src="~/Content/FW/LayuiZtree.js?v=20210610"></script>
     <input hidden="hidden" value="@ViewBag.AsType" id="AsType" />
     <input hidden="hidden" value="@ViewBag.Unit" id="Unit" />
+    <input hidden="hidden" value="@ViewBag.ModeAccess" id="ModeAccess" />
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
         <legend>单位基本信息</legend>
     </fieldset>
@@ -60,14 +61,14 @@
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
         <legend>
             <span>人员信息</span>
-            <button type="reset" class="layui-btn layui-btn-primary btnAction btnActionDown" onclick="OpenDown()">下编</button>
+            <span type="reset" class="layui-btn layui-btn-primary btnAction btnActionDown" onclick="OpenDown()">下编</span>
         </legend>
     </fieldset>
     <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label">姓名</label>
             <div class="layui-input-inline">
-                <input type="text" name="ACCOUNT_NAME" value="" lay-verify="required|name" autocomplete="off" class="layui-input">
+                <input type="text" name="ACCOUNT_NAME" id="ACCOUNT_NAME" value="" lay-verify="required|name" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
@@ -81,7 +82,7 @@
         <div class="layui-inline">
             <label class="layui-form-label">学历</label>
             <div class="layui-input-inline">
-                <select name="ACCOUNT_EDUCATION">
+                <select name="ACCOUNT_EDUCATION" id="ACCOUNT_EDUCATION">
                     <option value=""></option>
                     @foreach (var item in ViewBag.Education)
                     {
@@ -100,7 +101,7 @@
         <div class="layui-inline">
             <label class="layui-form-label">岗位类别</label>
             <div class="layui-input-inline">
-                <select name="POST_TYPE">
+                <select name="POST_TYPE" id="POST_TYPE">
                     <option value=""></option>
                     @foreach (var item in ViewBag.PostType)
                     {
@@ -120,7 +121,7 @@
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
         <legend>
             <span>编制信息</span>
-            <button type="reset"  class="layui-btn layui-btn-primary btnAction btnActionUp" onclick="Open('ActionUp')">上编</button>
+            <span type="reset"  class="layui-btn layui-btn-primary btnAction btnActionUp" onclick="Open()">上编</span>
         </legend>
     </fieldset>
     <div class="layui-form-item">
@@ -158,14 +159,15 @@
         <div class="layui-inline">
             <label class="layui-form-label">编制类型</label>
             <div class="layui-input-inline">
-                <input hidden="hidden" name="AS_TYPE" value="AS_TYPE" />
+                <input hidden="hidden" name="AS_TYPE" id="AS_TYPE" />
                 <input type="text" name="AS_TYPE_ID" id="AS_TYPE_ID" value="" />
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">进出方式</label>
             <div class="layui-input-inline">
-                <select name="ACCESS_MODE_ID">
+                <input hidden="hidden" name="ACCESS_MODE" id="ACCESS_MODE" />
+                <select name="ACCESS_MODE_ID" id="ACCESS_MODE_ID" lay-filter="sAccessMode">
                     <option value=""></option>
                 </select>
             </div>
@@ -340,4 +342,4 @@
         <button type="reset" class="layui-btn layui-btn-primary" onclick="CloseForm();">关闭</button>
     </div>
 </div>
-<script src="~/Views/AjtmAsPersonnel/JS/Edit.js?v=20210614"></script>
+<script src="~/Views/AjtmAsPersonnel/JS/Edit.js?v=20210624"></script>

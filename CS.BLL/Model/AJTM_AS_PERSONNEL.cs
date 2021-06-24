@@ -266,10 +266,16 @@ namespace CS.BLL.Model
         /// <returns></returns>
         public DataTable GetTableByAccountName(string AccountName, int UnitId = 0)
         {
+            DataTable dt = new DataTable();
             if (UnitId == 0)
-                return GetTable("Order by ID desc", "ACCOUNT_NAME like %?% AND ACTION='上编'", new object[] { AccountName });
+            {
+                dt = GetTable(new Order("ID", "DESC"), "ACCOUNT_NAME like '%"+ AccountName + "%' AND ACTION='上编'", new object[] { });
+            }
             else
-                return GetTable("Order by ID desc", "ACCOUNT_NAME like %?% AND ACTION='上编' AND UNIT_ID=?", new object[] { UnitId });
+            {
+                dt = GetTable(new Order("ID", "DESC"), "ACCOUNT_NAME like '%" + AccountName + "%' AND ACTION='上编' AND UNIT_ID=?", new object[] { UnitId });
+            }
+            return dt;
         }
     }
 

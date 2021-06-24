@@ -28,13 +28,13 @@ $(function () {
             });
             initTree("Unit", "ADownUnitId");
             //验证
-            form.verify({
-                name: function (value) {
-                    if (value.length <= 0) {
-                        return '单位名称不能为空！';
-                    }
-                }
-            });
+            //form.verify({
+            //    name: function (value) {
+            //        if (value.length <= 0) {
+            //            return '单位名称不能为空！';
+            //        }
+            //    }
+            //});
             //增加事件
             $("#ACTION_NO").bind("change", function () {
                 if (this.value) {
@@ -44,7 +44,7 @@ $(function () {
                     if (this.value.indexOf('增') > -1) {
                         $("#ACTION").val("上编");
                     }
-                    form.render();
+                    form.render("select");
                     ActionChange();
                 }
             });
@@ -52,9 +52,26 @@ $(function () {
             form.on('select(sACTION)', function (data) {
                 ActionChange();
             });
-
+            form.on('select(sAccessMode)', function (data) {
+                $("#ACCESS_MODE").val(data.elem[data.elem.selectedIndex].text);
+            });
             function ActionChange() {
                 var ACTION = $("#ACTION").val();
+                var ModeAccess = $("#ModeAccess").val();
+                var list = [];
+                console.log(1);
+                if (ModeAccess.length !== 0); {
+                    console.log(2);
+                    var listObj = JSON.parse(ModeAccess);
+                    $("#ACCESS_MODE_ID").children().remove();
+                    $("#ACCESS_MODE_ID").append("<option value=''></option>");
+                    for (var i = 0; i < listObj.length; i++) {
+                        console.log(ACTION, listObj[i].ACTION_TYPE);
+                        if (ACTION === listObj[i].ACTION_TYPE) {
+                            $("#ACCESS_MODE_ID").append("<option value='" + listObj[i].ID + "'>" + listObj[i].NAME + "</option>");
+                        }
+                    }
+                }
                 $(".btnAction").hide();
                 switch (ACTION) {
                     case "上编":
@@ -66,6 +83,7 @@ $(function () {
                     default:
                         break;
                 }
+                form.render("select");
             }
 
             //通用方法
@@ -126,7 +144,7 @@ function TempAsApplyRadio(item) {
     temp.bind("click", function () {
         var curr = $(this);
         $("input[name='AupAsApplyRadio']").removeAttr("checked");
-        curr.find("input").attr("checked","checked");
+        curr.find("input").attr("checked", "checked");
         var data = curr.find("input").data("item");
         $("#AupAsDetail").html("");
         for (var i = 0; i < data.length; i++) {
@@ -140,7 +158,7 @@ function TempAsDetailRadio(item) {
     var obj = $(`
         <div style="cursor:pointer">
            <span style="padding-right: 10px;"><input lay-ignore type="radio" name="AsDetailRadio" style="display:inline" /></span>
-           <span>` + `[` + item.AS_TYPE + `]` + (item.AS_NO ? item.AS_NO:"暂无用编编号") + `</span>
+           <span>` + `[` + item.AS_TYPE + `]` + (item.AS_NO ? item.AS_NO : "暂无用编编号") + `</span>
         </div>`);
     obj.find("input").data("result", item);
     obj.bind("click", function () {
@@ -199,17 +217,14 @@ function render() {
 }
 
 function Open() {
-    layui.use(['layer'], function () {
-        var layer = layui.layer;
-        layer.open({
-            id: "Aup",
-            closeBtn: true,  //关闭按钮
-            type: 1,
-            title:"上编信息",
-            area: ['1000px', '500px'],
-            shade: 0,       //不显示遮罩
-            content: $("#ActionUp"),
-        });
+    layer.open({
+        id: "Aup",
+        closeBtn: true,  //关闭按钮
+        type: 1,
+        title: "上编信息",
+        area: ['1000px', '500px'],
+        shade: 0,       //不显示遮罩
+        content: $("#ActionUp"),
     });
 }
 
@@ -235,7 +250,8 @@ function onSearch() {
         }
         data.AccountName = AccountName;
         $.get("../AjtmAsPersonnel/GetPersonnel", data, function (r) {
-            if (r.length) return layer.alert("未搜索出对应的信息");
+            if (!r) return layer.alert("未搜索出对应的信息");
+            if (r.length === 0) return layer.alert("未搜索出对应的信息");
             var temp = TempTableForAsDown();
             var temptbody = temp.find("tbody");
             for (var i = 0; i < r.length; i++) {
@@ -319,24 +335,24 @@ function onSearch() {
             //编制类型
             $("#AS_TYPE_ID").data("ztree").setValue(d.AS_TYPE_ID);
             $("#AS_TYPE").val(d.AS_TYPE);
-
+            //
+            form.render();
+            //关闭窗体
+            layer.close(layer.index);
         }
     });
 }
 
 
 function OpenDown() {
-    layui.use(['layer'], function () {
-        var layer = layui.layer;
-        layer.open({
-            id: "ADown",
-            closeBtn: true,  //关闭按钮
-            type: 1,
-            title: "上编信息",
-            area: ['1000px', '500px'],
-            shade: 0,       //不显示遮罩
-            content: $("#ActionDown"),
-        });
+    layer.open({
+        id: "ADown",
+        closeBtn: true,  //关闭按钮
+        type: 1,
+        title: "上编信息",
+        area: ['1000px', '500px'],
+        shade: 0,       //不显示遮罩
+        content: $("#ActionDown"),
     });
 }
 
@@ -353,12 +369,12 @@ function getRandomString(len) {
 function save() {
     layui.use(['form', 'layer', 'jquery'], function () {
         var form = layui.form, layer = layui.layer, $ = layui.$;
-        let r = unitAsArr();
-        if (r.isErr) {
-            layer.alert(r.Msg);
-            return;
-        }
-        var url = "../AjtmUnit/Detail";
+        //let r = unitAsArr();
+        //if (r.isErr) {
+        //    layer.alert(r.Msg);
+        //    return;
+        //}
+        var url = "../AjtmAsPersonnel/Edit";
         SaveForm('form', url);
         return;
         function unitAsArr() {
@@ -367,26 +383,6 @@ function save() {
             //    return { isErr: true, Msg: "提交失败,单位名称不能为空" };
             //}
             //
-            var trArr = $("#AsUnit").find("tr");
-            var rArr = [];
-            for (var i = 0; i < trArr.length; i++) {
-                var tr = $(trArr[i]);
-                tr.find("td").eq(0).find("input").val();
-                let AS_TYPE_ID = parseInt(tr.find("td").eq(0).find("input").val());
-                if (isNaN(AS_TYPE_ID) || AS_TYPE_ID === 0) {
-                    return { isErr: true, Msg: "未选择第" + (i + 1) + "行编制类型" };
-                }
-                let VERIFICATION_NUM = tr.find("td").eq(1).find("input").val();
-                let BEGIN_NUM = tr.find("td").eq(2).find("input").val();
-                var r = {
-                    AS_TYPE_ID: AS_TYPE_ID,
-                    VERIFICATION_NUM: VERIFICATION_NUM,
-                    BEGIN_NUM: BEGIN_NUM
-                };
-                rArr.push(r);
-            }
-            $("#AsUnitJson").val(JSON.stringify(rArr));
-            return { isErr: false };
         }
     });
 }

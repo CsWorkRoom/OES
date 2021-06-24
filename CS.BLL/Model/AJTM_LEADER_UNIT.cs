@@ -46,6 +46,11 @@ namespace CS.BLL.Model
             [Field(IsNotNull = true, DefaultValue = "0", Comment = "领导类型")]
             public int LEADER_TYPE_ID { get; set; }
             /// <summary>
+            /// 领导类型
+            /// </summary>
+            [Field(IsNotNull = true, Length = 128, Comment = "领导类型")]
+            public string LEADER_TYPE { get; set; }
+            /// <summary>
             /// 用编单位
             /// </summary>
             [Field(IsNotNull = true, DefaultValue = "0", Comment = "用编单位ID")]

@@ -35,6 +35,7 @@ namespace CS.WebUI.Controllers.AJTM
                 {
                     Dictionary<string, object> dic = new Dictionary<string, object>();
                     dic.Add("LEADER_TYPE_ID", entity.LEADER_TYPE_ID);
+                    dic.Add("LEADER_TYPE", entity.LEADER_TYPE);
                     dic.Add("UNIT_NAME", UNIT_NAME);
                     dic.Add("UNIT_ID", UNIT_ID);
                     dic.Add("UNIT_PARENT_ID", UNIT_PARENT_ID);
@@ -53,6 +54,7 @@ namespace CS.WebUI.Controllers.AJTM
                 {
                     Dictionary<string, object> dic = new Dictionary<string, object>();
                     dic.Add("LEADER_TYPE_ID", entity.LEADER_TYPE_ID);
+                    dic.Add("LEADER_TYPE", entity.LEADER_TYPE);
                     dic.Add("UNIT_NAME", UNIT_NAME);
                     dic.Add("UNIT_ID", UNIT_ID);
                     dic.Add("UNIT_PARENT_ID", UNIT_PARENT_ID);

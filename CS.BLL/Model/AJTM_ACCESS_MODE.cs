@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using CS.Library.BaseQuery;
 using CS.Common.FW;
 using CS.BLL.FW;
+using System.Data;
 
 namespace CS.BLL.Model
 {
-    class AJTM_ACCESS_MODE : BBaseQuery
+    public class AJTM_ACCESS_MODE : BBaseQuery
     {
         /// <summary>
         /// 单例
@@ -85,6 +86,14 @@ namespace CS.BLL.Model
         public Dictionary<int, string> GetDropDown()
         {
             return GetDictionary("ID", "NAME");
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public DataTable GetDropDownForDt()
+        {
+            return GetTableFields("ID,NAME,ACTION_TYPE");
         }
     }
 }
