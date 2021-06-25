@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExcelCalculator.cs" />
+    <Compile Include="Extension\ExcelFile.cs" />
     <Compile Include="FW\BF_RDLC_REPORT.cs" />
     <Compile Include="FW\BF_BULLETIN.cs" />
     <Compile Include="FW\BF_BULLETIN_ATTACH.cs" />

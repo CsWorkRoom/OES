@@ -181,5 +181,22 @@ commit;
                 MessageBox.Show(ex.Message);
             }
         }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("ID");
+
+            for(int i = 0; i < 10; i++)
+            {
+                DataRow dr = dt.NewRow();
+                dr[0] = i;
+                dt.Rows.Add(dr);
+            }
+            //var url = System.Web. Server.MapPath("/test/");
+            var url = "E:\\OES\\CS.TestForm\\test\\";
+            CS.BLL.Extension.Export.ExcelFile file = new BLL.Extension.Export.ExcelFile(url);
+            file.ToExcel("temp.xls", dt);
+        }
     }
 }

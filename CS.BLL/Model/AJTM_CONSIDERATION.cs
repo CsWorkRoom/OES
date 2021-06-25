@@ -7,6 +7,7 @@ using CS.Base.DBHelper;
 using CS.Library.BaseQuery;
 using CS.Common.FW;
 using CS.BLL.FW;
+using System.Data;
 
 namespace CS.BLL.Model
 {
@@ -82,5 +83,14 @@ namespace CS.BLL.Model
 
         }
         #endregion
+
+
+        //public string SaveExcal()
+        //{
+        //    //Library.Export.ExcelFile xls = new Library.Export.ExcelFile("/Files/Consideration/");
+        //    //DataTable dt = new DataTable();
+        //    //xls.ToDataTable("Temp.xls", ref dt, 3);
+        //    //xls.
+        //}
     }
 }
