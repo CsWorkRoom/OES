@@ -198,5 +198,16 @@ commit;
             CS.BLL.Extension.Export.ExcelFile file = new BLL.Extension.Export.ExcelFile(url);
             file.ToExcel("temp.xls", dt);
         }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            CS.BLL.Extension.Export.WordFile work = new BLL.Extension.Export.WordFile("E:\\OES\\CS.TestForm\\test\\", "temp1.doc");
+            var doc = work.GetDocument();
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            dic.Add("<content>", "<测试成功>");
+            dic.Add("<io>", "I/O");
+            work.ReplaceKeyword(dic);
+            work.Save("E:\\OES\\CS.TestForm\\test\\temp_" + DateTime.Now.Ticks + ".doc");
+        }
     }
 }
