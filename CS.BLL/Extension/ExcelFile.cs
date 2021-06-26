@@ -12,6 +12,7 @@ using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 
@@ -180,11 +181,12 @@ namespace CS.BLL.Extension.Export
         /// <param name="datatable"></param>
         /// <param name="sheetIndex"></param>
         /// <returns></returns>
-        public string ToExcel(string filename, DataTable datatable,int sheetIndex = 0)
+        public string ToRepalceExcel(string filename, DataTable datatable, Dictionary<string, string> dic,int sheetIndex = 0)
         {
             int startWriteIndex = 0;
+            
             //读取
-            IWorkbook workBook = FindxlsForKeyInfo(filename, ref startWriteIndex);
+            IWorkbook workBook = FindxlsForKeyInfo(filename, dic, ref startWriteIndex);
             return IWorkbookToExcel(workBook, startWriteIndex, datatable, sheetIndex);
         }
         /// <summary>
@@ -193,7 +195,7 @@ namespace CS.BLL.Extension.Export
         /// <param name="filename"></param>
         /// <param name="sheetIndex"></param>
         /// <returns></returns>
-        private IWorkbook FindxlsForKeyInfo(string filename, ref int startWriteIndex, int sheetIndex = 0)
+        private IWorkbook FindxlsForKeyInfo(string filename, Dictionary<string,string> dic, ref int startWriteIndex, int sheetIndex = 0)
         {
             string name = _rootPath + "/" + filename;
             if (File.Exists(name) == false)
@@ -230,6 +232,9 @@ namespace CS.BLL.Extension.Export
                     {
                         startWriteIndex = r;
                     }
+                    var value1 = dic[cell.ToString()];
+                    if (value1 != null)
+                        cell.SetCellValue(value1);
                 }
             }
             return workBook;
