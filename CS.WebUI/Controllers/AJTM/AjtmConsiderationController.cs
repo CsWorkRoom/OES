@@ -6,10 +6,11 @@ using System.Web;
 using System.Web.Mvc;
 using CS.BLL.Extension.Export;
 using CS.BLL.FW;
+using CS.BLL.Model;
 
 namespace CS.WebUI.Controllers.AJTM
 {
-    public class AjtmConsiderationController : Controller
+    public class AjtmConsiderationController : FW.ABaseController
     {
         // GET: AjtmConsideration
         public ActionResult Index(string IDS)
@@ -46,7 +47,7 @@ namespace CS.WebUI.Controllers.AJTM
 
             }
             DataTable dt = BLL.Model.AJTM_CONSIDERATION.Instance.GetApplyConsideration(IDS);
-            if (dt.Rows.Count === 0)
+            if (dt.Rows.Count == 0)
             {
                 result.IsSuccess = false;
                 result.Message = "未选中用申报,请选择中后再进行生成审议表";
@@ -54,7 +55,7 @@ namespace CS.WebUI.Controllers.AJTM
             }
             Dictionary<string, string> filterDic = new Dictionary<string, string>();
             if (xTime != null)
-                filterDic.Add("<X_TIME>", xTime.Value.ToString("yyyy年MM月dd日");
+                filterDic.Add("<X_TIME>", xTime.Value.ToString("yyyy年MM月dd日"));
             else
                 filterDic.Add("<X_TIME>", "   年  月  日");
             if (string.IsNullOrEmpty(xApprove))
@@ -89,6 +90,38 @@ namespace CS.WebUI.Controllers.AJTM
             result.IsSuccess = true;
             result.Message = "数据提交成功,请在《用编申报批准》模块进行下载审议表";
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public ActionResult Approvel(int id = 0)
+        {
+            ViewBag.AsPurpose = SerializeObject(AJTM_AS_PURPOSE.Instance.GetDropDown());
+            ViewBag.AsType = SerializeObject(AJTM_AS_TYPE.Instance.GetDropTree());
+            ViewBag.AsApplyList = "";
+            if (id > 0)
+            {
+                string ids = AJTM_CONSIDERATION.Instance.GetIdsById(id);
+                if (!string.IsNullOrEmpty(ids))
+                {
+                    var Apply = AJTM_AS_APPLY.Instance.GetApplyByIDS(ids);
+                    var ApplyDetail = AJTM_AS_APPLY_DETAIL.Instance.GetApplyDetailByIDS(ids);
+
+                    List<Model.AsApply> AsApplyList = new List<Model.AsApply>();
+                    foreach(var item in Apply)
+                    {
+                        var AsApply = CS.Common.Fun.ClassToCopy<AJTM_AS_APPLY.Entity, Model.AsApply>(item);
+                        AsApply.AsApplyDetailJson = SerializeObject(ApplyDetail.Select(x => x.AS_APPLY_ID == AsApply.ID).ToList());
+                        AsApplyList.Add(AsApply);
+                    }
+                    ViewBag.AsApplyList = SerializeObject(AsApplyList);
+                }
+            }
+            return View();
         }
     }
 }

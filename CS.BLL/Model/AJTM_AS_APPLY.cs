@@ -7,6 +7,7 @@ using CS.Base.DBHelper;
 using CS.Library.BaseQuery;
 using CS.Common.FW;
 using CS.BLL.FW;
+using System.Data;
 
 namespace CS.BLL.Model
 {
@@ -129,6 +130,15 @@ namespace CS.BLL.Model
             var index = GetCount(" TO_CHAR(CREATE_TIME,'YYYY')=? AND AS_APPLY_NO IS NOT NULL", new object[] { DateTime.Now.ToString("yyyy") });
             index += 1;
             return "达编机减[" + DateTime.Now.ToString("yyyy") + "]" + index + "号"; ;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public IList<Entity> GetApplyByIDS(string ids)
+        {
+            return GetList<Entity>(" ID IN (?)", ids);
         }
     }
 }

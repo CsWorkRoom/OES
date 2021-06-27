@@ -1,5 +1,5 @@
 ﻿$(function () {
-    layui.use(['form', 'layer', 'jquery'], function () {
+    layui.use(['form', 'layer', 'jquery','laydate'], function () {
         var form = layui.form, layer = layui.layer, $ = layui.jquery, laydate = layui.laydate;
         form.verify({
             name: function (value) {

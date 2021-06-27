@@ -7,6 +7,7 @@ using CS.Base.DBHelper;
 using CS.Library.BaseQuery;
 using CS.Common.FW;
 using CS.BLL.FW;
+using System.Data;
 
 namespace CS.BLL.Model
 {
@@ -106,6 +107,15 @@ namespace CS.BLL.Model
         public object GetTableByApplyId(int ApplyId)
         {
             return GetTable(" AS_APPLY_ID =?", new object[] { ApplyId });
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public IList<Entity> GetApplyDetailByIDS(string ids)
+        {
+            return GetList<Entity>(" AS_APPLY_ID IN (?)", ids);
         }
     }
 }

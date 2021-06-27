@@ -235,6 +235,9 @@ namespace CS.WebUI.Controllers.AJTM
             result.Message = "数据提交成功";
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+
+
+ 
         /// <summary>
         /// 编制使用通知单
         /// </summary>

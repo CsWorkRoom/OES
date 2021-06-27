@@ -135,5 +135,10 @@ namespace CS.BLL.Model
             index += 1;
             return "审议表[" + DateTime.Now.ToString("yyyy") + "]" + index + "号"; ;
         }
+
+        public string GetIdsById(int id = 0)
+        {
+            return GetValueByKey("IDS", id.ToString()).ToString();
+        }
     }
 }
