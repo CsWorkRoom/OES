@@ -124,7 +124,10 @@ namespace CS.BLL.Model
         }
         #endregion
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public string GetApplyNo()
         {
             var index = GetCount(" TO_CHAR(CREATE_TIME,'YYYY')=? AND AS_APPLY_NO IS NOT NULL", new object[] { DateTime.Now.ToString("yyyy") });
@@ -139,6 +142,37 @@ namespace CS.BLL.Model
         public IList<Entity> GetApplyByIDS(string ids)
         {
             return GetList<Entity>(" ID IN (?)", ids);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public IList<Entity> GetApplyData()
+        {
+            string sql = @"
+              SELECT A.* FROM AJTM_AS_APPLY A LEFT JOIN AJTM_CONSIDERATION_APPLY B ON(A.ID = B.AS_APPLY_ID) WHERE B.ID IS NULL AND A.APPROVAL_NUM IS NULL
+            ";
+            using (BDBHelper dbHelper = new BDBHelper())
+            {
+                var dt = dbHelper.ExecuteDataTable(sql);
+                List<Entity> list = new List<Entity>();
+                foreach(DataRow dr in dt.Rows)
+                {
+                    Entity entity = new Entity()
+                    {
+                        ID = Convert.ToInt32(dr["ID"]),
+                        UNIT_NAME = dr["UNIT_NAME"].ToString(),
+                        UNIT_PARENT = dr["UNIT_PARENT"].ToString(),
+                        APPLY_TIME = Convert.ToDateTime(dr["APPLY_TIME"]),
+                        APPLY_NUM =Convert.ToInt32(dr["APPLY_NUM"]),
+                        IS_YEAR = Convert.ToInt16(dr["IS_YEAR"]),
+                        ACCOUNT_PEOPLE = dr["ACCOUNT_PEOPLE"].ToString(),
+                        ACCOUNT_PHONE = dr["ACCOUNT_PHONE"].ToString()
+                    };
+                    list.Add(entity);
+                }
+                return list;
+            }
         }
     }
 }

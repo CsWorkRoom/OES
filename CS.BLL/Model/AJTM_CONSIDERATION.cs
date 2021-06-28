@@ -95,7 +95,7 @@ namespace CS.BLL.Model
         /// <returns></returns>
         public DataTable GetApplyConsideration(string IDs)
         {
-            string sql = @"
+            string sql = string.Format(@"
                SELECT A.ID,A.UNIT_NAME,A.UNIT_PARENT,C.NAME SETUP_LEVEL, D.NAME SETUP_TYPE,DECODE(B.IS_PUBLIC,1,'是','否') IS_PUBLIC,E.VERIFICATION_NUM,F.ACTUAL_NUM,
                 0 AS LEADER_NULL_NUM,
                 G.AS_DEAIL_NUM,
@@ -118,11 +118,11 @@ namespace CS.BLL.Model
                 LEFT JOIN (
                     SELECT UNIT_ID,COUNT(1) AS AS_DEAIL_NUM FROM AJTM_AS_DETAIL WHERE USE_TIME IS NULL GROUP BY UNIT_ID
                 )G ON(A.UNIT_ID = G.UNIT_ID)
-              WHERE A.ID IN(?)
-            ";
+              WHERE A.ID IN({0})
+            ", IDs);
             using (BDBHelper dbHelper = new BDBHelper())
             {
-                return dbHelper.ExecuteDataTableParams(sql, new object[] { IDs });
+                return dbHelper.ExecuteDataTable(sql);
             }
         }
         /// <summary>

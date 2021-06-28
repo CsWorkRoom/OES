@@ -232,9 +232,16 @@ namespace CS.BLL.Extension.Export
                     {
                         startWriteIndex = r;
                     }
-                    var value1 = dic[cell.ToString()];
-                    if (value1 != null)
-                        cell.SetCellValue(value1);
+                    try
+                    {
+                        var value1 = dic[cell.ToString()];
+                        if (value1 != null)
+                            cell.SetCellValue(value1);
+                    }
+                    catch
+                    {
+                        continue;
+                    }
                 }
             }
             return workBook;
@@ -266,16 +273,21 @@ namespace CS.BLL.Extension.Export
             floatStyle.DataFormat = format.GetFormat("0.00");
 
             int i = startWriteIndex;
-            IRow rs = sheet.GetRow(startWriteIndex);
-            sheet.RemoveRow(rs);
-            sheet.ShiftRows(startWriteIndex - 1, sheet.LastRowNum , dt.Rows.Count, true, false);
-           
+            //IRow rs = sheet.GetRow(startWriteIndex);
+            //sheet.RemoveRow(rs);
+            //sheet.ShiftRows(i, sheet.LastRowNum , dt.Rows.Count, true, false);
             foreach (DataRow dr in dt.Rows)
             {
-                row = sheet.CreateRow(i - 1);
+                //row = sheet.CreateRow(i);
+                if (startWriteIndex != i)
+                    row = sheet.CopyRow(startWriteIndex, i);
+                else
+                    row = sheet.GetRow(i);
+
                 for (int c = 0; c < dt.Columns.Count; c++)
                 {
-                    ICell cell = row.CreateCell(c);
+                    //ICell cell = row.CreateCell(c);
+                    ICell cell = row.GetCell(c);
                     if (dt.Columns[c].DataType == typeof(DateTime))
                     {
                         DateTime vd = new DateTime();
@@ -317,6 +329,7 @@ namespace CS.BLL.Extension.Export
                         cell.SetCellValue(dr[c].ToString());
                     }
                 }
+                i++;
             }
             //打开一个xls文件，如果没有则自行创建，如果存在myxls.xls文件则在创建时不要打开该文件  
             using (FileStream fs = File.OpenWrite(fileName))

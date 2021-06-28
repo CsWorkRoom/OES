@@ -196,7 +196,7 @@ commit;
             //var url = System.Web. Server.MapPath("/test/");
             var url = "E:\\OES\\CS.TestForm\\test\\";
             CS.BLL.Extension.Export.ExcelFile file = new BLL.Extension.Export.ExcelFile(url);
-            file.ToExcel("temp.xls", dt);
+            //file.ToRepalceExcel("temp.xls", dt);
         }
 
         private void button7_Click(object sender, EventArgs e)

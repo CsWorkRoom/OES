@@ -13,10 +13,10 @@ namespace CS.WebUI.Controllers.AJTM
     public class AjtmConsiderationController : FW.ABaseController
     {
         // GET: AjtmConsideration
-        public ActionResult Index(string IDS)
+        public ActionResult Index()
         {
-            ViewBag.IDS = IDS;
             ViewBag.NAME = BLL.Model.AJTM_CONSIDERATION.Instance.GetConsiderationName();
+            ViewBag.AsApply = BLL.Model.AJTM_AS_APPLY.Instance.GetApplyData();
             return View();
         }
         /// <summary>
@@ -58,10 +58,9 @@ namespace CS.WebUI.Controllers.AJTM
                 filterDic.Add("<X_TIME>", xTime.Value.ToString("yyyy年MM月dd日"));
             else
                 filterDic.Add("<X_TIME>", "   年  月  日");
-            if (string.IsNullOrEmpty(xApprove))
-                filterDic.Add("<X_APPROVE>", xApprove);
-            if (string.IsNullOrEmpty(xDeal))
-                filterDic.Add("<X_DEAL>", xDeal);
+      
+            filterDic.Add("<X_APPROVE>", xApprove);
+            filterDic.Add("<X_DEAL>", xDeal);
             //
             string path = Server.MapPath(BLL.Model.AJTM_CONSIDERATION.Instance.PATH_BASE);
             ExcelFile file = new ExcelFile(path);

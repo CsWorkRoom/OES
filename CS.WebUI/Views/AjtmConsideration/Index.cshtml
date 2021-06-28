@@ -1,11 +1,60 @@
-﻿@model CS.WebUI.Controllers.Model.AsPersonnel
-@{
+﻿@{
     Layout = "~/Views/Shared/_Content.cshtml";
-    //
-    var Typelist = ViewBag.LeaderType as List<CS.BLL.Model.AJTM_LEADER_TYPE.Entity>;
+    var AsApplyList = ViewBag.AsApply as List<CS.BLL.Model.AJTM_AS_APPLY.Entity>;
 }
 <form id="form" class="layui-form" action="" method="post">
-    <input hidden="hidden" id="IDS" name="IDS" value="@ViewBag.IDS" />
+    <input hidden="hidden" name="IDS" id="IDS" lay-verify="required |ids" />
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>市纪委派驻纪检组</legend>
+    </fieldset>
+    <div class="layui-form-item">
+        <table class="layui-table" lay-even style="margin:0 auto;width:80%">
+            <colgroup>
+                <col width="50">
+                <col width="260">
+                <col width="260">
+                <col width="100">
+                <col width="100">
+                <col width="100">
+                <col width="100">
+                <col width="100">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th style="text-align:center">
+                        <input type="checkbox" name="checkAll" id="checkAll" style="width:18px;height:18px" lay-ignore />
+                    </th>
+                    <th>用编单位</th>
+                    <th>主管单位</th>
+                    <th>来文时间</th>
+                    <th>申报数</th>
+                    <th>是否年度用编</th>
+                    <th>联系人</th>
+                    <th>联系电话</th>
+                </tr>
+            </thead>
+            <tbody id="AsApplyTbody">
+                @foreach (var item in AsApplyList)
+                {
+                    string isYear = item.IS_YEAR == 0 ? "否" : "是";
+                    <text>
+                        <tr>
+                            <td style="text-align:center">
+                                <input type="checkbox" name="AsApplyCheck" data-id="@item.ID" style="width:18px;height:18px" lay-ignore />
+                            </td>
+                            <td>@item.UNIT_NAME</td>
+                            <td>@item.UNIT_PARENT</td>
+                            <td>@item.APPLY_TIME</td>
+                            <td>@item.APPLY_NUM</td>
+                            <td>@isYear</td>
+                            <td>@item.ACCOUNT_PEOPLE</td>
+                            <td>@item.ACCOUNT_PHONE</td>
+                        </tr>
+                    </text>
+                }
+            </tbody>
+        </table>
+    </div>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
         <legend>审议表</legend>
     </fieldset>
@@ -50,4 +99,4 @@
         </div>
     </div>
 </form>
-<script src="~/Views/AjtmConsideration/JS/Index.js?v=20210614"></script>
+<script src="~/Views/AjtmConsideration/JS/Index.js?v=20210514"></script>
