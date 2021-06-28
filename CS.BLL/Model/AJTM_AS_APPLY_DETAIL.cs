@@ -115,7 +115,7 @@ namespace CS.BLL.Model
         /// <returns></returns>
         public IList<Entity> GetApplyDetailByIDS(string ids)
         {
-            return GetList<Entity>(" AS_APPLY_ID IN (?)", ids);
+            return GetList<Entity>(" AS_APPLY_ID IN (" + ids + ")", new object[] {  });
         }
     }
 }

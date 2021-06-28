@@ -134,6 +134,13 @@ namespace CS.BLL.Model
             index += 1;
             return "达编机减[" + DateTime.Now.ToString("yyyy") + "]" + index + "号"; ;
         }
+
+        public string GetApplyNo(int i)
+        {
+            var index = GetCount(" TO_CHAR(CREATE_TIME,'YYYY')=? AND AS_APPLY_NO IS NOT NULL", new object[] { DateTime.Now.ToString("yyyy") });
+            index = index + i + 1;
+            return "达编机减[" + DateTime.Now.ToString("yyyy") + "]" + index + "号"; ;
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -141,7 +148,7 @@ namespace CS.BLL.Model
         /// <returns></returns>
         public IList<Entity> GetApplyByIDS(string ids)
         {
-            return GetList<Entity>(" ID IN (?)", ids);
+            return GetList<Entity>(" ID IN (" + ids + ")", new object[] { });
         }
         /// <summary>
         /// 
