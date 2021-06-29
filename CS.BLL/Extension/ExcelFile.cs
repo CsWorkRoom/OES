@@ -259,8 +259,8 @@ namespace CS.BLL.Extension.Export
             {
                 return string.Empty;
             }
-
-            string fileName = _rootPath + "/" + DateTime.Now.Ticks.ToString() + ".xlsx";
+            string filen = DateTime.Now.Ticks.ToString() + ".xlsx"; 
+            string fileName = _rootPath + "/" + filen;
             Delete(fileName);
             ISheet sheet = wk.GetSheetAt(sheetIndex);
             IRow row = null;
@@ -337,7 +337,7 @@ namespace CS.BLL.Extension.Export
                 wk.Write(fs);
             }
 
-            return fileName;
+            return filen;
         }
         /// <summary>
         /// 删除文件

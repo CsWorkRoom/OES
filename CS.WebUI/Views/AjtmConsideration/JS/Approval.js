@@ -26,7 +26,7 @@ function tempApprovel(item) {
     var temp = $(`
          <div class="AsApproval">
             <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-                <legend>市纪委派驻纪检组</legend>
+                <legend>`+ item.UNIT_NAME +`</legend>
             </fieldset>
             <div class="layui-form-item">
                 <div class="layui-inline">
@@ -155,7 +155,7 @@ function save() {
             layer.alert(r.Msg);
             return;
         }
-        var url = "../ AjtmConsideration/Approval";
+        var url = "../AjtmConsideration/Approvel";
         SaveForm('form', url);
         return;
         function rArr() {

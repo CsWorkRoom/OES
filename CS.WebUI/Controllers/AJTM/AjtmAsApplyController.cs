@@ -211,7 +211,7 @@ namespace CS.WebUI.Controllers.AJTM
                     AsD.Add("AS_TYPE_ID", item.AS_TYPE_ID);
                     AsD.Add("AS_PURPOSE_REMARK", item.AS_PURPOSE_REMARK);
                     AsD.Add("AS_NO", AJTM_AS_DETAIL.Instance.GetAsNo(i * j + CNo));
-                    AsD.Add("APPROVAL_NUM", item.APPROVAL_NUM);
+                    AsD.Add("APPROVAL_NUM", 1);
                     AsD.Add("CREATE_TIME", DateTime.Now);
 
                     int AsDetailId = AJTM_AS_DETAIL.Instance.Add(AsD, true);

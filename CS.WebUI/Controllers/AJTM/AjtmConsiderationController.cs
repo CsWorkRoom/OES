@@ -70,6 +70,7 @@ namespace CS.WebUI.Controllers.AJTM
             dic.Add("NAME", NAME);
             dic.Add("IDS", IDS);
             dic.Add("PATH", BLL.Model.AJTM_CONSIDERATION.Instance.PATH_BASE + filename);
+            dic.Add("STATUS", BLL.Model.CONSIDERATION_STATUS.创建.ToString());
             dic.Add("CREATE_UID", SystemSession.UserID);
             dic.Add("UPDATE_UID", SystemSession.UserID);
             dic.Add("CREATE_TIME", DateTime.Now);
@@ -97,11 +98,12 @@ namespace CS.WebUI.Controllers.AJTM
         /// </summary>
         /// <param name="ids"></param>
         /// <returns></returns>
-        public ActionResult Approvel(int id = 15)
+        public ActionResult Approvel(int id = 0)
         {
             ViewBag.AsPurpose = SerializeObject(AJTM_AS_PURPOSE.Instance.GetDropDown());
             ViewBag.AsType = SerializeObject(AJTM_AS_TYPE.Instance.GetDropTree());
             ViewBag.AsApplyList = "";
+            ViewBag.ID = id;
             if (id > 0)
             {
                 string ids = AJTM_CONSIDERATION.Instance.GetIdsById(id);
@@ -135,11 +137,126 @@ namespace CS.WebUI.Controllers.AJTM
         /// <param name="MEETING"></param>
         /// <param name="AsApply"></param>
         /// <returns></returns>
-        public ActionResult Approvel(string AS_APPROVAL_TIME,string MEETING,string AsApply)
+        [HttpPost]
+        public ActionResult Approvel(int ID,DateTime AS_APPROVAL_TIME,string MEETING,string AsApply)
         {
             JsonResultData result = new JsonResultData();
+            if (ID == 0)
+            {
+                result.IsSuccess = false;
+                result.Message = "提交失败,该审议表不存在";
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+            List<Model.AsApply> AsApplyArr = DeserializeObject<List<Model.AsApply>>(AsApply);
+            foreach(var AsA in AsApplyArr)
+            {
+                var AsApplyDetail = DeserializeObject<List<AJTM_AS_APPLY_DETAIL.Entity>>(AsA.AsApplyDetailJson);
+                if (AsApplyDetail.Count == 0)
+                {
+                    result.IsSuccess = false;
+                    result.Message = "提交失败,用编明细缺失";
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
+                if (AsA.ID == 0)
+                {
+                    result.IsSuccess = false;
+                    result.Message = "用编申报不存在";
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
+                var Apply = AJTM_AS_APPLY.Instance.GetEntityByKey<AJTM_AS_APPLY.Entity>(AsA.ID);
+                if (Apply.ID == 0)
+                {
+                    result.IsSuccess = false;
+                    result.Message = "用编申报不存在";
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
+                int APPROVAL_NUM = AsApplyDetail.Sum(x => x.APPROVAL_NUM);
+                if (Apply.APPLY_NUM < APPROVAL_NUM)
+                {
+                    result.IsSuccess = false;
+                    result.Message = "批准数不能大于申请数";
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
+            }
+
+            foreach (var AsA in AsApplyArr)
+            {
+                var AsApplyDetail = DeserializeObject<List<AJTM_AS_APPLY_DETAIL.Entity>>(AsA.AsApplyDetailJson);
+                var Apply = AJTM_AS_APPLY.Instance.GetEntityByKey<AJTM_AS_APPLY.Entity>(AsA.ID);
+                //
+                Dictionary<string, object> dic = new Dictionary<string, object>();
+                dic.Add("AS_APPLY_NO", AsA.AS_APPLY_NO);
+                dic.Add("APPROVAL_NUM", AsA.APPROVAL_NUM);
+                dic.Add("UPDATE_UID", SystemSession.UserID);
+                dic.Add("UPDATE_TIME", DateTime.Now);
+                //
+                AJTM_AS_APPLY.Instance.Update(dic, " ID=?", new object[] { AsA.ID });
+                var CNo = AJTM_AS_DETAIL.Instance.GetCurrentNo();
+                var j = 1;
+                //
+                foreach (var item in AsApplyDetail)
+                {
+                    Dictionary<string, object> AsApplyDetailItem = new Dictionary<string, object>();
+                    AsApplyDetailItem.Add("AS_TYPE_ID", item.AS_TYPE_ID);
+                    AsApplyDetailItem.Add("AS_PURPOSE_ID", item.AS_PURPOSE_ID);
+                    AsApplyDetailItem.Add("AS_PURPOSE_REMARK", item.AS_PURPOSE_REMARK);
+                    AsApplyDetailItem.Add("APPROVAL_NUM", item.APPROVAL_NUM);
+                    if (item.ID == 0)
+                    {
+                        AsApplyDetailItem.Add("AS_APPLY_ID", AsA.ID);
+                        AsApplyDetailItem.Add("APPLY_NUM", 0);
+                        AJTM_AS_APPLY_DETAIL.Instance.Add(AsApplyDetailItem);
+                    }
+                    else
+                    {
+                        AJTM_AS_APPLY_DETAIL.Instance.Update(AsApplyDetailItem, " ID=?", item.ID);
+                    }
+
+                    for (int i = 0; i < item.APPROVAL_NUM; i++)
+                    {
+                        Dictionary<string, object> AsD = new Dictionary<string, object>();
+                        AsD.Add("APPROVAL_TIME", AS_APPROVAL_TIME);
+                        AsD.Add("MEETING", MEETING);
+                        AsD.Add("UNIT_ID", Apply.UNIT_ID);
+                        AsD.Add("UNIT_NAME", Apply.UNIT_NAME);
+                        AsD.Add("UNIT_PARENT_ID", Apply.UNIT_PARENT_ID);
+                        AsD.Add("UNIT_PARENT", Apply.UNIT_PARENT);
+                        AsD.Add("AS_APPLY_ID", Apply.ID);
+                        AsD.Add("AS_APPLY_NO", AsA.AS_APPLY_NO);
+                        AsD.Add("AS_PURPOSE_ID", item.AS_PURPOSE_ID);
+                        AsD.Add("AS_TYPE_ID", item.AS_TYPE_ID);
+                        AsD.Add("AS_PURPOSE_REMARK", item.AS_PURPOSE_REMARK);
+                        AsD.Add("AS_NO", AJTM_AS_DETAIL.Instance.GetAsNo(i * j + CNo));
+                        AsD.Add("APPROVAL_NUM", 1);
+                        AsD.Add("CREATE_TIME", DateTime.Now);
+
+                        int AsDetailId = AJTM_AS_DETAIL.Instance.Add(AsD, true);
+
+                        Dictionary<string, object> AsDS = new Dictionary<string, object>();
+                        AsDS.Add("AS_DETAIL_ID", AsDetailId);
+                        AsDS.Add("AS_APPLY_ID", Apply.ID);
+                        AsDS.Add("AS_APPLY_NO", AsA.AS_APPLY_NO);
+                        AsDS.Add("STATUS", ENUM_AS_DETAIL_STATUS.创建.ToString());
+                        AsDS.Add("STATUS_TIME", DateTime.Now);
+                        AsDS.Add("CREATE_UID", SystemSession.UserID);
+                        AsDS.Add("UPDATE_UID", SystemSession.UserID);
+                        AsDS.Add("CREATE_TIME", DateTime.Now);
+                        AsDS.Add("UPDATE_TIME", DateTime.Now);
+
+                        AJTM_AS_DETAIL_STATUS.Instance.Add(AsDS);
+                    }
+                    j++;
+                }
+            }
+
+
+            Dictionary<string, object> dicc = new Dictionary<string, object>();
+            dicc.Add("STATUS", BLL.Model.CONSIDERATION_STATUS.审议完成.ToString());
+            BLL.Model.AJTM_CONSIDERATION.Instance.Update(dicc, "ID = ?", new object[] { ID });
+
             result.IsSuccess = true;
-            result.Message = "数据提交成功,请在《用编申报批准》模块进行下载审议表";
+            result.Message = "数据提交成功";
             return Json(result, JsonRequestBehavior.AllowGet);
         }
     }

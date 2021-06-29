@@ -58,6 +58,11 @@ namespace CS.BLL.Model
             [Field(IsNotNull = true, Length = 500, Comment = "用编审议表(文件路径)")]
             public string PATH { get; set; }
             /// <summary>
+            /// 用编审议表(文件路径)
+            /// </summary>
+            [Field(IsNotNull = true, Length = 500, Comment = "用编审议表(文件路径)")]
+            public string STATUS { get; set; }
+            /// <summary>
             /// 创建者ID
             /// </summary>
             [Field(IsNotNull = true, DefaultValue = "0", Comment = "创建者ID")]
@@ -141,5 +146,12 @@ namespace CS.BLL.Model
             var ids = GetValueByKey(id, "IDS");
             return ids.ToString();
         }
+    }
+
+
+    public enum CONSIDERATION_STATUS
+    {
+        创建,
+        审议完成
     }
 }
