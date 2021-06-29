@@ -97,7 +97,7 @@ namespace CS.WebUI.Controllers.AJTM
         /// </summary>
         /// <param name="ids"></param>
         /// <returns></returns>
-        public ActionResult Approvel(int id = 0)
+        public ActionResult Approvel(int id = 15)
         {
             ViewBag.AsPurpose = SerializeObject(AJTM_AS_PURPOSE.Instance.GetDropDown());
             ViewBag.AsType = SerializeObject(AJTM_AS_TYPE.Instance.GetDropTree());
@@ -109,18 +109,38 @@ namespace CS.WebUI.Controllers.AJTM
                 {
                     var Apply = AJTM_AS_APPLY.Instance.GetApplyByIDS(ids);
                     var ApplyDetail = AJTM_AS_APPLY_DETAIL.Instance.GetApplyDetailByIDS(ids);
-
-                    List<Model.AsApply> AsApplyList = new List<Model.AsApply>();
-                    foreach(var item in Apply)
+                    if (ApplyDetail != null)
                     {
-                        var AsApply = CS.Common.Fun.ClassToCopy<AJTM_AS_APPLY.Entity, Model.AsApply>(item);
-                        AsApply.AsApplyDetailJson = SerializeObject(ApplyDetail.Select(x => x.AS_APPLY_ID == AsApply.ID).ToList());
-                        AsApplyList.Add(AsApply);
+                        List<Model.AsApply> AsApplyList = new List<Model.AsApply>();
+                        int i = 0;
+                        foreach (var item in Apply)
+                        {
+                            var AsApply = CS.Common.Fun.ClassToCopy<AJTM_AS_APPLY.Entity, Model.AsApply>(item);
+                            AsApply.AS_APPLY_NO = BLL.Model.AJTM_AS_APPLY.Instance.GetApplyNo(i);
+                            AsApply.AsApplyDetailJson = SerializeObject(ApplyDetail.Where(x => x.AS_APPLY_ID == AsApply.ID).ToList());
+                            AsApplyList.Add(AsApply);
+                            i++;
+                        }
+                        ViewBag.AsApplyList = SerializeObject(AsApplyList);
                     }
-                    ViewBag.AsApplyList = SerializeObject(AsApplyList);
+
                 }
             }
             return View();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="AS_APPROVAL_TIME"></param>
+        /// <param name="MEETING"></param>
+        /// <param name="AsApply"></param>
+        /// <returns></returns>
+        public ActionResult Approvel(string AS_APPROVAL_TIME,string MEETING,string AsApply)
+        {
+            JsonResultData result = new JsonResultData();
+            result.IsSuccess = true;
+            result.Message = "数据提交成功,请在《用编申报批准》模块进行下载审议表";
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
     }
 }

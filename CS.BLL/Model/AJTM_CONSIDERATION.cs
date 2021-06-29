@@ -138,7 +138,8 @@ namespace CS.BLL.Model
 
         public string GetIdsById(int id = 0)
         {
-            return GetValueByKey("IDS", id.ToString()).ToString();
+            var ids = GetValueByKey(id, "IDS");
+            return ids.ToString();
         }
     }
 }
