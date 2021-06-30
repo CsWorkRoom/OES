@@ -37,7 +37,7 @@ function add(e) {
                        <input type="text" id="`+ id + `" value="` + r.AS_TYPE_ID + `" class="AsType" >
                   </td>
                   <td>
-                       <select><option value=''></option></select>
+                       <select  style="width:100%;height:40px;" lay-ignore><option value=''>请选择</option></select>
                  </td>
                   <td><input type="text" autocomplete="off" value="` + r.AS_PURPOSE_REMARK + `" class="layui-input"></td>
                   <td>`+ r.APPLY_NUM+`</td>

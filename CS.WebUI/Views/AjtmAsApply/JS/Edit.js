@@ -56,7 +56,7 @@ function add(e) {
                        <input type="text" id="`+ id + `" value="` + r.AS_TYPE_ID + `" class="AsType" >
                   </td>
                   <td>
-                       <select><option value=''></option></select>
+                       <select style="width:100%;height:40px;" lay-ignore><option value=''>请选择</option></select>
                  </td>
                   <td><input type="text" autocomplete="off" value="` + r.AS_PURPOSE_REMARK + `" class="layui-input"></td>
                   <td><input type="text" autocomplete="off" value="` + r.APPLY_NUM + `" class="layui-input"></td>
@@ -81,11 +81,6 @@ function add(e) {
     temp.find(".remove").bind("click", remove);
     $("#AsApplyDetail").append(temp);
     $.comboztree(id, { ztreenode: zNodes });
-    //重新渲染
-    layui.use(['form'], function () {
-        var form = layui.form;
-        form.render('select');
-    })
 }
 
 function remove() {

@@ -109,7 +109,6 @@ namespace CS.BLL.Model
                 0 AS USABLE_AS_NUM,
                 A.APPLY_NUM,
                 0 AS SUGGEST_NUM,
-                0 AS SURPLUS_NUM,
                 '' AS REASON,
                 '' AS REMARK
                 FROM AJTM_AS_APPLY A 

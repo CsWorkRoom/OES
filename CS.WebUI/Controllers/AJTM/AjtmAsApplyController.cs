@@ -64,6 +64,8 @@ namespace CS.WebUI.Controllers.AJTM
             dic.Add("ACCOUNT_PHONE", entity.ACCOUNT_PHONE);
             dic.Add("IS_YEAR", entity.IS_YEAR);
             dic.Add("APPLY_NUM", AsApplyDetail.Sum(x => x.APPLY_NUM));
+            dic.Add("APPROVAL_NUM", 0);
+            dic.Add("STATUS", BLL.Model.AS_APPLY_STATUS.申报.ToString());
             if (entity.ID > 0)
             {
                 dic.Add("UPDATE_UID", SystemSession.UserID);
@@ -111,7 +113,6 @@ namespace CS.WebUI.Controllers.AJTM
             result.Message = "数据提交成功";
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
         /// <summary>
         /// 批准
         /// </summary>
@@ -235,9 +236,6 @@ namespace CS.WebUI.Controllers.AJTM
             result.Message = "数据提交成功";
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
-
- 
         /// <summary>
         /// 编制使用通知单
         /// </summary>

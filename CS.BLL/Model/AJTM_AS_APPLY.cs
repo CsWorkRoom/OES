@@ -98,6 +98,11 @@ namespace CS.BLL.Model
             [Field(IsNotNull = true, DefaultValue = "0", Comment = "申报总数")]
             public int APPROVAL_NUM { get; set; }
             /// <summary>
+            /// 状态
+            /// </summary>
+            [Field(IsNotNull = false, Length = 512, Comment = "状态")]
+            public string STATUS { get; set; }
+            /// <summary>
             /// 创建者ID
             /// </summary>
             [Field(IsNotNull = true, DefaultValue = "0", Comment = "创建者ID")]
@@ -156,9 +161,9 @@ namespace CS.BLL.Model
         /// <returns></returns>
         public IList<Entity> GetApplyData()
         {
-            string sql = @"
-              SELECT A.* FROM AJTM_AS_APPLY A LEFT JOIN AJTM_CONSIDERATION_APPLY B ON(A.ID = B.AS_APPLY_ID) WHERE B.ID IS NULL AND A.APPROVAL_NUM IS NULL
-            ";
+            string sql = string.Format(@"
+              SELECT  * FROM AJTM_AS_APPLY WHERE STATUS = '{0}'
+            ", AS_APPLY_STATUS.申报.ToString());
             using (BDBHelper dbHelper = new BDBHelper())
             {
                 var dt = dbHelper.ExecuteDataTable(sql);
@@ -181,5 +186,12 @@ namespace CS.BLL.Model
                 return list;
             }
         }
+    }
+
+    public enum AS_APPLY_STATUS
+    {
+        申报,
+        审议,
+        完成
     }
 }

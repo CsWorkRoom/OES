@@ -82,6 +82,7 @@ namespace CS.WebUI.Controllers.AJTM
             }
             else
             {
+                dic.Add("IS_USE", 1);
                 dic.Add("CREATE_UID", SystemSession.UserID);
                 dic.Add("UPDATE_UID", SystemSession.UserID);
                 dic.Add("CREATE_TIME", DateTime.Now);
@@ -102,6 +103,61 @@ namespace CS.WebUI.Controllers.AJTM
 
             result.IsSuccess = true;
             result.Message = "数据提交成功";
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// 启用
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult SetEnable(int id)
+        {
+            JsonResultData result = new JsonResultData();
+            result.IsSuccess = true;
+            result.Message = "启用成功";
+            try
+            {
+                int i = AJTM_UNIT.Instance.SetEnable(id);
+                if (i < 1)
+                {
+                    throw new Exception("未知原因");
+                }
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.Message = "启用失败：" + ex.Message;
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// 禁用
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult SetUnable(int id)
+        {
+            JsonResultData result = new JsonResultData();
+            result.IsSuccess = true;
+            result.Message = "禁用成功";
+            try
+            {
+                int i = AJTM_UNIT.Instance.SetUnable(id);
+                if (i < 1)
+                {
+                    throw new Exception("未知原因");
+                }
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.Message = "禁用失败：" + ex.Message;
+            }
+
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
