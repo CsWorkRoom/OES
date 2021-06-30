@@ -32,6 +32,7 @@ PublishProfiles/
 # Executables
 *.out
 *.app
+*.zip
 .vs/EasyMan/v14/.suo
 .vs/config/applicationhost.config
 Easyman.Web/PlugIns/Easyman.FwWeb.dll
