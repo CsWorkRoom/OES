@@ -185,18 +185,15 @@ namespace CS.WebUI.Controllers.AJTM
 
             foreach (var AsA in AsApplyArr)
             {
+                //
+                var basePath = Server.MapPath(AJTM_AS_APPLY.Instance.PATH_BASE);
+               //
                 var AsApplyDetail = DeserializeObject<List<AJTM_AS_APPLY_DETAIL.Entity>>(AsA.AsApplyDetailJson);
                 var Apply = AJTM_AS_APPLY.Instance.GetEntityByKey<AJTM_AS_APPLY.Entity>(AsA.ID);
                 //
-                Dictionary<string, object> dic = new Dictionary<string, object>();
-                dic.Add("AS_APPLY_NO", AsA.AS_APPLY_NO);
-                dic.Add("APPROVAL_NUM", AsA.APPROVAL_NUM);
-                dic.Add("UPDATE_UID", SystemSession.UserID);
-                dic.Add("UPDATE_TIME", DateTime.Now);
-                //
-                AJTM_AS_APPLY.Instance.Update(dic, " ID=?", new object[] { AsA.ID });
                 var CNo = AJTM_AS_DETAIL.Instance.GetCurrentNo();
                 var j = 1;
+               
                 //
                 foreach (var item in AsApplyDetail)
                 {
@@ -215,10 +212,12 @@ namespace CS.WebUI.Controllers.AJTM
                     {
                         AJTM_AS_APPLY_DETAIL.Instance.Update(AsApplyDetailItem, " ID=?", item.ID);
                     }
-
+                    List<string> AsNoList = new List<string>();
                     for (int i = 0; i < item.APPROVAL_NUM; i++)
                     {
+                        string ASNO = AJTM_AS_DETAIL.Instance.GetAsNo(i * j + CNo);
                         Dictionary<string, object> AsD = new Dictionary<string, object>();
+
                         AsD.Add("APPROVAL_TIME", AS_APPROVAL_TIME);
                         AsD.Add("MEETING", MEETING);
                         AsD.Add("UNIT_ID", Apply.UNIT_ID);
@@ -230,7 +229,7 @@ namespace CS.WebUI.Controllers.AJTM
                         AsD.Add("AS_PURPOSE_ID", item.AS_PURPOSE_ID);
                         AsD.Add("AS_TYPE_ID", item.AS_TYPE_ID);
                         AsD.Add("AS_PURPOSE_REMARK", item.AS_PURPOSE_REMARK);
-                        AsD.Add("AS_NO", AJTM_AS_DETAIL.Instance.GetAsNo(i * j + CNo));
+                        AsD.Add("AS_NO", ASNO);
                         AsD.Add("APPROVAL_NUM", 1);
                         AsD.Add("CREATE_TIME", DateTime.Now);
 
@@ -248,9 +247,27 @@ namespace CS.WebUI.Controllers.AJTM
                         AsDS.Add("UPDATE_TIME", DateTime.Now);
 
                         AJTM_AS_DETAIL_STATUS.Instance.Add(AsDS);
+                        //
+                        AsNoList.Add(ASNO);
                     }
+                    //生成通知表
+                    string file1 = AJTM_AS_APPLY.Instance.SaveApplyNoFile(basePath, AsA.UNIT_PARENT, AsA.UNIT_NAME, AsA.APPLY_FILE, AsA.AS_APPLY_NO, AsA.APPROVAL_NUM, "");
+                    string file2 = AJTM_AS_APPLY.Instance.SaveApplyNoFileList(basePath, AsA.UNIT_PARENT, AsA.UNIT_NAME, AsA.APPLY_FILE, AsA.AS_APPLY_NO, AsA.APPROVAL_NUM, "", AsNoList);
+
+                    //修改申请表
+                    Dictionary<string, object> dic = new Dictionary<string, object>();
+                    dic.Add("AS_APPLY_NO", AsA.AS_APPLY_NO);
+                    dic.Add("APPROVAL_NUM", AsA.APPROVAL_NUM);
+                    dic.Add("AS_APPLY_PATH", file1);
+                    dic.Add("AS_APPLY_PATH2", file2);
+                    dic.Add("UPDATE_UID", SystemSession.UserID);
+                    dic.Add("UPDATE_TIME", DateTime.Now);
+                    //
+                    AJTM_AS_APPLY.Instance.Update(dic, " ID=?", new object[] { AsA.ID });
+
                     j++;
                 }
+
             }
 
 
