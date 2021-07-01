@@ -43,10 +43,15 @@ namespace CS.BLL.Model
             [Field(IsPrimaryKey = true, IsAutoIncrement = true, IsNotNull = true, Comment = "ID ")]
             public int ID { get; set; }
             /// <summary>
-            /// 创建者ID
+            /// 用编文件文号(编制使用通知单)
             /// </summary>
             [Field(IsNotNull = false, Length = 128, Comment = "用编文件文号(编制使用通知单)")]
             public string AS_APPLY_NO { get; set; }
+            /// <summary>
+            /// 用编通知数文件
+            /// </summary>
+            [Field(IsNotNull = false, Length = 128, Comment = "用编通知数文件")]
+            public string AS_APPLY_PATH { get; set; }
             /// <summary>
             /// 用编单位
             /// </summary>
@@ -68,9 +73,14 @@ namespace CS.BLL.Model
             [Field(IsNotNull = true, Length = 128, Comment = "申报单位")]
             public string UNIT_PARENT { get; set; }
             /// <summary>
+            /// 来文文件名
+            /// </summary>
+            [Field(IsNotNull = true, Length = 128, Comment = "来文文件名")]
+            public string APPLY_FILE { get; set; }
+            /// <summary>
             /// 来文时间
             /// </summary>
-            [Field(IsNotNull = true, DefaultValue = "NOW", Comment = "创建时间")]
+            [Field(IsNotNull = true, DefaultValue = "NOW", Comment = "来文时间")]
             public DateTime APPLY_TIME { get; set; }
             /// <summary>
             /// 联系人
@@ -137,14 +147,46 @@ namespace CS.BLL.Model
         {
             var index = GetCount(" TO_CHAR(CREATE_TIME,'YYYY')=? AND AS_APPLY_NO IS NOT NULL", new object[] { DateTime.Now.ToString("yyyy") });
             index += 1;
-            return "达编机减[" + DateTime.Now.ToString("yyyy") + "]" + index + "号"; ;
+            return "达市编控〔" + DateTime.Now.ToString("yyyy") + "〕" + index + "号"; 
         }
 
         public string GetApplyNo(int i)
         {
             var index = GetCount(" TO_CHAR(CREATE_TIME,'YYYY')=? AND AS_APPLY_NO IS NOT NULL", new object[] { DateTime.Now.ToString("yyyy") });
             index = index + i + 1;
-            return "达编机减[" + DateTime.Now.ToString("yyyy") + "]" + index + "号"; ;
+            return "达市编控〔" + DateTime.Now.ToString("yyyy") + "〕" + index + "号";
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ApplyNo"></param>
+        /// <returns></returns>
+        public string[] analysisApplyNo(string ApplyNo)
+        {
+            ApplyNo.Replace("达市编控〔", "");
+            ApplyNo.Replace("号","");
+
+            return ApplyNo.Split('〕');
+        }
+        public List<string> GetApplyList()
+        {
+            var index = GetCount(" TO_CHAR(CREATE_TIME,'YYYY')=? AND AS_APPLY_NO IS NOT NULL", new object[] { DateTime.Now.ToString("yyyy") });
+            index += 1;
+            List<string> list = new List<string>();
+            list.Add("达市编控〔" + DateTime.Now.ToString("yyyy") + "〕" + index + "号");
+            list.Add(DateTime.Now.ToString("yyyy"));
+            list.Add(index.ToString());
+            return list;
+        }
+        public List<string> GetApplyList(int i)
+        {
+            var index = GetCount(" TO_CHAR(CREATE_TIME,'YYYY')=? AND AS_APPLY_NO IS NOT NULL", new object[] { DateTime.Now.ToString("yyyy") });
+            index = index + i + 1;
+            List<string> list = new List<string>();
+            list.Add("达市编控〔" + DateTime.Now.ToString("yyyy") + "〕" + index + "号");
+            list.Add(DateTime.Now.ToString("yyyy"));
+            list.Add(index.ToString());
+            return list;
         }
         /// <summary>
         /// 
@@ -155,6 +197,20 @@ namespace CS.BLL.Model
         {
             return GetList<Entity>(" ID IN (" + ids + ")", new object[] { });
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ids"></param>
+
+        public int UpdateStatusForApprovel(string ids)
+        {
+            Dictionary<string, object> dic = new Dictionary<string, object>();
+            dic.Add("CREATE_UID", SystemSession.UserID);
+            dic.Add("CREATE_TIME", DateTime.Now);
+            dic.Add("STATUS", AS_APPLY_STATUS.审议.ToString());
+            return Update(dic, " ID in (" + ids + ")", new object[] { });
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -185,6 +241,91 @@ namespace CS.BLL.Model
                 }
                 return list;
             }
+        }
+
+        public string PATH_BASE = "../File/APPLYNO/";
+
+        private string File = "temp.doc";
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="year"></param>
+        /// <param name="no"></param>
+        /// <param name="unitParent"></param>
+        /// <param name="unitName"></param>
+        /// <param name="applyFile"></param>
+        /// <param name="asApplyNo"></param>
+        /// <param name="ApproveNum"></param>
+        /// <param name="AsDeal"></param>
+        /// <returns></returns>
+        public string SaveApplyNoFile(string path, string unitParent, string unitName, string applyFile, string asApplyNo, int ApproveNum, string AsDeal)
+        {
+            var r = analysisApplyNo(asApplyNo);
+
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            dic.Add("<YEAR>", r[0]);
+            dic.Add("<NO>", r[1]);
+            dic.Add("<UNIT_PARENT>", unitParent);
+            dic.Add("<UNIT_NAME>", unitName);
+            dic.Add("<APPLY_FILE>", applyFile);
+            dic.Add("<AS_APPLY_NO>", asApplyNo);
+            dic.Add("<APPROVE_NUM>", ApproveNum.ToString());
+            dic.Add("<AS_DEAL>", AsDeal);
+
+            Extension.Export.WordFile word = new Extension.Export.WordFile(path, File);
+            word.ReplaceKeyword(dic);
+            string filename = "temp_" + DateTime.Now.Ticks;
+            word.Save(path + filename);
+            return PATH_BASE + filename;
+        }
+        private string FileList = "templist.doc";
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="year"></param>
+        /// <param name="no"></param>
+        /// <param name="unitParent"></param>
+        /// <param name="unitName"></param>
+        /// <param name="applyFile"></param>
+        /// <param name="asApplyNo"></param>
+        /// <param name="ApproveNum"></param>
+        /// <param name="AsDeal"></param>
+        /// <returns></returns>
+        public string SaveApplyNoFileList(string path, string unitParent, string unitName, string applyFile, string asApplyNo, int ApproveNum, string AsDeal,List<string> ApplyNO)
+        {
+            var r = analysisApplyNo(asApplyNo);
+
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            dic.Add("<YEAR>", r[0]);
+            dic.Add("<NO>", r[1]);
+            dic.Add("<UNIT_PARENT>", unitParent);
+            dic.Add("<UNIT_NAME>", unitName);
+            dic.Add("<APPLY_FILE>", applyFile);
+            dic.Add("<AS_APPLY_NO>", asApplyNo);
+            dic.Add("<APPROVE_NUM>", ApproveNum.ToString());
+            dic.Add("<AS_DEAL>", AsDeal);
+
+            DataTable dt = new DataTable();
+            dt.Columns.Add("序号");
+            dt.Columns.Add("姓名");
+            dt.Columns.Add("编号");
+
+            for (var i = 0; i < ApplyNO.Count; i++)
+            {
+                DataRow dr = dt.NewRow();
+                dr[0] = i;
+                dr[1] = "";
+                dr[2] = ApplyNO[i];
+                dt.Rows.Add(dr);
+            }
+
+            Extension.Export.WordFile word = new Extension.Export.WordFile(path, FileList);
+            word.ReplaceKeyword(dic);
+            word.AddTableForTable(dt);
+            string filename = "templist_" + DateTime.Now.Ticks;
+            word.Save(path + filename);
+            return PATH_BASE + filename;
         }
     }
 

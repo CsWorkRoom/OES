@@ -288,6 +288,7 @@ namespace CS.BLL.Extension.Export
                 {
                     //ICell cell = row.CreateCell(c);
                     ICell cell = row.GetCell(c);
+                    if (cell == null) cell = row.CreateCell(c);
                     if (dt.Columns[c].DataType == typeof(DateTime))
                     {
                         DateTime vd = new DateTime();

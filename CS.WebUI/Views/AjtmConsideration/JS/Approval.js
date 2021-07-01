@@ -75,7 +75,8 @@ function tempApprovel(item) {
 }
 
 
-function add(target,e) {
+function add(target, e) {
+    if (!target) target = $(this).closest(".AsApproval");
     var r = { ID: 0, AS_TYPE_ID: 0, AS_PURPOSE_ID: 0, AS_PURPOSE_REMARK: "", APPLY_NUM: 0, APPROVAL_NUM: 0 };
     if (e) {
         r = $.extend(r, e);
@@ -89,7 +90,7 @@ function add(target,e) {
                        <input type="text" id="`+ id + `" value="` + r.AS_TYPE_ID + `" class="AsType" >
                   </td>
                   <td>
-                       <select><option value=''></option></select>
+                       <select><option style="width:100%;height:40px;" lay-ignore value=''>请选择</option></select>
                  </td>
                   <td><input type="text" autocomplete="off" value="` + r.AS_PURPOSE_REMARK + `" class="layui-input"></td>
                   <td>`+ r.APPLY_NUM+`</td>

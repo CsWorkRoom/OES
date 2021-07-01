@@ -59,6 +59,7 @@ namespace CS.WebUI.Controllers.AJTM
             dic.Add("UNIT_NAME", entity.UNIT_NAME);
             dic.Add("UNIT_PARENT_ID", entity.UNIT_PARENT_ID);
             dic.Add("UNIT_PARENT", entity.UNIT_PARENT);
+            dic.Add("APPLY_FILE", entity.APPLY_FILE);
             dic.Add("APPLY_TIME", entity.APPLY_TIME);
             dic.Add("ACCOUNT_PEOPLE", entity.ACCOUNT_PEOPLE);
             dic.Add("ACCOUNT_PHONE", entity.ACCOUNT_PHONE);

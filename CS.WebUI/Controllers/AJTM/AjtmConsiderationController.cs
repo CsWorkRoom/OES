@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using CS.BLL.Extension.Export;
@@ -61,7 +62,7 @@ namespace CS.WebUI.Controllers.AJTM
       
             filterDic.Add("<X_APPROVE>", xApprove);
             filterDic.Add("<X_DEAL>", xDeal);
-            //
+            //新增审议表
             string path = Server.MapPath(BLL.Model.AJTM_CONSIDERATION.Instance.PATH_BASE);
             ExcelFile file = new ExcelFile(path);
             string filename = file.ToRepalceExcel(BLL.Model.AJTM_CONSIDERATION.Instance.PATH_FILENAME, dt, filterDic);
@@ -77,7 +78,7 @@ namespace CS.WebUI.Controllers.AJTM
             dic.Add("UPDATE_TIME", DateTime.Now);
             //
             var id = BLL.Model.AJTM_CONSIDERATION.Instance.Add(dic, true);
-            //
+            //新增审议表详细
             var idArray = IDS.Split(',').Select(x => Convert.ToInt32(x)).ToList();
             foreach(var item in idArray)
             {
@@ -87,6 +88,8 @@ namespace CS.WebUI.Controllers.AJTM
                 //
                 BLL.Model.AJTM_CONSIDERATION_APPLY.Instance.Add(dicConAs);
             }
+            //修改状态
+            BLL.Model.AJTM_AS_APPLY.Instance.UpdateStatusForApprovel(IDS);
             result.IsSuccess = true;
             result.Message = "数据提交成功,请在《用编申报批准》模块进行下载审议表";
             return Json(result, JsonRequestBehavior.AllowGet);
@@ -258,6 +261,42 @@ namespace CS.WebUI.Controllers.AJTM
             result.IsSuccess = true;
             result.Message = "数据提交成功";
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// 导出审议表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult ExportFile(int id)
+        {
+
+            try
+            {
+                var model = BLL.Model.AJTM_CONSIDERATION.Instance.GetEntityByKey<AJTM_CONSIDERATION.Entity>(id);
+                if (model.ID > 0)
+                {
+                    string filename = HttpUtility.UrlEncode(string.Format("{1}_{0}.xlsx", DateTime.Now.ToString("yyyyMMddHHmmss"), model.NAME), Encoding.UTF8);
+                    string fullName = Server.MapPath(model.PATH);
+                    System.Web.HttpContext.Current.Response.Buffer = true;
+                    System.Web.HttpContext.Current.Response.Clear();//清除缓冲区所有内容
+                    System.Web.HttpContext.Current.Response.ContentType = "application/octet-stream";
+                    System.Web.HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment;filename=" + filename);
+                    System.Web.HttpContext.Current.Response.WriteFile(fullName);
+                    System.Web.HttpContext.Current.Response.Flush();
+                    System.Web.HttpContext.Current.Response.End();
+                }
+                else
+                {
+                    return ShowAlert("导出失败！未找到该工单");
+                }
+            }
+            catch (Exception ex)
+            {
+                return ShowAlert("导出数据到Excel出现未知错误：" + ex.Message);
+            }
+            //
+            return ShowAlert("导出成功！");
         }
     }
 }

@@ -1,10 +1,23 @@
 ﻿
 $(function () {
 
-    layui.use(['form', 'layer', 'jquery','laydate'], function () {
+    layui.use(['form', 'layer', 'jquery', 'laydate'], function () {
         var form = layui.form, layer = layui.layer, $ = layui.$, laydate = layui.laydate;
         laydate.render({
             elem: '#APPLY_TIME' //指定元素
+        });
+        //验证
+        form.verify({
+            ApplyFile: function (vvalue) {
+                if (value.length <= 0) {
+                    return '请填写来文文件名称！';
+                }
+            },
+            ApplyTime: function (value) {
+                if (value.length <= 0) {
+                    return '请填写来文时间！';
+                }
+            }
         });
 
         init();
@@ -43,7 +56,7 @@ $(function () {
 
 
 function add(e) {
-    var r = { AS_TYPE_ID: 0, AS_PURPOSE_ID: 0, AS_PURPOSE_REMARK: "", APPLY_NUM:0 };
+    var r = { AS_TYPE_ID: 0, AS_PURPOSE_ID: 0, AS_PURPOSE_REMARK: "", APPLY_NUM: 0 };
     if (e) {
         r = $.extend(r, e);
     }
@@ -89,8 +102,6 @@ function remove() {
     $(this).closest("tr").remove();
 }
 
-
-
 function getRandomString(len) {
     len = len | 8;
     var str = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -100,7 +111,6 @@ function getRandomString(len) {
     }
     return strRan;
 }
-
 
 function save() {
     layui.use(['form', 'layer', 'jquery'], function () {
@@ -115,8 +125,16 @@ function save() {
         return;
         function rArr() {
             var UnitId = parseInt($("#UNIT_ID").val());
-            if (UnitId ===0) {
+            if (UnitId === 0) {
                 return { isErr: true, Msg: "请选择用编单位" };
+            }
+            var ApplyFile = $("#APPLY_FILE").val();
+            if (ApplyFile.length <= 0) {
+                return { isErr: true, Msg: "请填写来文文件名称" };
+            }
+            var ApplyTime = $("#APPLY_TIME").val();
+            if (ApplyTime.length <= 0) {
+                return { isErr: true, Msg: "请填写来文时间" };
             }
             var trArr = $("#AsApplyDetail").find("tr");
             var rArr = [];

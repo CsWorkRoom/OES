@@ -14,14 +14,14 @@
     </fieldset>
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">用编单位</label>
+            <label class="layui-form-label">用编单位(必填)</label>
             <div class="layui-input-inline">
                 <input hidden="hidden" name="UNIT_NAME" id="UNIT_NAME" value="@Model.UNIT_NAME" />
                 <input type="text" name="UNIT_ID" id="UNIT_ID" value="@Model.UNIT_ID">
             </div>
         </div>
         <div class="layui-inline">
-            <label class="layui-form-label">申报单位</label>
+            <label class="layui-form-label">申报单位(必填)</label>
             <div class="layui-input-inline">
                 <input hidden="hidden" name="UNIT_PARENT_ID" id="UNIT_PARENT_ID" value="@Model.UNIT_PARENT" />
                 <input type="text" name="UNIT_PARENT" id="UNIT_PARENT" value="@Model.UNIT_PARENT" autocomplete="off" class="layui-input" readonly="readonly">
@@ -30,11 +30,19 @@
     </div>
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">来文时间</label>
+            <label class="layui-form-label">来文文件名(必填)</label>
             <div class="layui-input-inline">
-                <input type="tel" name="APPLY_TIME" value='@Model.APPLY_TIME.ToString("yyyy-MM-dd")' id="APPLY_TIME" autocomplete="off" class="layui-input">
+                <input type="tel" name="APPLY_FILE" value='@Model.APPLY_FILE' id="APPLY_FILE" lay-verify="required |ApplyFile" autocomplete="off" class="layui-input">
             </div>
         </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">来文时间(必填)</label>
+            <div class="layui-input-inline">
+                <input type="tel" name="APPLY_TIME" value='@Model.APPLY_TIME.ToString("yyyy-MM-dd")' id="APPLY_TIME" lay-verify="required |ApplyTime" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label">是否为年度用编</label>
             <div class="layui-input-inline">
@@ -58,14 +66,15 @@
                 </select>
             </div>
         </div>
-    </div>
-    <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label">联系人</label>
             <div class="layui-input-inline">
                 <input type="tel" name="ACCOUNT_PEOPLE" value="@Model.ACCOUNT_PEOPLE" autocomplete="off" class="layui-input">
             </div>
         </div>
+    </div>
+    <div class="layui-form-item">
+
         <div class="layui-inline">
             <label class="layui-form-label">联系方式</label>
             <div class="layui-input-inline">
@@ -105,4 +114,4 @@
         <button type="reset" class="layui-btn layui-btn-primary" onclick="CloseForm();">关闭</button>
     </div>
 </div>
-<script src="~/Views/AjtmAsApply/JS/Edit.js?v=20210310"></script>
+<script src="~/Views/AjtmAsApply/JS/Edit.js?v=20210210"></script>
