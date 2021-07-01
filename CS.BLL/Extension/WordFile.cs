@@ -468,11 +468,9 @@ namespace CS.BLL.Extension.Export
                         if (tempText.Contains(kvp.Key))
                         {
                             tempText = tempText.Replace(kvp.Key, kvp.Value);
-
-                            para.ReplaceText(oldText, tempText);
                         }
                     }
-
+                    para.ReplaceText(oldText, tempText);
                 }
             }
 
@@ -507,7 +505,7 @@ namespace CS.BLL.Extension.Export
                 }
             }
         }
-    
+
         public List<int> GetKeyForTableIndex()
         {
             //遍历表格      
@@ -531,7 +529,7 @@ namespace CS.BLL.Extension.Export
                             {
                                 //记录段落文本
                                 string tempText = para.ParagraphText;
-                                if (tempText.Contains("<START_TABLE>"))
+                                if (tempText.Contains("<START>"))
                                 {
                                     currTablesIndex = tablesIndex;
                                     currRowIndex = rowIndex;
@@ -544,7 +542,7 @@ namespace CS.BLL.Extension.Export
                 rowIndex = -1;
             }
             return new List<int> { currTablesIndex, currRowIndex };
-                }
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -555,18 +553,20 @@ namespace CS.BLL.Extension.Export
             int currTablesIndex = Convert.ToInt32(result[0]);
             int currRowIndex = Convert.ToInt32(result[1]);
             //
+            if (currTablesIndex == -1 || currRowIndex == -1) return;
             var tables = doc.Tables;
             var targetTable = tables[currTablesIndex];
             var rowindex = currRowIndex;
+
             for (var i = 0; i < dt.Rows.Count; i++)
             {
-                var dr = dt.Rows[i];
+                var dr = dt.Rows[currRowIndex + i];
                 if (i >= targetTable.Rows.Count)
                 {
                     targetTable.InsertNewTableRow(i);
                 }
-                var targetRow = targetTable.Rows[currRowIndex];
-                for (var j = 0; j < dt.Columns.Count; i++)
+                var targetRow = targetTable.Rows[i];
+                for (var j = 0; j < dt.Columns.Count; j++)
                 {
                     if (j > targetRow.GetTableCells().Count) continue;
                     var cell = targetRow.GetCell(j);

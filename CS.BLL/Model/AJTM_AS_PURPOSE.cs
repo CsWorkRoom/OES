@@ -98,5 +98,13 @@ namespace CS.BLL.Model
         {
             return GetDictionary("ID", "NAME");
         }
+
+
+        public string GetNames(int ids)
+        {
+            var dt = GetTableFields("NAME", " ID in (" + ids + ")", new object[] { });
+            string[] list = dt.AsEnumerable().Select(x => x.Field<string>("NAME")).ToArray();
+            return string.Join(",", list);
+        }
     }
 }

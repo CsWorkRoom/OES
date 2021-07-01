@@ -150,7 +150,7 @@ namespace CS.WebUI.Controllers.AJTM
                 result.Message = "提交失败,该审议表不存在";
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
-
+            //校验
             List<Model.AsApply> AsApplyArr = DeserializeObject<List<Model.AsApply>>(AsApply);
             foreach(var AsA in AsApplyArr)
             {
@@ -182,21 +182,27 @@ namespace CS.WebUI.Controllers.AJTM
                     return Json(result, JsonRequestBehavior.AllowGet);
                 }
             }
-
             foreach (var AsA in AsApplyArr)
             {
-                //
-                var basePath = Server.MapPath(AJTM_AS_APPLY.Instance.PATH_BASE);
-               //
+              
+               //解析申报明细
                 var AsApplyDetail = DeserializeObject<List<AJTM_AS_APPLY_DETAIL.Entity>>(AsA.AsApplyDetailJson);
+                //获取编制用途列表,用编申报信息
+                var AsPurse = BLL.Model.AJTM_AS_PURPOSE.Instance.GetDicDropDown();
                 var Apply = AJTM_AS_APPLY.Instance.GetEntityByKey<AJTM_AS_APPLY.Entity>(AsA.ID);
-                //
+                //获取当年序列号
                 var CNo = AJTM_AS_DETAIL.Instance.GetCurrentNo();
+                //编制号码
+                List<string> AsNoList = new List<string>();
+                List<string> AsPurseList = new List<string>();
+                //申报明细序列号，用于计算用编需要清单
                 var j = 1;
-               
                 //
                 foreach (var item in AsApplyDetail)
                 {
+                    var Purpose = AsPurse[item.AS_PURPOSE_ID];
+                    AsPurseList.Add(Purpose);
+                    //
                     Dictionary<string, object> AsApplyDetailItem = new Dictionary<string, object>();
                     AsApplyDetailItem.Add("AS_TYPE_ID", item.AS_TYPE_ID);
                     AsApplyDetailItem.Add("AS_PURPOSE_ID", item.AS_PURPOSE_ID);
@@ -212,7 +218,7 @@ namespace CS.WebUI.Controllers.AJTM
                     {
                         AJTM_AS_APPLY_DETAIL.Instance.Update(AsApplyDetailItem, " ID=?", item.ID);
                     }
-                    List<string> AsNoList = new List<string>();
+                   
                     for (int i = 0; i < item.APPROVAL_NUM; i++)
                     {
                         string ASNO = AJTM_AS_DETAIL.Instance.GetAsNo(i * j + CNo);
@@ -227,6 +233,7 @@ namespace CS.WebUI.Controllers.AJTM
                         AsD.Add("AS_APPLY_ID", Apply.ID);
                         AsD.Add("AS_APPLY_NO", AsA.AS_APPLY_NO);
                         AsD.Add("AS_PURPOSE_ID", item.AS_PURPOSE_ID);
+                        AsD.Add("AS_PURPOSE", Purpose);
                         AsD.Add("AS_TYPE_ID", item.AS_TYPE_ID);
                         AsD.Add("AS_PURPOSE_REMARK", item.AS_PURPOSE_REMARK);
                         AsD.Add("AS_NO", ASNO);
@@ -250,27 +257,30 @@ namespace CS.WebUI.Controllers.AJTM
                         //
                         AsNoList.Add(ASNO);
                     }
-                    //生成通知表
-                    string file1 = AJTM_AS_APPLY.Instance.SaveApplyNoFile(basePath, AsA.UNIT_PARENT, AsA.UNIT_NAME, AsA.APPLY_FILE, AsA.AS_APPLY_NO, AsA.APPROVAL_NUM, "");
-                    string file2 = AJTM_AS_APPLY.Instance.SaveApplyNoFileList(basePath, AsA.UNIT_PARENT, AsA.UNIT_NAME, AsA.APPLY_FILE, AsA.AS_APPLY_NO, AsA.APPROVAL_NUM, "", AsNoList);
-
-                    //修改申请表
-                    Dictionary<string, object> dic = new Dictionary<string, object>();
-                    dic.Add("AS_APPLY_NO", AsA.AS_APPLY_NO);
-                    dic.Add("APPROVAL_NUM", AsA.APPROVAL_NUM);
-                    dic.Add("AS_APPLY_PATH", file1);
-                    dic.Add("AS_APPLY_PATH2", file2);
-                    dic.Add("UPDATE_UID", SystemSession.UserID);
-                    dic.Add("UPDATE_TIME", DateTime.Now);
-                    //
-                    AJTM_AS_APPLY.Instance.Update(dic, " ID=?", new object[] { AsA.ID });
-
+                    
                     j++;
                 }
+                //参数-批准数,编制用途，根目录
+                int APPROVAL_NUM = AsApplyDetail.Sum(x => x.APPROVAL_NUM);
+                string AsPurseString = string.Join("/", AsPurseList);
+                string basePath = Server.MapPath(AJTM_AS_APPLY.Instance.PATH_BASE);
+                //生成通知表
+                string file1 = AJTM_AS_APPLY.Instance.SaveApplyNoFile(basePath, AsA.UNIT_PARENT, AsA.UNIT_NAME, AsA.APPLY_FILE, AsA.AS_APPLY_NO, APPROVAL_NUM, AS_APPROVAL_TIME, AsPurseString);
+                string file2 = AJTM_AS_APPLY.Instance.SaveApplyNoFileList(basePath, AsA.UNIT_PARENT, AsA.UNIT_NAME, AsA.APPLY_FILE, AsA.AS_APPLY_NO, APPROVAL_NUM, AS_APPROVAL_TIME, AsPurseString, AsNoList);
 
+                //修改申请表
+                Dictionary<string, object> dic = new Dictionary<string, object>();
+                dic.Add("AS_APPLY_NO", AsA.AS_APPLY_NO);
+                dic.Add("APPROVAL_NUM", APPROVAL_NUM);
+                dic.Add("AS_APPLY_PATH", file1);
+                dic.Add("STATUS", BLL.Model.AS_APPLY_STATUS.完成.ToString());
+                dic.Add("AS_APPLY_PATH2", file2);
+                dic.Add("UPDATE_UID", SystemSession.UserID);
+                dic.Add("UPDATE_TIME", DateTime.Now);
+                AJTM_AS_APPLY.Instance.Update(dic, " ID=?", new object[] { AsA.ID });
             }
 
-
+            //修改审议
             Dictionary<string, object> dicc = new Dictionary<string, object>();
             dicc.Add("STATUS", BLL.Model.CONSIDERATION_STATUS.审议完成.ToString());
             BLL.Model.AJTM_CONSIDERATION.Instance.Update(dicc, "ID = ?", new object[] { ID });

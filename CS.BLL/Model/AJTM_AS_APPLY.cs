@@ -163,10 +163,11 @@ namespace CS.BLL.Model
         /// <returns></returns>
         public string[] analysisApplyNo(string ApplyNo)
         {
-            ApplyNo.Replace("达市编控〔", "");
-            ApplyNo.Replace("号","");
+            string applyNo = ApplyNo;
+            applyNo = applyNo.Replace("达市编控〔", "");
+            applyNo = applyNo.Replace("号", "");
 
-            return ApplyNo.Split('〕');
+            return applyNo.Split('〕');
         }
         public List<string> GetApplyList()
         {
@@ -259,7 +260,7 @@ namespace CS.BLL.Model
         /// <param name="ApproveNum"></param>
         /// <param name="AsDeal"></param>
         /// <returns></returns>
-        public string SaveApplyNoFile(string path, string unitParent, string unitName, string applyFile, string asApplyNo, int ApproveNum, string AsDeal)
+        public string SaveApplyNoFile(string path, string unitParent, string unitName, string applyFile, string asApplyNo, int ApproveNum, DateTime ApproveTime, string AsDeal)
         {
             var r = analysisApplyNo(asApplyNo);
 
@@ -271,11 +272,12 @@ namespace CS.BLL.Model
             dic.Add("<APPLY_FILE>", applyFile);
             dic.Add("<AS_APPLY_NO>", asApplyNo);
             dic.Add("<APPROVE_NUM>", ApproveNum.ToString());
+            dic.Add("<DATETIME>", ApproveTime.ToString("yyyy年MM月dd"));
             dic.Add("<AS_DEAL>", AsDeal);
 
             Extension.Export.WordFile word = new Extension.Export.WordFile(path, File);
             word.ReplaceKeyword(dic);
-            string filename = "temp_" + DateTime.Now.Ticks;
+            string filename = "temp_" + DateTime.Now.Ticks + ".doc";
             word.Save(path + filename);
             return PATH_BASE + filename;
         }
@@ -292,7 +294,7 @@ namespace CS.BLL.Model
         /// <param name="ApproveNum"></param>
         /// <param name="AsDeal"></param>
         /// <returns></returns>
-        public string SaveApplyNoFileList(string path, string unitParent, string unitName, string applyFile, string asApplyNo, int ApproveNum, string AsDeal,List<string> ApplyNO)
+        public string SaveApplyNoFileList(string path, string unitParent, string unitName, string applyFile, string asApplyNo, int ApproveNum, DateTime ApproveTime, string AsDeal,List<string> ApplyNO)
         {
             var r = analysisApplyNo(asApplyNo);
 
@@ -304,6 +306,7 @@ namespace CS.BLL.Model
             dic.Add("<APPLY_FILE>", applyFile);
             dic.Add("<AS_APPLY_NO>", asApplyNo);
             dic.Add("<APPROVE_NUM>", ApproveNum.ToString());
+            dic.Add("<DATETIME>", ApproveTime.ToString("yyyy年MM月dd"));
             dic.Add("<AS_DEAL>", AsDeal);
 
             DataTable dt = new DataTable();
@@ -314,8 +317,8 @@ namespace CS.BLL.Model
             for (var i = 0; i < ApplyNO.Count; i++)
             {
                 DataRow dr = dt.NewRow();
-                dr[0] = i;
-                dr[1] = "";
+                dr[0] = i + 1;
+                dr[1] = " ";
                 dr[2] = ApplyNO[i];
                 dt.Rows.Add(dr);
             }
@@ -323,7 +326,7 @@ namespace CS.BLL.Model
             Extension.Export.WordFile word = new Extension.Export.WordFile(path, FileList);
             word.ReplaceKeyword(dic);
             word.AddTableForTable(dt);
-            string filename = "templist_" + DateTime.Now.Ticks;
+            string filename = "templist_" + DateTime.Now.Ticks + ".doc"; ;
             word.Save(path + filename);
             return PATH_BASE + filename;
         }
