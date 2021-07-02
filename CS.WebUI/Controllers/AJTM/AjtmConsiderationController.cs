@@ -273,17 +273,17 @@ namespace CS.WebUI.Controllers.AJTM
                 dic.Add("AS_APPLY_NO", AsA.AS_APPLY_NO);
                 dic.Add("APPROVAL_NUM", APPROVAL_NUM);
                 dic.Add("AS_APPLY_PATH", file1);
-                dic.Add("STATUS", BLL.Model.AS_APPLY_STATUS.完成.ToString());
                 dic.Add("AS_APPLY_PATH2", file2);
+                dic.Add("STATUS", AS_APPLY_STATUS.完成.ToString());
                 dic.Add("UPDATE_UID", SystemSession.UserID);
                 dic.Add("UPDATE_TIME", DateTime.Now);
-                AJTM_AS_APPLY.Instance.Update(dic, " ID=?", new object[] { AsA.ID });
+                AJTM_AS_APPLY.Instance.UpdateByKey(dic, AsA.ID);
             }
 
             //修改审议
             Dictionary<string, object> dicc = new Dictionary<string, object>();
             dicc.Add("STATUS", BLL.Model.CONSIDERATION_STATUS.审议完成.ToString());
-            BLL.Model.AJTM_CONSIDERATION.Instance.Update(dicc, "ID = ?", new object[] { ID });
+            BLL.Model.AJTM_CONSIDERATION.Instance.UpdateByKey(dicc, ID);
 
             result.IsSuccess = true;
             result.Message = "数据提交成功";

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using CS.BLL.FW;
@@ -48,7 +49,7 @@ namespace CS.WebUI.Controllers.AJTM
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             var AsApplyDetail = DeserializeObject<List<AJTM_AS_APPLY_DETAIL.Entity>>(entity.AsApplyDetailJson);
-            if(AsApplyDetail.Count == 0)
+            if (AsApplyDetail.Count == 0)
             {
                 result.IsSuccess = false;
                 result.Message = "提交失败,用编明细缺失";
@@ -149,7 +150,7 @@ namespace CS.WebUI.Controllers.AJTM
                 result.Message = "提交失败,用编明细缺失";
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
-            if(entity.ID == 0)
+            if (entity.ID == 0)
             {
                 result.IsSuccess = false;
                 result.Message = "用编申报不存在";
@@ -198,7 +199,7 @@ namespace CS.WebUI.Controllers.AJTM
                     AJTM_AS_APPLY_DETAIL.Instance.Update(AsApplyDetailItem, " ID=?", item.ID);
                 }
 
-                for(int i = 0; i < item.APPROVAL_NUM; i++)
+                for (int i = 0; i < item.APPROVAL_NUM; i++)
                 {
                     Dictionary<string, object> AsD = new Dictionary<string, object>();
                     AsD.Add("APPROVAL_TIME", entity.AS_APPROVAL_TIME);
@@ -231,7 +232,7 @@ namespace CS.WebUI.Controllers.AJTM
 
                     AJTM_AS_DETAIL_STATUS.Instance.Add(AsDS);
                 }
-                
+
             }
             result.IsSuccess = true;
             result.Message = "数据提交成功";
@@ -242,7 +243,7 @@ namespace CS.WebUI.Controllers.AJTM
         /// </summary>
         /// <param name="UnitId"></param>
         /// <returns></returns>
-        public string GetApplyNo(int UnitId=0)
+        public string GetApplyNo(int UnitId = 0)
         {
             if (UnitId > 0)
             {
@@ -250,6 +251,85 @@ namespace CS.WebUI.Controllers.AJTM
                 return SerializeObject(r);
             }
             return "{}";
+        }
+
+        /// <summary>
+        /// 导出审议表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult ExportFile(int id, int op)
+        {
+
+            try
+            {
+                var model = BLL.Model.AJTM_AS_APPLY.Instance.GetEntityByKey<AJTM_AS_APPLY.Entity>(id);
+                if (model.ID > 0)
+                {
+                    string filename = HttpUtility.UrlEncode(string.Format("{2}_{1}_{0}.doc", DateTime.Now.ToString("yyyyMMddHHmmss"), "编制通知书", model.UNIT_NAME), Encoding.UTF8);
+                    string fullName = Server.MapPath(model.AS_APPLY_PATH);
+                    if (op == 1) fullName = Server.MapPath(model.AS_APPLY_PATH2);
+                    System.Web.HttpContext.Current.Response.Buffer = true;
+                    System.Web.HttpContext.Current.Response.Clear();//清除缓冲区所有内容
+                    System.Web.HttpContext.Current.Response.ContentType = "application/octet-stream";
+                    System.Web.HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment;filename=" + filename);
+                    System.Web.HttpContext.Current.Response.WriteFile(fullName);
+                    System.Web.HttpContext.Current.Response.Flush();
+                    System.Web.HttpContext.Current.Response.End();
+                }
+                else
+                {
+                    return ShowAlert("导出失败！未找到该工单");
+                }
+            }
+            catch (Exception ex)
+            {
+                return ShowAlert("导出数据到Excel出现未知错误：" + ex.Message);
+            }
+            //
+            return ShowAlert("导出成功！");
+        }
+
+        /// <summary>
+        /// 注销
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult Cancel(int id)
+        {
+            JsonResultData result = new JsonResultData();
+            var model = BLL.Model.AJTM_AS_APPLY.Instance.GetEntityByKey<AJTM_AS_APPLY.Entity>(id);
+            if (model.ID == 0)
+            {
+                result.IsSuccess = false;
+                result.Message = "撤销失败！未找到该订单";
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            if (model.STATUS == AS_APPLY_STATUS.撤销.ToString())
+            {
+                result.IsSuccess = true;
+                result.Message = "已撤销";
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+            int count = AJTM_AS_DETAIL.Instance.GetCount(" (USE_TIME IS NOT NULL OR CANCEL_TIME IS NOT NULL) AND AS_APPLY_ID = ?", new object[] { model.ID });
+            if (count > 0)
+            {
+                result.IsSuccess = false;
+                result.Message = "撤销失败！已存在使用的上编信息";
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            Dictionary<string, object> dic = new Dictionary<string, object>();
+            dic.Add("STATUS", AS_APPLY_STATUS.撤销.ToString());
+            dic.Add("UPDATE_UID", SystemSession.UserID);
+            dic.Add("UPDATE_TIME", DateTime.Now);
+            AJTM_AS_APPLY.Instance.UpdateByKey(dic, model.ID);
+            AJTM_AS_DETAIL.Instance.Delete(" AS_APPLY_ID = ?", new object[] { model.ID });
+            //提示
+            result.IsSuccess = true;
+            result.Message = "撤销成功";
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
     }
 }

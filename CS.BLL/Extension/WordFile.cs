@@ -531,6 +531,7 @@ namespace CS.BLL.Extension.Export
                                 string tempText = para.ParagraphText;
                                 if (tempText.Contains("<START>"))
                                 {
+                                    para.ReplaceText(oldText, "");
                                     currTablesIndex = tablesIndex;
                                     currRowIndex = rowIndex;
                                     return new List<int> { currTablesIndex, currRowIndex };
@@ -560,12 +561,12 @@ namespace CS.BLL.Extension.Export
 
             for (var i = 0; i < dt.Rows.Count; i++)
             {
-                var dr = dt.Rows[currRowIndex + i];
+                var dr = dt.Rows[i];
                 if (i >= targetTable.Rows.Count)
                 {
                     targetTable.InsertNewTableRow(i);
                 }
-                var targetRow = targetTable.Rows[i];
+                var targetRow = targetTable.Rows[rowindex+i];
                 for (var j = 0; j < dt.Columns.Count; j++)
                 {
                     if (j > targetRow.GetTableCells().Count) continue;

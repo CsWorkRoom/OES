@@ -53,6 +53,11 @@ namespace CS.BLL.Model
             [Field(IsNotNull = false, Length = 128, Comment = "用编通知数文件")]
             public string AS_APPLY_PATH { get; set; }
             /// <summary>
+            /// 用编通知数文件
+            /// </summary>
+            [Field(IsNotNull = false, Length = 128, Comment = "用编通知数文件")]
+            public string AS_APPLY_PATH2 { get; set; }
+            /// <summary>
             /// 用编单位
             /// </summary>
             [Field(IsNotNull = true, DefaultValue = "0", Comment = "用编单位ID")]
@@ -331,11 +336,11 @@ namespace CS.BLL.Model
             return PATH_BASE + filename;
         }
     }
-
     public enum AS_APPLY_STATUS
     {
         申报,
         审议,
-        完成
+        完成,
+        撤销
     }
 }
