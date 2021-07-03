@@ -105,5 +105,13 @@ namespace CS.BLL.Model
             }
             return list;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<int,string> GetDropDown()
+        {
+            return GetDictionary("ID", "NAME");
+        }
     }
 }

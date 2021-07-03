@@ -71,8 +71,9 @@ namespace CS.WebUI.Controllers.AJTM
             result.Message = "数据提交成功";
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+
         /// <summary>
-        /// 
+        /// 获取待上编
         /// </summary>
         /// <returns></returns>
         public string GetAsDetail(int unitId = 0, int op = 0)

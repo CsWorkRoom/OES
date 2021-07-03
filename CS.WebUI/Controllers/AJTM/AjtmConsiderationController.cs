@@ -95,7 +95,6 @@ namespace CS.WebUI.Controllers.AJTM
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-
         /// <summary>
         /// 
         /// </summary>
@@ -182,13 +181,14 @@ namespace CS.WebUI.Controllers.AJTM
                     return Json(result, JsonRequestBehavior.AllowGet);
                 }
             }
+            //获取编制用途列表,编制类型
+            var AsPurse = BLL.Model.AJTM_AS_PURPOSE.Instance.GetDicDropDown();
+            var AsType = BLL.Model.AJTM_AS_TYPE.Instance.GetDropDown();
             foreach (var AsA in AsApplyArr)
             {
-              
-               //解析申报明细
+
+                //解析申报明细,用编申报信息
                 var AsApplyDetail = DeserializeObject<List<AJTM_AS_APPLY_DETAIL.Entity>>(AsA.AsApplyDetailJson);
-                //获取编制用途列表,用编申报信息
-                var AsPurse = BLL.Model.AJTM_AS_PURPOSE.Instance.GetDicDropDown();
                 var Apply = AJTM_AS_APPLY.Instance.GetEntityByKey<AJTM_AS_APPLY.Entity>(AsA.ID);
                 //获取当年序列号
                 var CNo = AJTM_AS_DETAIL.Instance.GetCurrentNo();
@@ -235,6 +235,7 @@ namespace CS.WebUI.Controllers.AJTM
                         AsD.Add("AS_PURPOSE_ID", item.AS_PURPOSE_ID);
                         AsD.Add("AS_PURPOSE", Purpose);
                         AsD.Add("AS_TYPE_ID", item.AS_TYPE_ID);
+                        AsD.Add("AS_TYPE", AsType[item.AS_TYPE_ID]);
                         AsD.Add("AS_PURPOSE_REMARK", item.AS_PURPOSE_REMARK);
                         AsD.Add("AS_NO", ASNO);
                         AsD.Add("APPROVAL_NUM", 1);
