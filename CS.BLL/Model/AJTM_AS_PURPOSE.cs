@@ -55,6 +55,11 @@ namespace CS.BLL.Model
             [Field(IsNotNull = false, Length = 512, Comment = "备注")]
             public string REMARK { get; set; }
             /// <summary>
+            /// 是否在用
+            /// </summary>
+            [Field(IsNotNull = true, DefaultValue = "1", Comment = "是否在用")]
+            public int IS_USE { get; set; }
+            /// <summary>
             /// 创建者ID
             /// </summary>
             [Field(IsNotNull = true, DefaultValue = "0", Comment = "创建者ID")]
@@ -96,7 +101,7 @@ namespace CS.BLL.Model
         /// <returns></returns>
         public Dictionary<int, string> GetDicDropDown()
         {
-            return GetDictionary("ID", "NAME");
+            return GetDictionary("ID", "NAME", " IS_USE = 1", new object[] { });
         }
 
 

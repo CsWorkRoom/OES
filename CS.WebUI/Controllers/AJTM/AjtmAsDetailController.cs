@@ -12,7 +12,7 @@ namespace CS.WebUI.Controllers.AJTM
     public class AjtmAsDetailController : FW.ABaseController
     {
         // GET: AjtmAsDetail
-        public ActionResult Edit(int id=0)
+        public ActionResult Edit(int id = 0)
         {
             ViewBag.AsType = SerializeObject(AJTM_AS_TYPE.Instance.GetDropTree());
             ViewBag.Unit = SerializeObject(AJTM_UNIT.Instance.GetDropTree());
@@ -79,7 +79,7 @@ namespace CS.WebUI.Controllers.AJTM
         public string GetAsDetail(int unitId = 0, int op = 0)
         {
             DataTable dt;
-            if(op == 0)
+            if (op == 0)
             {
                 dt = AJTM_AS_DETAIL.Instance.GetCrateAsDetail(unitId);
             }
@@ -87,21 +87,32 @@ namespace CS.WebUI.Controllers.AJTM
             {
                 dt = AJTM_AS_DETAIL.Instance.GetCancelAsDetail(unitId);
             }
-            if(dt != null)
+            if (dt != null)
             {
                 List<string> dstr = new List<string>();
                 List<object> AsApplyD = new List<object>();
                 foreach (DataRow dr in dt.Rows)
                 {
+
                     var id = dr["AS_APPLY_ID"].ToString() + dr["AS_APPLY_NO"].ToString();
                     if (!dstr.Contains(id))
                     {
-                        long AS_APPLY_ID = Convert.ToInt64(dr["AS_APPLY_ID"]);
-                        string AS_APPLY_NO = dr["AS_APPLY_NO"].ToString();
-                        var AsDetail = dt.AsEnumerable().Where(
-                            x => x.Field<long>("AS_APPLY_ID") == AS_APPLY_ID
-                        && x.Field<string>("AS_APPLY_NO") == AS_APPLY_NO).CopyToDataTable();
-        
+                        DataTable AsDetail = new DataTable();
+                        if (!string.IsNullOrEmpty(dr["AS_APPLY_ID"].ToString()))
+                        {
+                            long AS_APPLY_ID = Convert.ToInt64(dr["AS_APPLY_ID"]);
+                            string AS_APPLY_NO = dr["AS_APPLY_NO"].ToString();
+                            AsDetail = dt.AsEnumerable().Where(
+                                x => x.Field<long?>("AS_APPLY_ID") == AS_APPLY_ID
+                            && x.Field<string>("AS_APPLY_NO") == AS_APPLY_NO).CopyToDataTable();
+                        }
+                        else
+                        {
+                            string AS_APPLY_NO = dr["AS_APPLY_NO"].ToString();
+                            AsDetail = dt.AsEnumerable().Where(x =>
+                                x.Field<string>("AS_APPLY_NO") == AS_APPLY_NO).CopyToDataTable();
+
+                        }
                         AsApplyD.Add(new
                         {
                             AS_APPLY_ID = dr["AS_APPLY_ID"].ToString(),
@@ -110,7 +121,7 @@ namespace CS.WebUI.Controllers.AJTM
                         });
                         dstr.Add(id);
                     }
-                   
+
                 }
                 return SerializeObject(new
                 {

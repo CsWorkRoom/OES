@@ -195,7 +195,8 @@ namespace CS.WebUI.Controllers.AJTM
                         Dictionary<string, object> dicAsDetailStatus = new Dictionary<string, object>();
                         dicAsDetailStatus.Add("AS_DETAIL_ID", Convert.ToInt32(dr["ID"]));
                         dicAsDetailStatus.Add("AS_APPLY_NO", dr["AS_APPLY_NO"].ToString());
-                        dicAsDetailStatus.Add("AS_APPLY_ID", Convert.ToInt32(dr["AS_APPLY_ID"]));
+                        if (!string.IsNullOrEmpty(dr["AS_APPLY_ID"].ToString()))
+                            dicAsDetailStatus.Add("AS_APPLY_ID", Convert.ToInt32(dr["AS_APPLY_ID"]));
                         dicAsDetailStatus.Add("STATUS_TIME", DateTime.Now);
                         dicAsDetailStatus.Add("CREATE_UID", SystemSession.UserID);
                         dicAsDetailStatus.Add("UPDATE_UID", SystemSession.UserID);

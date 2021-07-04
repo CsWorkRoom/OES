@@ -1601,11 +1601,13 @@
     <Content Include="Views\AjtmAsApply\JS\Approval.js" />
     <Content Include="Views\AjtmAsApply\JS\Edit.js" />
     <Content Include="Views\AjtmAsDetail\JS\Edit.js" />
+    <Content Include="Views\AjtmAsPersonnel\JS\Add.js" />
     <Content Include="Views\AjtmAsPersonnel\JS\Edit.js" />
     <Content Include="Views\AjtmConsideration\JS\Approval.js" />
     <Content Include="Views\AjtmConsideration\JS\Index.js" />
     <Content Include="Views\AjtmLeaderUnit\JS\Index.js" />
     <Content Include="Views\AjtmUnit\JS\Edit.js" />
+    <Content Include="Views\AjtmUnit\JS\Show.js" />
     <Content Include="Views\FormulaHelp.html" />
     <Content Include="Views\Home\CSS\default.css" />
     <Content Include="Views\Home\CSS\manager.css" />
@@ -1876,6 +1878,7 @@
     <Content Include="Views\AjtmConsideration\Index.cshtml" />
     <Content Include="Views\AjtmConsideration\Approvel.cshtml" />
     <Content Include="Views\AjtmAsPersonnel\Add.cshtml" />
+    <Content Include="Views\AjtmUnit\Show.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

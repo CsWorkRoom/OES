@@ -218,10 +218,11 @@ function Open() {
     });
 }
 function Close() {
-    layui.use(['layer'], function () {
-        var layer = layui.layer;
-        layer.close(layer.index + 1);
-    });
+    //layui.use(['layer'], function () {
+    //    var layer = layui.layer;
+    //    layer.close(layer.index + 1);
+    //});
+    layer.closeAll();
 }
 function onSearch() {
     layui.use(['form', 'layer', 'jquery', 'laydate'], function () {

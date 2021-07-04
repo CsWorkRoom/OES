@@ -168,6 +168,16 @@ namespace CS.WebUI.Controllers.AJTM
         public ActionResult Index()
         {
             ViewBag.Unit = SerializeObject(CS.BLL.Model.AJTM_UNIT.Instance.GetDropTree());
+            //ViewBag.UnitInfo = AJTM_UNIT.Instance.GetUnitByIdForShow(unitid);
+            return View();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Show(int unitid = 0)
+        {
+            ViewBag.UnitInfo = AJTM_UNIT.Instance.GetUnitByIdForShow(unitid);
             return View();
         }
     }

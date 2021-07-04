@@ -54,7 +54,7 @@ namespace CS.BLL.Model
             /// <summary>
             /// 数据库ID（为0时表示默认数据库）
             /// </summary>
-            [Field(IsNotNull = false,  Comment = "主管单位")]
+            [Field(IsNotNull = false, Comment = "主管单位")]
             public int PARENT_ID { get; set; }
             /// <summary>
             /// 机构类别
@@ -239,6 +239,113 @@ namespace CS.BLL.Model
                 });
             }
             return list;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="unitId"></param>
+        /// <returns></returns>
+        public Dictionary<string,string> GetUnitByIdForShow(int unitId = 0)
+        {
+            string sql = string.Format(@"SELECT A.ID,
+                   A.NAME,
+                   B.NAME AS PANRET,
+                   C.NAME SETUP_NATRUE,
+                   D.NAME SETUP_TYPE,
+                   E.NAME SETUP_LEVEL,
+                   F.NAME OUTLAY_MODE,
+                   G.NAME SETUP_RANGE,
+                   decode(a.IS_PUBLIC,1,'参公','') AS IS_PUBLIC,
+                   A.DEP_NUM,
+                   H.UP_NUM,
+                   I.DOWN_NUM,
+                    A.WITHIN_MAIN_NUM,
+                    A.WITHIN_VICE_NUM,
+                    A.OTHER_NUM,
+                    A.OFFICE_MIAN_NUM,
+                    A.OFFICE_VICE_NUM,
+                    A.COUNTY_MIAN_L  ,
+                    A.COUNTY_VICE_L  ,
+                    A.VILLAGE_MIAN_L ,
+                    A.VILLAGE_VICE_L ,
+                    A.COUNTY_MIAN_MR ,
+                    A.COUNTY_VICE_MR ,
+                    A.VILLAGE_MIAN_MR,
+                    A.VILLAGE_VICE_MR
+              FROM AJTM_UNIT A
+                   LEFT JOIN AJTM_UNIT B ON (A.PARENT_ID = B.ID)
+                   LEFT JOIN AJTM_SETUP_NATRUE C ON (A.SETUP_NATRUE_ID = C.ID)
+                   LEFT JOIN AJTM_SETUP_TYPE D ON (A.SETUP_TYPE_ID = D.ID)
+                   LEFT JOIN AJTM_SETUP_LEVEL E ON (A.SETUP_LEVEL_ID = E.ID)
+                   LEFT JOIN AJTM_OUTLAY_MODE F ON (A.OUTLAY_MODE_ID = F.ID)
+                   LEFT JOIN AJTM_SETUP_RANGE G ON (A.SETUP_RANGE_ID = G.ID)
+                   LEFT JOIN (SELECT UNIT_ID,COUNT(1) AS UP_NUM FROM AJTM_AS_PERSONNEL WHERE ACTION = '上编' AND UNIT_ID = {0} GROUP BY UNIT_ID)  H ON(A.ID = H.UNIT_ID)
+                   LEFT JOIN (SELECT UNIT_ID,COUNT(1) AS DOWN_NUM FROM AJTM_AS_PERSONNEL WHERE ACTION = '下编' AND UNIT_ID = {0} GROUP BY UNIT_ID) I ON(A.ID = I.UNIT_ID)
+            WHERE A.IS_USE = 1 AND A.ID = {0}
+            ", unitId);
+            using (BDBHelper dbHelper = new BDBHelper())
+            {
+                var dt = dbHelper.ExecuteDataTable(sql);
+                Dictionary<string, string> dic = new Dictionary<string, string>();
+                if (dt.Rows.Count > 0)
+                {
+                    var dr = dt.Rows[0];
+                    dic.Add("ID", dr["ID"].ToString());
+                    dic.Add("NAME", dr["NAME"].ToString());
+                    dic.Add("PANRET", dr["PANRET"].ToString());
+                    dic.Add("SETUP_NATRUE", dr["SETUP_NATRUE"].ToString());
+                    dic.Add("SETUP_TYPE", dr["SETUP_TYPE"].ToString());
+                    dic.Add("SETUP_LEVEL", dr["SETUP_LEVEL"].ToString());
+                    dic.Add("OUTLAY_MODE", dr["OUTLAY_MODE"].ToString());
+                    dic.Add("SETUP_RANGE", dr["SETUP_RANGE"].ToString());
+                    dic.Add("IS_PUBLIC", dr["IS_PUBLIC"].ToString());
+                    dic.Add("DEP_NUM", dr["DEP_NUM"].ToString());
+                    dic.Add("UP_NUM", dr["UP_NUM"].ToString());
+                    dic.Add("DOWN_NUM", dr["DOWN_NUM"].ToString());
+                    dic.Add("WITHIN_MAIN_NUM", dr["WITHIN_MAIN_NUM"].ToString());
+                    dic.Add("WITHIN_VICE_NUM", dr["WITHIN_VICE_NUM"].ToString());
+                    dic.Add("OTHER_NUM", dr["OTHER_NUM"].ToString());
+                    dic.Add("OFFICE_MIAN_NUM", dr["OFFICE_MIAN_NUM"].ToString());
+                    dic.Add("OFFICE_VICE_NUM", dr["OFFICE_VICE_NUM"].ToString());
+                    dic.Add("COUNTY_MIAN_L", dr["COUNTY_MIAN_L"].ToString());
+                    dic.Add("COUNTY_VICE_L", dr["COUNTY_VICE_L"].ToString());
+                    dic.Add("VILLAGE_MIAN_L", dr["VILLAGE_MIAN_L"].ToString());
+                    dic.Add("VILLAGE_VICE_L", dr["VILLAGE_VICE_L"].ToString());
+                    dic.Add("COUNTY_MIAN_MR", dr["COUNTY_MIAN_MR"].ToString());
+                    dic.Add("COUNTY_VICE_MR", dr["COUNTY_VICE_MR"].ToString());
+                    dic.Add("VILLAGE_MIAN_MR", dr["VILLAGE_MIAN_MR"].ToString());
+                    dic.Add("VILLAGE_VICE_MR", dr["VILLAGE_VICE_MR"].ToString());
+                }
+                else
+                {
+                    dic.Add("ID", "");
+                    dic.Add("NAME", "");
+                    dic.Add("PANRET", "");
+                    dic.Add("SETUP_NATRUE", "");
+                    dic.Add("SETUP_TYPE", "");
+                    dic.Add("SETUP_LEVEL", "");
+                    dic.Add("OUTLAY_MODE", "");
+                    dic.Add("SETUP_RANGE", "");
+                    dic.Add("IS_PUBLIC", "");
+                    dic.Add("DEP_NUM", "");
+                    dic.Add("UP_NUM", "");
+                    dic.Add("DOWN_NUM", "");
+                    dic.Add("WITHIN_MAIN_NUM", "");
+                    dic.Add("WITHIN_VICE_NUM", "");
+                    dic.Add("OTHER_NUM", "");
+                    dic.Add("OFFICE_MIAN_NUM", "");
+                    dic.Add("OFFICE_VICE_NUM", "");
+                    dic.Add("COUNTY_MIAN_L", "");
+                    dic.Add("COUNTY_VICE_L", "");
+                    dic.Add("VILLAGE_MIAN_L", "");
+                    dic.Add("VILLAGE_VICE_L", "");
+                    dic.Add("COUNTY_MIAN_MR", "");
+                    dic.Add("COUNTY_VICE_MR", "");
+                    dic.Add("VILLAGE_MIAN_MR", "");
+                    dic.Add("VILLAGE_VICE_MR", "");
+                }
+                return dic;
+            }
         }
     }
 }
