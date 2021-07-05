@@ -1,25 +1,10 @@
 ﻿
 $(function () {
-
     layui.use(['form', 'layer', 'jquery', 'laydate'], function () {
         var form = layui.form, layer = layui.layer, $ = layui.$, laydate = layui.laydate;
         laydate.render({
             elem: '#APPLY_TIME' //指定元素
         });
-        //验证
-        form.verify({
-            ApplyFile: function (vvalue) {
-                if (value.length <= 0) {
-                    return '请填写来文文件名称！';
-                }
-            },
-            ApplyTime: function (value) {
-                if (value.length <= 0) {
-                    return '请填写来文时间！';
-                }
-            }
-        });
-
         init();
 
         function init() {
@@ -72,7 +57,7 @@ function add(e) {
                        <select style="width:100%;height:40px;" lay-ignore><option value=''>请选择</option></select>
                  </td>
                   <td><input type="text" autocomplete="off" value="` + r.AS_PURPOSE_REMARK + `" class="layui-input"></td>
-                  <td><input type="text" autocomplete="off" value="` + r.APPLY_NUM + `" class="layui-input"></td>
+                  <td><input type="text" autocomplete="off" value="` + r.APPLY_NUM + `" class="layui-input" onafterpaste="InputNumber(this)" onkeyup="InputNumber(this)" oninput="InputNumber(this)"></td>
                   <td>
                        <button type="button" class="layui-btn add">增加</button>
                        <button type="button" class="layui-btn remove">删除</button>

@@ -15,7 +15,7 @@ function TransURL(url) {
 function SaveForm(formid, url) {
     layui.use(['form', 'layer', 'jquery'], function () {
         var form = layui.form, layer = layui.layer, $ = layui.$;
-        loading = layer.msg("数据保存中，请稍候……", { time: false, shade :0.3 });
+        loading = layer.msg("数据保存中，请稍候……", { time: false, shade: 0.3 });
         $.post(TransURL(url), $("#" + formid).serialize(), function (result) {
             layer.close(loading);//关闭保存中
 
@@ -474,3 +474,12 @@ $(function () {
     //    return false;
     //});
 });
+
+
+
+
+//输入数字
+function InputNumber(e) {
+    var _this = e || this;
+    return _this.value = _this.value.replace(/[^\d]/g, '');
+}

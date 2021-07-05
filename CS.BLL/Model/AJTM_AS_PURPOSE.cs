@@ -92,7 +92,7 @@ namespace CS.BLL.Model
         /// <returns></returns>
         public DataTable GetDropDown()
         {
-            return GetTableFields("ID,NAME");
+            return GetTableFields("ID,NAME", " IS_USE = 1", new object[] { });
         }
 
         /// <summary>
