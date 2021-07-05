@@ -477,18 +477,7 @@ $(function () {
 
 
 
-//KeyUp:输入正整数
-function NumberOnKeyUp(e) {
-    var _this = e || this;
-    //输入正整数
-    if (_this.value.length == 1) { _this.value = _this.value.replace(/[^0-9]/g, '') } else { _this.value = _this.value.replace(/\D/g, '') }
-}
-//onafterpaste:输入正整数
-function NumberOnAfterpaste(e) {
-    var _this = e || this;
-    //输入正整数
-    if (_this.value.length == 1) { _this.value = _this.value.replace(/[^0-9]/g, '') } else { _this.value = _this.value.replace(/\D/g, '') }
-}
+
 //输入数字
 function InputNumber(e) {
     var _this = e || this;
