@@ -35,6 +35,18 @@ function tempApprovel(item) {
                         <input type="text"  autocomplete="off" class="layui-input InputApplyNo" readonly="readonly" />
                     </div>
                 </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">申报量</label>
+                    <label class="layui-form-label" style="color:red">
+                         `+ item.APPLY_NUM +`
+                    </label>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">批准量</label>
+                    <label class="layui-form-label ApproveNum"  style="color:red;font-weight:bold">
+                         `+ item.APPLY_NUM +`
+                    </label>
+                </div>
             </div>
             <div class="layui-form-item">
                 <table class="layui-table" lay-even style="margin:0 auto">
@@ -76,7 +88,13 @@ function tempApprovel(item) {
 
 
 function add(target, e) {
-    if (!target) target = $(this).closest(".AsApproval");
+    if (target) {
+        if (target.type == "click" && target.currentTarget) {
+            target = $(target.currentTarget).closest("tbody");
+        }
+    } else {
+        target = $(this).closest("tbody")
+    }
     var r = { ID: 0, AS_TYPE_ID: 0, AS_PURPOSE_ID: 0, AS_PURPOSE_REMARK: "", APPLY_NUM: 0, APPROVAL_NUM: 0 };
     if (e) {
         r = $.extend(r, e);
@@ -90,11 +108,11 @@ function add(target, e) {
                        <input type="text" id="`+ id + `" value="` + r.AS_TYPE_ID + `" class="AsType" >
                   </td>
                   <td>
-                       <select><option style="width:100%;height:40px;" lay-ignore value=''>请选择</option></select>
+                       <select style="width:100%;height:40px;" lay-ignore><option  value=''>请选择</option></select>
                  </td>
                   <td><input type="text" autocomplete="off" value="` + r.AS_PURPOSE_REMARK + `" class="layui-input"></td>
                   <td>`+ r.APPLY_NUM+`</td>
-                  <td><input type="text" autocomplete="off" value="` + r.APPLY_NUM + `" class="layui-input"></td>
+                  <td><input type="text" autocomplete="off" value="` + r.APPLY_NUM + `" class="layui-input amount" onafterpaste="textchange(this)" oninput="textchange(this)" onkeyup="textchange(this)"></td>
                   <td>
                        <input hidden="hidden" value="`+ r.ID +`"/>
                        <button type="button" class="layui-btn add">增加</button>
@@ -123,15 +141,28 @@ function add(target, e) {
     target.append(temp);
     $.comboztree(id, { ztreenode: zNodes });
     //重新渲染
-    layui.use(['form'], function () {
-        var form = layui.form;
-        form.render('select');
-    });
+    //layui.use(['form'], function () {
+    //    var form = layui.form;
+    //    form.render('select');
+    //});
+}
+
+function textchange(_this) {
+    InputNumber(_this);
+    //
+    var e = $(_this.closest("tbody")).find(".amount");
+    var num = 0;
+    for (var i = 0; i < e.length; i++) {
+        var target = e.eq(i);
+        var n = parseFloat(target.val());
+        if (!isNaN(n)) {
+            num += n;
+        }
+    }
+    $(_this.closest(".AsApproval")).find(".ApproveNum").text(num);
 }
 
 function remove() {
-    var trArr = $("#AsApplyDetail").find("tr");
-    if (trArr.length <= 1) return;
     $(this).closest("tr").remove();
 }
 

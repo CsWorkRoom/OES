@@ -1,7 +1,13 @@
 ﻿@{
     Layout = "~/Views/Shared/_Content.cshtml";
 }
+<style>
+    .layui-table:hover dl dd {
+        color: black;
+    }
+</style>
 <form id="form" class="layui-form" action="" method="post">
+
     <script src="~/Content/FW/LayuiZtree.js?v=20210609"></script>
     <input hidden="hidden" id="ID" name="ID" value="@ViewBag.ID" />
     <input hidden="hidden" id="AsType" name="AsType" value="@ViewBag.AsType" />
@@ -106,5 +112,5 @@
         <button type="reset" class="layui-btn layui-btn-primary" onclick="CloseForm();">关闭</button>
     </div>
 </div>
-<script src="~/Views/AjtmConsideration/JS/Approval.js?v=20210710"></script>
+<script src="~/Views/AjtmConsideration/JS/Approval.js?v=20210610"></script>
 

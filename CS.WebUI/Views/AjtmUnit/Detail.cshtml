@@ -153,7 +153,7 @@
         <div class="layui-inline">
             <label class="layui-form-label">内设机构数</label>
             <div class="layui-input-inline">
-                <input type="tel" name="DEP_NUM" value="@Model.DEP_NUM" autocomplete="off" class="layui-input">
+                <input type="tel" name="DEP_NUM" value="@Model.DEP_NUM" autocomplete="off" class="layui-input" onafterpaste="InputNumber(this)" oninput="InputNumber(this)" onkeyup="InputNumber(this)">
             </div>
         </div>
     </div>

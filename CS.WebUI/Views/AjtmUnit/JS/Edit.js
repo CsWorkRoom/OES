@@ -1,8 +1,8 @@
-﻿layui.use(['form', 'layer', 'jquery'], function () {
+﻿//开局渲染
+layui.use(['form', 'layer', 'jquery'], function () {
     var form = layui.form, layer = layui.layer, $ = layui.jquery;
     form.verify({
         name: function (value) {
-            console.log("verify:" + value);
             if (value.length <= 0) {
                 return '单位名称不能为空！';
             }
@@ -42,8 +42,8 @@ function add(e) {
                   <td>
                        <input type="text" id="`+ id + `" value="` + r.AS_TYPE_ID + `" class="AsType" >
                   </td>
-                  <td><input type="text" autocomplete="off" value="` + r.VERIFICATION_NUM + `" class="layui-input"></td>
-                  <td><input type="text" autocomplete="off" value="` + r.BEGIN_NUM + `" class="layui-input"></td>
+                  <td><input type="text" autocomplete="off" value="` + r.VERIFICATION_NUM + `" class="layui-input" onafterpaste="InputNumber(this)" onkeyup="InputNumber(this)" oninput="InputNumber(this)"></td>
+                  <td><input type="text" autocomplete="off" value="` + r.BEGIN_NUM + `" class="layui-input" onafterpaste="InputNumber(this)" onkeyup="InputNumber(this)" oninput="InputNumber(this)"></td>
                   <td>
                        <button type="button" class="layui-btn add">增加</button>
                        <button type="button" class="layui-btn remove">删除</button>
