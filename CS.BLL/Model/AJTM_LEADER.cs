@@ -125,5 +125,11 @@ namespace CS.BLL.Model
 
         }
         #endregion
+
+
+        public IList<Entity> GetListEntityByUnitId(int unitId)
+        {
+           return GetList<Entity>(" UNIT_ID=?", new object[] { unitId });
+        }
     }
 }

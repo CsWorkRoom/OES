@@ -178,6 +178,9 @@ namespace CS.WebUI.Controllers.AJTM
         public ActionResult Show(int unitid = 0)
         {
             ViewBag.UnitInfo = AJTM_UNIT.Instance.GetUnitByIdForShow(unitid);
+            ViewBag.UnitAs = AJTM_UNIT_AS.Instance.GetListByUnitId(unitid);
+            ViewBag.Leader = AJTM_LEADER.Instance.GetListEntityByUnitId(unitid);
+            ViewBag.leaderUnit = AJTM_LEADER_UNIT.Instance.GetListEntityByUnitId(unitid);
             return View();
         }
     }

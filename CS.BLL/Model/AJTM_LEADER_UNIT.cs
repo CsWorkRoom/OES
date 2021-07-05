@@ -98,5 +98,14 @@ namespace CS.BLL.Model
 
         }
         #endregion
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="unitID"></param>
+        /// <returns></returns>
+        public IList<Entity> GetListEntityByUnitId(int unitId)
+        {
+            return GetList<Entity>(" UNIT_ID=?", new object[] { unitId });
+        }
     }
 }

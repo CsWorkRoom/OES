@@ -7,10 +7,11 @@ using CS.Base.DBHelper;
 using CS.Library.BaseQuery;
 using CS.Common.FW;
 using CS.BLL.FW;
+using System.Data;
 
 namespace CS.BLL.Model
 {
-    public class AJTM_UNIT_AS:BBaseQuery
+    public class AJTM_UNIT_AS : BBaseQuery
     {
         /// <summary>
         /// 单例
@@ -89,6 +90,28 @@ namespace CS.BLL.Model
         }
         #endregion
 
+
+        public class UnitAsShow
+        {
+            public int ID { get; set; }
+            /// <summary>
+            /// 编制类型
+            /// </summary>
+            public string TYPE { get; set; }
+            /// <summary>
+            /// 核定数
+            /// </summary>
+            public int VERIFICATION_NUM { get; set; }
+            /// <summary>
+            /// 期初数
+            /// </summary>
+            public int BEGIN_NUM { get; set; }
+            /// <summary>
+            /// 实际拥有数
+            /// </summary>
+            public int ACTUAL_NUM { get; set; }
+        }
+
         /// <summary>
         /// 过去
         /// </summary>
@@ -97,6 +120,44 @@ namespace CS.BLL.Model
         public object GetTableByUnitId(int UnitId)
         {
             return GetTable(" UNIT_ID =?", new object[] { UnitId });
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="UnitId"></param>
+        /// <returns></returns>
+        public List<UnitAsShow> GetListByUnitId(int UnitId)
+        {
+            string sql = string.Format(@"
+                SELECT  ID,TYPE, BEGIN_NUM,VERIFICATION_NUM,(UP_NUM-DOWN_NUM)  AS ACTUAL_NUM  FROM(
+                SELECT A.ID,B.NAME TYPE,BEGIN_NUM,VERIFICATION_NUM,NVL(C.UP_NUM,0) AS UP_NUM,NVL(D.DOWN_NUM,0) AS DOWN_NUM
+                FROM AJTM_UNIT_AS A
+                LEFT JOIN 
+                AJTM_AS_TYPE B ON(A.AS_TYPE_ID = B.ID)
+                LEFT JOIN
+                (SELECT UNIT_ID,COUNT(1) AS UP_NUM FROM AJTM_AS_PERSONNEL WHERE ACTION = '上编' AND UNIT_ID = {0} GROUP BY UNIT_ID) C ON(A.UNIT_ID = C.UNIT_ID)
+                LEFT JOIN
+                (SELECT UNIT_ID,COUNT(1) AS DOWN_NUM FROM AJTM_AS_PERSONNEL WHERE ACTION = '下编' AND UNIT_ID = {0} GROUP BY UNIT_ID) D ON(A.UNIT_ID = D.UNIT_ID)
+                WHERE A.UNIT_ID = {0})
+            ", UnitId);
+
+            using (BDBHelper dbHelper = new BDBHelper())
+            {
+                var dt = dbHelper.ExecuteDataTable(sql);
+                var arr = new List<UnitAsShow>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    arr.Add(new UnitAsShow()
+                    {
+                        ID = Convert.ToInt32(dr["ID"]),
+                        TYPE = dr["TYPE"].ToString(),
+                        BEGIN_NUM = Convert.ToInt32(dr["BEGIN_NUM"]),
+                        VERIFICATION_NUM = Convert.ToInt32(dr["VERIFICATION_NUM"]),
+                        ACTUAL_NUM = Convert.ToInt32(dr["ACTUAL_NUM"])
+                    });
+                }
+                return arr;
+            }
         }
     }
 }
