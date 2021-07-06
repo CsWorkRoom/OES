@@ -31,6 +31,10 @@ namespace CS.BLL.Extension.Export
         /// 工作表最大记录条数
         /// </summary>
         private int _pageSize = 1000000;
+        /// <summary>
+        /// 
+        /// </summary>
+        private XSSFWorkbook Excel;
 
         /// <summary>
         /// 构造函数
@@ -44,6 +48,8 @@ namespace CS.BLL.Extension.Export
             }
             _rootPath = new DirectoryInfo(path).FullName;
         }
+
+
 
         /// <summary>
         /// 导出文件到EXCEL

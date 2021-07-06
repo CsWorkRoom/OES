@@ -201,13 +201,22 @@ commit;
 
         private void button7_Click(object sender, EventArgs e)
         {
-            CS.BLL.Extension.Export.WordFile work = new BLL.Extension.Export.WordFile("E:\\OES\\CS.TestForm\\test\\", "temp1.doc");
-            var doc = work.GetDocument();
-            Dictionary<string, string> dic = new Dictionary<string, string>();
-            dic.Add("<content>", "<测试成功>");
-            dic.Add("<io>", "I/O");
-            work.ReplaceKeyword(dic);
-            work.Save("E:\\OES\\CS.TestForm\\test\\temp_" + DateTime.Now.Ticks + ".doc");
+            //CS.BLL.Extension.Export.WordFile work = new BLL.Extension.Export.WordFile("E:\\OES\\CS.TestForm\\test\\", "temp1.doc");
+            //var doc = work.GetDocument();
+            //Dictionary<string, string> dic = new Dictionary<string, string>();
+            //dic.Add("<content>", "<测试成功>");
+            //dic.Add("<io>", "I/O");
+            //work.ReplaceKeyword(dic);
+            //work.Save("E:\\OES\\CS.TestForm\\test\\temp_" + DateTime.Now.Ticks + ".doc");
+
+            CS.BLL.Extension.Excel excel = new BLL.Extension.Excel("I:\\OES\\DOC", "text");
+            excel.wrHeader(18, "市本级县处级及以上单位核定领导职数情况表");
+            excel.wrLineFeed();
+            excel.wrTitleAndLineCol(1, "序号");
+            excel.wrTitleAndLineCol(1, "机构名称");
+            //excel.wrTitle(2, "行政");
+            //excel.wrTitle(2, "机构规格");
+            excel.Save();
         }
     }
 }

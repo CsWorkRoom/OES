@@ -78,6 +78,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExcelCalculator.cs" />
+    <Compile Include="ExportFile.cs" />
+    <Compile Include="Extension\Excel.cs" />
     <Compile Include="Extension\ExcelFile.cs" />
     <Compile Include="Extension\WordFile.cs" />
     <Compile Include="FW\BF_RDLC_REPORT.cs" />
