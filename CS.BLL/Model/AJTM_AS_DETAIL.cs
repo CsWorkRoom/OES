@@ -117,7 +117,11 @@ namespace CS.BLL.Model
             /// </summary>
             [Field(IsNotNull = true, DefaultValue = "0", Comment = "批准数量")]
             public int APPROVAL_NUM { get; set; }
-
+            /// <summary>
+            /// 备注
+            /// </summary>
+            [Field(IsNotNull = false, Length = 128, Comment = "备注")]
+            public string REMARK { get; set; }
             /// <summary>
             /// 创建时间
             /// </summary>
@@ -162,9 +166,80 @@ namespace CS.BLL.Model
             return "N" + DateTime.Now.ToString("yyyy") + i.ToString().PadLeft(5, '0');
         }
 
+
+        public string GetAsNo()
+        {
+            return "N" + DateTime.Now.ToString("yyyy") + GetCurrentNo().ToString().PadLeft(5, '0');
+        }
+
         public int GetCurrentNo()
         {
-            return GetCount(" TO_CHAR(CREATE_TIME,'YYYY')=?", new object[] { DateTime.Now.ToString("yyyy") });
+            var res = (string)GetValueByKey(GetMaxKeyID(), "AS_NO");
+            if (res.IndexOf(DateTime.Now.ToString("yyyy")) == -1) return 1;
+            else return Convert.ToInt32(res.Substring(5, 5)) + 1;
+            //return GetCount(" TO_CHAR(CREATE_TIME,'YYYY')=?", new object[] { DateTime.Now.ToString("yyyy") });
+        }
+
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <returns></returns>
+        public int Add(Entity entity)
+        {
+            Dictionary<string, object> dic = new Dictionary<string, object>();
+            if (entity.APPROVAL_TIME > Convert.ToDateTime("1990-01-01"))
+                dic.Add("APPROVAL_TIME", entity.APPROVAL_TIME);
+            dic.Add("MEETING", entity.MEETING);
+            dic.Add("UNIT_ID", entity.UNIT_ID);
+            dic.Add("UNIT_NAME", entity.UNIT_NAME);
+            dic.Add("UNIT_PARENT_ID", entity.UNIT_PARENT_ID);
+            dic.Add("UNIT_PARENT", entity.UNIT_PARENT);
+            dic.Add("AS_APPLY_ID", entity.AS_APPLY_ID);
+            dic.Add("AS_APPLY_NO", entity.AS_APPLY_NO);
+            dic.Add("AS_PURPOSE_ID", entity.AS_PURPOSE_ID);
+            dic.Add("AS_PURPOSE", entity.AS_PURPOSE);
+            dic.Add("AS_PURPOSE_REMARK", entity.AS_PURPOSE_REMARK);
+            dic.Add("AS_TYPE_ID", entity.AS_TYPE_ID);
+            dic.Add("AS_TYPE", entity.AS_TYPE);
+            dic.Add("AS_NO", entity.AS_NO);
+            dic.Add("APPROVAL_NUM", entity.APPROVAL_NUM);
+            dic.Add("REMARK", entity.REMARK);
+            //创建时间
+            dic.Add("CREATE_TIME", DateTime.Now);
+            //状态
+            dic.Add("STATUS", ENUM_AS_DETAIL_STATUS.创建.ToString());
+            dic.Add("STATUS_TIME", DateTime.Now);
+            //添加
+            return Add(dic, true);
+        }
+        /// <summary>
+        /// 修改
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public int UpdateByKey(Entity entity,int keyId)
+        {
+            Dictionary<string, object> dic = new Dictionary<string, object>();
+            if (entity.APPROVAL_TIME > Convert.ToDateTime("1990-01-01"))
+                dic.Add("APPROVAL_TIME", entity.APPROVAL_TIME);
+            dic.Add("MEETING", entity.MEETING);
+            dic.Add("UNIT_ID", entity.UNIT_ID);
+            dic.Add("UNIT_NAME", entity.UNIT_NAME);
+            dic.Add("UNIT_PARENT_ID", entity.UNIT_PARENT_ID);
+            dic.Add("UNIT_PARENT", entity.UNIT_PARENT);
+            dic.Add("AS_APPLY_ID", entity.AS_APPLY_ID);
+            dic.Add("AS_APPLY_NO", entity.AS_APPLY_NO);
+            dic.Add("AS_PURPOSE_ID", entity.AS_PURPOSE_ID);
+            dic.Add("AS_PURPOSE", entity.AS_PURPOSE);
+            dic.Add("AS_PURPOSE_REMARK", entity.AS_PURPOSE_REMARK);
+            dic.Add("AS_TYPE_ID", entity.AS_TYPE_ID);
+            dic.Add("AS_NO", entity.AS_NO);
+            dic.Add("AS_TYPE", entity.AS_TYPE);
+            dic.Add("APPROVAL_NUM", entity.APPROVAL_NUM);
+            dic.Add("REMARK", entity.REMARK);
+            //修改
+            return UpdateByKey(dic, keyId);
         }
     }
 }

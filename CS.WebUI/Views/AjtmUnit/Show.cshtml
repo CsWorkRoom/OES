@@ -10,8 +10,14 @@
     </ul>
     <div class="layui-tab-content larryms-tab-content" style="height:93%">
         <div class="layui-tab-item layui-show" style="height:100%">
+            <div class="layui-btn-group"> 
+                <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" title="修改(待定)"><i class="layui-icon layui-icon-edit"></i> 修改</button>
+                <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" title="修改(待定)"><i class="layui-icon layui-icon-delete"></i> 注销</button>
+            </div>
             <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-                <legend>单位信息</legend>
+                <legend>
+                    单位信息
+                </legend>
             </fieldset>
             <div>
                 <table class="layui-table" lay-size="lg" style="width:90%;margin:20px auto;">
@@ -43,10 +49,18 @@
                     <tr>
                         <td>内设机构数</td>
                         <td>@dicInfo["DEP_NUM"]</td>
-                        <td>行政或事业上编数</td>
+                        <td>行政或事业上编数<span style="color:red;font-weight:bold;">(待核算)</span></td>
                         <td>@dicInfo["UP_NUM"]</td>
-                        <td>行政或事业下编数</td>
+                        <td>行政或事业下编数<span style="color:red;font-weight:bold;">(待核算)</span></td>
                         <td>@dicInfo["DOWN_NUM"]</td>
+                    </tr>
+                    <tr>
+                        <td>行政或事业正在上编<span style="color:red;font-weight:bold;">(待核算)</span></td>
+                        <td>@dicInfo["UP_NUM"]</td>
+                        <td>行政或事业正在下编<span style="color:red;font-weight:bold;">(待核算)</span></td>
+                        <td>@dicInfo["DOWN_NUM"]</td>
+                        <td></td>
+                        <td></td>
                     </tr>
                 </table>
             </div>
@@ -81,7 +95,7 @@
                 </table>
             </div>
             <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-                <legend>单位信息</legend>
+                <legend>单位信息-领导/中层</legend>
             </fieldset>
             <div>
                 <table class="layui-table" lay-size="lg" style="width:90%;margin:20px auto;">
@@ -133,11 +147,13 @@
             </div>
         </div>
         <div class="layui-tab-item" style="height:100%">
-
+            <div class="layui-btn-group">
+                <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" title="修改(待定)"><i class="layui-icon layui-icon-edit"></i> 修改</button>
+            </div>
             <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
                 <legend>单位领导信息</legend>
             </fieldset>
- 
+
             <div>
                 <table class="layui-table" lay-size="lg" style="width:90%;margin:20px auto;">
                     <thead style="text-align:center">
@@ -174,30 +190,6 @@
                                 </tr>
                             }
                         }
-                        @*<tr>
-            <td>领导副职</td>
-            <td>
-                书记
-                兼监委主任
-                (市委常委兼任)
-            </td>
-            <td>1</td>
-            <td>1</td>
-        </tr>
-        <tr>
-            <td rowspan="3">
-                领导副职
-            </td>
-            <td>副书记兼监委副主任</td>
-            <td rowspan="3">3</td>
-            <td rowspan="3">3</td>
-        </tr>
-        <tr>
-            <td>副书记兼监委副主任</td>
-        </tr>
-        <tr>
-            <td>副书记兼监委副主任</td>
-        </tr>*@
                     </tbody>
                 </table>
             </div>

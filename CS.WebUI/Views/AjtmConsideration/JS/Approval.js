@@ -215,7 +215,7 @@ function save() {
                     let AS_PURPOSE_REMARK = tr.find("td").eq(2).find("input").val();
                     let APPLY_NUM = parseInt(tr.find("td").eq(3).text());
                     var APPROVAL_NUM = parseInt(tr.find("td").eq(4).find("input").val());
-                    if (isNaN(APPROVAL_NUM) || APPROVAL_NUM === 0) {
+                    if (isNaN(APPROVAL_NUM)) {
                         return { isErr: true, Msg: "第" + (i + 1) + "行,请正确输入批准数" };
                     }
                     var ID = tr.find("td").eq(5).find("input").val();

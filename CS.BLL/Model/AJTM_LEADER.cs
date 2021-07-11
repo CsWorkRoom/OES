@@ -131,5 +131,10 @@ namespace CS.BLL.Model
         {
            return GetList<Entity>(" UNIT_ID=?", new object[] { unitId });
         }
+
+        public IList<Entity> GetListEntity()
+        {
+            return GetList<Entity>();
+        }
     }
 }

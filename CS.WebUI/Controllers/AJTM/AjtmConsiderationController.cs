@@ -184,6 +184,7 @@ namespace CS.WebUI.Controllers.AJTM
             //获取编制用途列表,编制类型
             var AsPurse = BLL.Model.AJTM_AS_PURPOSE.Instance.GetDicDropDown();
             var AsType = BLL.Model.AJTM_AS_TYPE.Instance.GetDropDown();
+           
             foreach (var AsA in AsApplyArr)
             {
 
@@ -221,7 +222,9 @@ namespace CS.WebUI.Controllers.AJTM
                    
                     for (int i = 0; i < item.APPROVAL_NUM; i++)
                     {
-                        string ASNO = AJTM_AS_DETAIL.Instance.GetAsNo(i * j + CNo);
+                        //string ASNO = AJTM_AS_DETAIL.Instance.GetAsNo(i * j + CNo);
+
+                        string ASNO = AJTM_AS_DETAIL.Instance.GetAsNo();
                         Dictionary<string, object> AsD = new Dictionary<string, object>();
 
                         AsD.Add("APPROVAL_TIME", AS_APPROVAL_TIME);

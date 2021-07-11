@@ -316,7 +316,7 @@ function AjaxPost(url) {
             //debugger;wlf-6-28：新增提示框和刷新
             if (result.IsSuccess == true) {
                 var msg = result.Message + " <br/>要刷新列表数据吗？";
-                layer.confirm(msg, { area: ['900px', '500px'] }, function (index) {
+                layer.confirm(msg, { area: ['300px', '200px'] }, function (index) {
                     //layer.closeAll();
                     //parent.layer.closeAll();
                     //parent.RefreshData();
@@ -326,7 +326,7 @@ function AjaxPost(url) {
                 });
 
             } else {
-                layer.alert(result.Message, { area: ['900px', '500px'] });
+                layer.alert(result.Message, { area: ['300px', '200px'] });
             }
         });
     });

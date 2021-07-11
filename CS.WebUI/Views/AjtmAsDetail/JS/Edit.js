@@ -1,47 +1,43 @@
 ﻿
 $(function () {
-
-    layui.use(['form', 'layer', 'jquery','laydate'], function () {
+    //初始化时间主键
+    layui.use(['form', 'layer', 'jquery', 'laydate'], function () {
         var form = layui.form, layer = layui.layer, $ = layui.$, laydate = layui.laydate;
         laydate.render({
             elem: '#APPROVAL_TIME' //指定元素
         });
-
-        init();
-
-        function init() {
-            var zsNodes = {};
-            if ($("#Unit").val() !== "") {
-                zsNodes = JSON.parse($("#Unit").val());
-                $.comboztree("UNIT_ID", {
-                    ztreenode: zsNodes, onClick: function (event, treeId, treeNode) {
-                        $("#UNIT_NAME").val(treeNode.name);
-                        let parentNode = treeNode.getParentNode();
-                        if (parentNode) {
-                            $("#UNIT_PARENT").val(parentNode.name);
-                            $("#UNIT_PARENT_ID").val(parentNode.id);
-                        } else {
-                            $("#UNIT_PARENT").val("");
-                            $("#UNIT_PARENT_ID").val(0);
-                        }
-                    }
-                });
-            } else {
-                $.comboztree("UNIT_ID", {});
-            }
-            var AsType = $("#AsType").val();
-            if (AsType !== "") {
-                var AsTypeNode = JSON.parse(AsType);
-                $.comboztree("AS_TYPE_ID", {
-                    ztreenode: AsTypeNode,
-                    onClick: function (event, treeId, treeNode) {
-                        $("#AS_TYPE").val(treeNode.name);
-                    }
-                });
-            }
+    });
+    //初始化树
+    initTree("AsType", "AS_TYPE_ID");
+    //初始化树
+    initTree("Unit", "UNIT_ID", function (event, treeId, treeNode) {
+        $("#UNIT_NAME").val(treeNode.name);
+        let parentNode = treeNode.getParentNode();
+        if (parentNode) {
+            $("#UNIT_PARENT").val(parentNode.name);
+            $("#UNIT_PARENT_ID").data("ztree").setValue(parentNode.id);
+        } else {
+            $("#UNIT_PARENT").val("");
+            $("#UNIT_PARENT_ID").data("ztree").setValue(0);
         }
     });
+    //初始化树
+    initTree("Unit", "UNIT_PARENT_ID", function (event, treeId, treeNode) {
+        $("#UNIT_PARENT").val(treeNode.name);
+    });
 });
+
+
+//通用方法
+function initTree(inputId, treeId, onClick) {
+    if (typeof onClick !== "function") onClick = function (event, treeId, treeNode) { };
+    var json = $("#" + inputId).val();
+    if (json) {
+        var node = JSON.parse(json);
+        let obj = $.comboztree(treeId, { ztreenode: node, onClick: onClick });
+        $("#" + treeId).data("ztree", obj);
+    }
+}
 
 
 function save() {
@@ -49,6 +45,6 @@ function save() {
         var form = layui.form, layer = layui.layer, $ = layui.$;
         var url = "../AjtmAsDetail/Edit";
         SaveForm('form', url);
-        return; 
+        return;
     });
 }

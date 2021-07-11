@@ -9,7 +9,7 @@
     <input hidden="hidden" id="ID" name="ID" value="@Model.ID" />
     <input hidden="hidden" id="AsPurpose" name="AsPurpose" value="@ViewBag.AsPurpose" />
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-        <legend>单位基本信息</legend>
+        <legend>待上编信息</legend>
     </fieldset>
     <div class="layui-form-item">
         <div class="layui-inline">
@@ -37,23 +37,18 @@
         <div class="layui-inline">
             <label class="layui-form-label">申报单位</label>
             <div class="layui-input-inline">
-                <input hidden="hidden" name="UNIT_PARENT_ID" id="UNIT_PARENT_ID" value="@Model.UNIT_PARENT" />
-                <input type="text" name="UNIT_PARENT" id="UNIT_PARENT" value="@Model.UNIT_PARENT" autocomplete="off" class="layui-input" readonly="readonly">
+                <input hidden="hidden" name="UNIT_PARENT" id="UNIT_PARENT" value="@Model.UNIT_PARENT">
+                <input type="text" name="UNIT_PARENT_ID" id="UNIT_PARENT_ID" value="@Model.UNIT_PARENT_ID">
             </div>
         </div>
     </div>
     <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">编制使用通知单</label>
-            <div class="layui-input-inline">
-                <input type="text" name="AS_APPLY_NO" value="@Model.AS_APPLY_NO" autocomplete="off" class="layui-input">
-            </div>
-        </div>
+
         <div class="layui-inline">
             <label class="layui-form-label">编制用途</label>
             <div class="layui-input-inline">
-                <input hidden="hidden" name="AS_PURPOSE" id="AS_PURPOSE" value="@Model.UNIT_PARENT" />
-                <select name="AS_PURPOSE_ID">
+                <input hidden="hidden" name="AS_PURPOSE" id="AS_PURPOSE" value="@Model.AS_PURPOSE" />
+                <select name="AS_PURPOSE_ID" lay-search>
                     <option value=""></option>
                     @foreach (var item in ViewBag.AsPurpose)
                     {
@@ -69,19 +64,25 @@
                 </select>
             </div>
         </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">编制使用通知单</label>
+            <div class="layui-input-inline">
+                <input type="text" name="AS_APPLY_NO" value="@Model.AS_APPLY_NO" autocomplete="off" class="layui-input">
+            </div>
+        </div>
     </div>
     <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">编制类型</label>
+            <div class="layui-input-inline">
+                @*<input hidden="hidden" name="AS_TYPE" id="AS_TYPE" value="@Model.AS_TYPE" />*@
+                <input type="text" name="AS_TYPE_ID" id="AS_TYPE_ID" value="@Model.AS_TYPE_ID">
+            </div>
+        </div>
         <div class="layui-inline">
             <label class="layui-form-label">编制详细用途</label>
             <div class="layui-input-inline">
                 <input type="text" name="AS_PURPOSE_REMARK" value="@Model.AS_PURPOSE_REMARK" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-inline">
-            <label class="layui-form-label">编制类型</label>
-            <div class="layui-input-inline">
-                <input hidden="hidden" name="AS_TYPE" id="AS_TYPE" value="@Model.AS_TYPE" />
-                <input type="text" name="AS_TYPE_ID" id="AS_TYPE_ID" value="@Model.AS_TYPE_ID">
             </div>
         </div>
     </div>
@@ -99,6 +100,12 @@
             </div>
         </div>
     </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-block">
+            <textarea type="text" name="REMARK" id="REMARK"  autocomplete="off" class="layui-textarea" style="width:91%">@Model.REMARK</textarea>
+        </div>
+    </div>
 </form>
 <div class="form-bottom-submit" style="text-align:center;">
     <input type="hidden" id="msg" value="@ViewBag.Message" />
@@ -107,4 +114,4 @@
         <button type="reset" class="layui-btn layui-btn-primary" onclick="CloseForm();">关闭</button>
     </div>
 </div>
-<script src="~/Views/AjtmAsDetail/JS/Edit.js?v=20210610"></script>
+<script src="~/Views/AjtmAsDetail/JS/Edit.js?v=20210710"></script>

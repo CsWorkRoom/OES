@@ -81,6 +81,8 @@
     <Compile Include="ExportFile.cs" />
     <Compile Include="Extension\Excel.cs" />
     <Compile Include="Extension\ExcelFile.cs" />
+    <Compile Include="Extension\ExcelLeaderUnit.cs" />
+    <Compile Include="Extension\UnitLeaderExcel.cs" />
     <Compile Include="Extension\WordFile.cs" />
     <Compile Include="FW\BF_RDLC_REPORT.cs" />
     <Compile Include="FW\BF_BULLETIN.cs" />

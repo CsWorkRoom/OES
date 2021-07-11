@@ -209,13 +209,8 @@ commit;
             //work.ReplaceKeyword(dic);
             //work.Save("E:\\OES\\CS.TestForm\\test\\temp_" + DateTime.Now.Ticks + ".doc");
 
-            CS.BLL.Extension.Excel excel = new BLL.Extension.Excel("I:\\OES\\DOC", "text");
-            excel.wrHeader(18, "市本级县处级及以上单位核定领导职数情况表");
-            excel.wrLineFeed();
-            excel.wrTitleAndLineCol(1, "序号");
-            excel.wrTitleAndLineCol(1, "机构名称");
-            //excel.wrTitle(2, "行政");
-            //excel.wrTitle(2, "机构规格");
+            CS.BLL.Extension.ExcelLeaderUnit excel = new BLL.Extension.ExcelLeaderUnit("I:\\OES\\DOC", "text");
+           
             excel.Save();
         }
     }

@@ -57,7 +57,6 @@ namespace CS.WebUI.Controllers.AJTM
             dic.Add("SETUP_RANGE_ID", entity.SETUP_RANGE_ID);
             dic.Add("IS_PUBLIC", entity.IS_PUBLIC);
             dic.Add("DEP_NUM", entity.DEP_NUM);
-            dic.Add("IS_USE", 1);
             dic.Add("WITHIN_MAIN_NUM", entity.WITHIN_MAIN_NUM);
             dic.Add("WITHIN_VICE_NUM", entity.WITHIN_VICE_NUM);
             dic.Add("OTHER_NUM", entity.OTHER_NUM);
@@ -168,7 +167,6 @@ namespace CS.WebUI.Controllers.AJTM
         public ActionResult Index()
         {
             ViewBag.Unit = SerializeObject(CS.BLL.Model.AJTM_UNIT.Instance.GetDropTree());
-            //ViewBag.UnitInfo = AJTM_UNIT.Instance.GetUnitByIdForShow(unitid);
             return View();
         }
         /// <summary>
@@ -177,6 +175,8 @@ namespace CS.WebUI.Controllers.AJTM
         /// <returns></returns>
         public ActionResult Show(int unitid = 0)
         {
+            //CS.BLL.Extension.UnitLeaderExcel excel = new BLL.Extension.UnitLeaderExcel("I:\\OES\\DOC", "text");
+            //excel.Save();
             ViewBag.UnitInfo = AJTM_UNIT.Instance.GetUnitByIdForShow(unitid);
             ViewBag.UnitAs = AJTM_UNIT_AS.Instance.GetListByUnitId(unitid);
             ViewBag.Leader = AJTM_LEADER.Instance.GetListEntityByUnitId(unitid);

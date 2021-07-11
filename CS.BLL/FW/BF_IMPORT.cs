@@ -535,7 +535,9 @@ namespace CS.BLL.FW
                     {
                         try
                         {
-
+                            //新增，删除表数据
+                            dbHelper.Delete(tableName);
+                            //原版
                             loadCount = dbHelper.LoadDataInDataTable(tableName, tdLoad);
                             message = string.Format("共导入{0}条数据", loadCount);
                         }

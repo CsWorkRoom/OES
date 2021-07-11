@@ -347,5 +347,29 @@ namespace CS.BLL.Model
                 return dic;
             }
         }
+
+        /// <summary>
+        /// 获取单位信息
+        /// </summary>
+        /// <returns></returns>
+        public DataTable GetTableForExcel()
+        {
+            string sql = @"
+               SELECT A.ID,
+                     A.PARENT_ID,
+                     A.NAME,
+                     B.NAME AS RANGE_NAME,
+                     C.NAME AS LEVEL_NAME
+                FROM AJTM_UNIT A
+                     LEFT JOIN AJTM_SETUP_RANGE B ON (A.SETUP_RANGE_ID = B.ID)
+                     LEFT JOIN AJTM_SETUP_LEVEL C ON (A.SETUP_LEVEL_ID = C.ID)
+            WHERE A.IS_USE = 1
+            ORDER BY A.ID, A.PARENT_ID ASC
+            ";
+            using (BDBHelper db = new BDBHelper())
+            {
+                return db.ExecuteDataTable(sql);
+            }
+        }
     }
 }
