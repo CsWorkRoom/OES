@@ -92,6 +92,30 @@ namespace CS.BLL.Model
 
         }
         #endregion
+
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="AsDetailId"></param>
+        /// <param name="AsApplyNO"></param>
+        /// <param name="AsApplyID"></param>
+        /// <param name="Status"></param>
+        /// <returns></returns>
+        public int Add(int AsDetailId, string AsApplyNO, int AsApplyID, string Status)
+        {
+            Dictionary<string, object> dicAsDetailStatus = new Dictionary<string, object>();
+            dicAsDetailStatus.Add("AS_DETAIL_ID", AsDetailId);
+            dicAsDetailStatus.Add("AS_APPLY_NO", AsApplyNO);
+            dicAsDetailStatus.Add("AS_APPLY_ID", AsApplyID);
+            dicAsDetailStatus.Add("STATUS_TIME", DateTime.Now);
+            dicAsDetailStatus.Add("CREATE_UID", SystemSession.UserID);
+            dicAsDetailStatus.Add("UPDATE_UID", SystemSession.UserID);
+            dicAsDetailStatus.Add("CREATE_TIME", DateTime.Now);
+            dicAsDetailStatus.Add("UPDATE_TIME", DateTime.Now);
+            dicAsDetailStatus.Add("STATUS", Status);
+
+            return Add(dicAsDetailStatus);
+        }
     }
 }
 

@@ -11,8 +11,8 @@
     <div class="layui-tab-content larryms-tab-content" style="height:93%">
         <div class="layui-tab-item layui-show" style="height:100%">
             <div class="layui-btn-group"> 
-                <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" title="修改(待定)"><i class="layui-icon layui-icon-edit"></i> 修改</button>
-                <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" title="修改(待定)"><i class="layui-icon layui-icon-delete"></i> 注销</button>
+                <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" onclick="Open('Edit','@dicInfo["ID"]')" title="修改(待定)"><i class="layui-icon layui-icon-edit"></i> 修改</button>
+                <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" onclick="Open('Delete','@dicInfo["ID"]')" title="修改(待定)"><i class="layui-icon layui-icon-delete"></i> 注销</button>
             </div>
             <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
                 <legend>
@@ -148,7 +148,7 @@
         </div>
         <div class="layui-tab-item" style="height:100%">
             <div class="layui-btn-group">
-                <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" title="修改(待定)"><i class="layui-icon layui-icon-edit"></i> 修改</button>
+                <button type="button" onclick="Open('Leader','@dicInfo["ID"]')" class="layui-btn layui-btn-primary layui-btn-sm" title="修改(待定)"><i class="layui-icon layui-icon-edit"></i> 修改</button>
             </div>
             <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
                 <legend>单位领导信息</legend>
@@ -197,4 +197,4 @@
     </div>
 </div>
 
-<script src="~/Views/AjtmUnit/JS/Show.js?v=20210510"></script>
+<script src="~/Views/AjtmUnit/JS/Show.js?v=20210610"></script>

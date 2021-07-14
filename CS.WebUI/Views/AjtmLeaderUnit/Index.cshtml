@@ -5,11 +5,12 @@
     var Typelist = ViewBag.LeaderType as List<CS.BLL.Model.AJTM_LEADER_TYPE.Entity>;
 }
 <form id="form" class="layui-form" action="" method="post">
-    <script src="~/Content/FW/LayuiZtree.js?v=20210610"></script>
+    <script src="~/Content/FW/LayuiZtree.js?v=20210310"></script>
     <input hidden="hidden" id="Unit" name="Unit" value="@ViewBag.Unit" />
     <input hidden="hidden" id="SetupLevel" name="SetupLevel" value="@ViewBag.SetupLevel" />
     <input hidden="hidden" id="Leader" name="Leader" value="" />
     <input hidden="hidden" id="LeaderTypeUnit" name="LeaderTypeUnit" value="" />
+    <input hidden="hidden" id="UnitId"  value="@ViewBag.UnitId"/>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
         <legend>选择单位</legend>
     </fieldset>
@@ -57,4 +58,4 @@
         </div>
     </div>
 </form>
-<script src="~/Views/AjtmLeaderUnit/JS/Index.js?v=20210614"></script>
+<script src="~/Views/AjtmLeaderUnit/JS/Index.js?v=20210314"></script>

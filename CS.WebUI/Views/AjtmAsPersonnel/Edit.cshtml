@@ -73,7 +73,7 @@
                     <option value=""></option>
                     @foreach (var item in ViewBag.Education)
                     {
-                        if (Model.ACTION == item.Key)
+                        if (Model.ACCOUNT_EDUCATION == item.Key)
                         {
                             <option value="@item.Key" selected="selected">@item.Value</option>
                         }
@@ -92,7 +92,7 @@
                     <option value=""></option>
                     @foreach (var item in ViewBag.PostType)
                     {
-                        if (Model.ACTION == item.Key)
+                        if (Model.POST_TYPE == item.Key)
                         {
                             <option value="@item.Key" selected="selected">@item.Value</option>
                         }
@@ -144,12 +144,13 @@
             <label class="layui-form-label">编制类型</label>
             <div class="layui-input-inline">
                 <input hidden="hidden" name="AS_TYPE" id="AS_TYPE" />
-                <input type="text" name="AS_TYPE_ID" id="AS_TYPE_ID" value="@Model.AS_TYPE" />
+                <input type="text" name="AS_TYPE_ID" id="AS_TYPE_ID" value="@Model.AS_TYPE_ID" />
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">进出方式</label>
             <div class="layui-input-inline">
+                <input hidden="hidden" id="AccessModeId" value="@Model.ACCESS_MODE_ID" />
                 <input hidden="hidden" name="ACCESS_MODE" id="ACCESS_MODE" />
                 <select name="ACCESS_MODE_ID" id="ACCESS_MODE_ID" lay-filter="sAccessMode">
                     <option value=""></option>
@@ -170,7 +171,7 @@
             <div class="layui-input-inline">
                 @{
                     string filetime = string.Empty;
-                    if (Model.FILE_SEND > Convert.ToDateTime("1990-01-01")) { filetime = Model.AGREE_TIME.ToString("yyyy-MM-dd"); }
+                    if (Model.FILE_SEND > Convert.ToDateTime("1990-01-01")) { filetime = Model.FILE_SEND.ToString("yyyy-MM-dd"); }
                 }
                 <input type="text" name="FILE_SEND" id="FILE_SEND" value="@filetime" autocomplete="off" class="layui-input">
             </div>
@@ -178,18 +179,23 @@
     </div>
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">人员增减情况</label>
+            <label class="layui-form-label">人员来源</label>
             <div class="layui-input-inline">
-                <input type="text" name="ACCOUNT_SOURCE" id="ACCOUNT_SOURCE" value="" autocomplete="off" class="layui-input">
+                <input type="text" name="ACCOUNT_SOURCE" id="ACCOUNT_SOURCE" value="@Model.ACCOUNT_SOURCE" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
-            <label class="layui-form-label">去(来）向</label>
+            <label class="layui-form-label">人员增减情况</label>
             <div class="layui-input-inline">
-                <input type="text" name="ACCOUNT_REMARK" id="ACCOUNT_REMARK" value="" autocomplete="off" class="layui-input">
+                <input type="text" name="ACCOUNT_SITUATION" id="ACCOUNT_SITUATION" value="@Model.ACCOUNT_SITUATION" autocomplete="off" class="layui-input">
             </div>
         </div>
-
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">去(来）向</label>
+        <div class="layui-input-block">
+            <textarea type="text" name="ACCOUNT_REMARK" id="ACCOUNT_REMARK"  autocomplete="off" class="layui-textarea">@Model.ACCOUNT_REMARK</textarea>
+        </div>
     </div>
     <div class="layui-form-item">
         <div class="layui-inline">
@@ -203,7 +209,7 @@
             </div>
         </div>
         <div class="layui-inline">
-            <label class="layui-form-label">实名制信息入库登记时间</label>
+            <label class="layui-form-label">实名制信息入库时间</label>
             <div class="layui-input-inline">
                 @{
                     string checktime = string.Empty;
@@ -230,8 +236,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">上下编未完成原因</label>
         <div class="layui-input-block">
-            <textarea type="text" name="REMARKS" value="@Model.REMARKS" lay-verify="required|name" autocomplete="off" class="layui-textarea">
-            </textarea>
+            <textarea type="text" name="REMARKS" autocomplete="off" class="layui-textarea">@Model.REMARKS</textarea>
         </div>
     </div>
     <div id="ActionUp" hidden="hidden">
@@ -331,11 +336,11 @@
         </div>
     </div>
 </form>
-<div class="form-bottom-submit" style="text-align:right;">
+<div class="form-bottom-submit" style="text-align:center;">
     <input type="hidden" id="msg" value="@ViewBag.Message" />
     <div class="layui-inline">
         <button type="button" class="layui-btn" onclick="save();">确定</button>
         <button type="reset" class="layui-btn layui-btn-primary" onclick="CloseForm();">关闭</button>
     </div>
 </div>
-<script src="~/Views/AjtmAsPersonnel/JS/Edit.js?v=20210624"></script>
+<script src="~/Views/AjtmAsPersonnel/JS/Edit.js?v=20210724"></script>

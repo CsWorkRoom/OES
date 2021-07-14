@@ -347,7 +347,7 @@ function OpenDown() {
 function save() {
     layui.use(['form', 'layer', 'jquery'], function () {
         var form = layui.form, layer = layui.layer, $ = layui.$;
-        var url = "../AjtmAsPersonnel/Edit";
+        var url = "../AjtmAsPersonnel/Add";
         SaveForm('form', url);
         return;
     });

@@ -30,14 +30,14 @@
                 </select>
             </div>
         </div>
-    </div>
-    <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label">增加减少审批单号(必填)</label>
             <div class="layui-input-inline">
                 <input type="text" name="ACTION_NO" id="ACTION_NO" value="" autocomplete="off" class="layui-input">
             </div>
         </div>
+    </div>
+    <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label">上编/下编(必填)</label>
             <div class="layui-input-inline">
@@ -57,11 +57,14 @@
                 </select>
             </div>
         </div>
+        <div class="layui-inline">
+            <span type="reset" class="layui-btn layui-btn-primary btnAction btnActionDown" onclick="OpenDown()">下编</span>
+            <span type="reset" class="layui-btn layui-btn-primary btnAction btnActionUp" onclick="Open()">上编</span>
+        </div>
     </div>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
         <legend>
             <span>人员信息</span>
-            <span type="reset" class="layui-btn layui-btn-primary btnAction btnActionDown" onclick="OpenDown()">下编</span>
         </legend>
     </fieldset>
     <div class="layui-form-item">
@@ -121,7 +124,6 @@
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
         <legend>
             <span>编制信息</span>
-            <span type="reset" class="layui-btn layui-btn-primary btnAction btnActionUp" onclick="Open()">上编</span>
         </legend>
     </fieldset>
     <div class="layui-form-item">
@@ -203,11 +205,11 @@
         </div>
     </div>
     <div class="layui-form-item">
-       <label class="layui-form-label">去(来）向</label>
-            <div class="layui-input-block">
-                <textarea type="text" name="ACCOUNT_REMARK" id="ACCOUNT_REMARK" value="" autocomplete="off" class="layui-textarea">
+        <label class="layui-form-label">去(来）向</label>
+        <div class="layui-input-block">
+            <textarea type="text" name="ACCOUNT_REMARK" id="ACCOUNT_REMARK" value="" autocomplete="off" class="layui-textarea">
                 </textarea>
-            </div>
+        </div>
     </div>
     <div class="layui-form-item">
         <div class="layui-inline">
@@ -240,8 +242,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">上下编未完成原因</label>
         <div class="layui-input-block">
-            <textarea type="text" name="REMARKS" value="" lay-verify="required|name" autocomplete="off" class="layui-textarea">
-            </textarea>
+            <textarea type="text" name="REMARKS" value="" lay-verify="required|name" autocomplete="off" class="layui-textarea"></textarea>
         </div>
     </div>
     <div id="ActionUp" hidden="hidden">
@@ -341,11 +342,11 @@
         </div>
     </div>
 </form>
-<div class="form-bottom-submit" style="text-align:right;">
+<div class="form-bottom-submit" style="text-align:center;">
     <input type="hidden" id="msg" value="@ViewBag.Message" />
     <div class="layui-inline">
         <button type="button" class="layui-btn" onclick="save();">确定</button>
         <button type="reset" class="layui-btn layui-btn-primary" onclick="CloseForm();">关闭</button>
     </div>
 </div>
-<script src="~/Views/AjtmAsPersonnel/JS/Add.js?v=20210624"></script>
+<script src="~/Views/AjtmAsPersonnel/JS/Add.js?v=20210724"></script>

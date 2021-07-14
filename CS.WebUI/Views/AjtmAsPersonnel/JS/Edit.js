@@ -27,14 +27,6 @@ $(function () {
                 }
             });
             initTree("Unit", "ADownUnitId");
-            //验证
-            //form.verify({
-            //    name: function (value) {
-            //        if (value.length <= 0) {
-            //            return '单位名称不能为空！';
-            //        }
-            //    }
-            //});
             //增加事件
             $("#ACTION_NO").bind("change", function () {
                 if (this.value) {
@@ -55,18 +47,23 @@ $(function () {
             form.on('select(sAccessMode)', function (data) {
                 $("#ACCESS_MODE").val(data.elem[data.elem.selectedIndex].text);
             });
+            //
+            $("#ACCESS_MODE_ID").find("option[value='" + $("#AccessModeId").val() + "']").attr("selected", "selected");
+            form.render("select");
+            //
             function ActionChange() {
                 var ACTION = $("#ACTION").val();
                 var ModeAccess = $("#ModeAccess").val();
                 var list = [];
-                console.log(1);
                 if (ModeAccess.length !== 0); {
                     console.log(2);
                     var listObj = JSON.parse(ModeAccess);
                     $("#ACCESS_MODE_ID").children().remove();
                     $("#ACCESS_MODE_ID").append("<option value=''></option>");
+                    //
+                    var POST_TYPE_ID = $("#POST_TYPE_ID").val();
+                    //
                     for (var i = 0; i < listObj.length; i++) {
-                        console.log(ACTION, listObj[i].ACTION_TYPE);
                         if (ACTION === listObj[i].ACTION_TYPE) {
                             $("#ACCESS_MODE_ID").append("<option value='" + listObj[i].ID + "'>" + listObj[i].NAME + "</option>");
                         }
@@ -368,21 +365,8 @@ function getRandomString(len) {
 
 function save() {
     layui.use(['form', 'layer', 'jquery'], function () {
-        var form = layui.form, layer = layui.layer, $ = layui.$;
-        //let r = unitAsArr();
-        //if (r.isErr) {
-        //    layer.alert(r.Msg);
-        //    return;
-        //}
         var url = "../AjtmAsPersonnel/Edit";
         SaveForm('form', url);
         return;
-        function unitAsArr() {
-            //let name = $("#NAME").val();
-            //if (name..length === 0) {
-            //    return { isErr: true, Msg: "提交失败,单位名称不能为空" };
-            //}
-            //
-        }
     });
 }

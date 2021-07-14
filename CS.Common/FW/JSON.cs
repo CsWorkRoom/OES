@@ -127,7 +127,7 @@ namespace CS.Common.FW
             }
             catch (Exception ex)
             {
-
+                string msg = ex.ToString();
             }
             result = dataTable;
             return result;

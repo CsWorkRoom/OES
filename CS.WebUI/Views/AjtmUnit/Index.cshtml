@@ -7,6 +7,7 @@
     <script src="~/Content/FW/LayuiZtree.js?v=20210609"></script>
     <input hidden="hidden" value="@ViewBag.Unit" id="Unit" />
     <input hidden="hidden" value="0" />
+    <input hidden="hidden" id="PAction" />
     <div class="layui-row" style="height:100%">
         <div class="layui-col-md2" style="height:100%;display: inline-block;  padding: 10px; border: 1px solid #ddd; overflow: auto;">
             <ul id="unitId" class="ztree"></ul>
@@ -16,4 +17,21 @@
         </div>
     </div>
 </form>
-<script src="~/Views/AjtmUnit/JS/Index.js?v=20210510"></script>
+<script>
+    function RefreshData() {
+        var type = $("#PAction").val();
+        switch (type) {
+            case "Edit":
+                $("#iframeShow")[0].contentWindow.location.reload(true);
+                break;
+            case "Delete":
+                window.location.reload();
+                break;
+            default:
+                $("#iframeShow")[0].contentWindow.location.reload(true);
+                break;
+        }
+        
+    }
+</script>
+<script src="~/Views/AjtmUnit/JS/Index.js?v=20210610"></script>

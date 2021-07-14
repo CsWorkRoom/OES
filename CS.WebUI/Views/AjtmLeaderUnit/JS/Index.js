@@ -10,10 +10,11 @@
             $("#UNIT_PARENT_ID").val(0);
         }
 
-        $.get("../AjtmLeaderUnit/GetLeaderInfoByUnit", { UnitID: treeNode.id }, function (r) {
-            AjaxGetLeaderType(r.LeaderUnit);
-            AjaxGetLeader(r.Leader);
-        },"json");
+        //$.get("../AjtmLeaderUnit/GetLeaderInfoByUnit", { UnitID: treeNode.id }, function (r) {
+        //    AjaxGetLeaderType(r.LeaderUnit);
+        //    AjaxGetLeader(r.Leader);
+        //}, "json");
+        AjaxGet(treeNode.id);
     });
     //通用方法
     function initTree(inputId, treeId, onClick) {
@@ -27,7 +28,34 @@
     }
 
     $("#btnInit").bind("click", init);
+
+   
+    var UId = $("#UnitId").val();
+    if (UId) {
+        var treeNode = $("#UNIT_ID").data("ztree").setValue(UId);
+        if (treeNode) {
+            $("#UNIT_NAME").val(treeNode.name);
+            let parentNode = treeNode.getParentNode();
+            if (parentNode) {
+                $("#UNIT_PARENT").val(parentNode.name);
+                $("#UNIT_PARENT_ID").val(parentNode.id);
+            } else {
+                $("#UNIT_PARENT").val("");
+                $("#UNIT_PARENT_ID").val(0);
+            }
+        }
+        AjaxGet(UId);
+    }
 });
+
+
+function AjaxGet(unitId) {
+    $.get("../AjtmLeaderUnit/GetLeaderInfoByUnit", { UnitID: unitId }, function (r) {
+        console.log(r);
+        AjaxGetLeaderType(r.LeaderUnit);
+        AjaxGetLeader(r.Leader);
+    }, "json");
+}
 
 function init() {
     var temp = TempLeaderInfo();

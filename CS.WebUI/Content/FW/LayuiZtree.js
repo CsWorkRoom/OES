@@ -233,12 +233,18 @@
             }
             //
             var s = {};
-            if (!this.ztreeisMultiple)
+            var node;
+            if (!this.ztreeisMultiple) {
                 var s = $.zTreeFunc.FuncAssignment("000000", ztree.getSelectedNodes());
-            else
+                node = ztree.getSelectedNodes()[0];
+            }
+            else {
                 var s = $.zTreeFunc.FuncAssignment("000000", ztree.getCheckedNodes());
-
+                node = ztree.getCheckedNodes();
+            }
+            
             FuncChangeValue(s, this.inputId, this.id, this.ztreehideId);
+            return node;
 
             //变更input标签值
             function FuncChangeValue(s, inputId, id, ztreehideId) {
@@ -251,7 +257,7 @@
         },
         setValue: function (value) {
             this.obj.attr("value", value);
-            this.init_value();
+            return this.init_value();
         }
     },
     comboztree: function (id, s) {

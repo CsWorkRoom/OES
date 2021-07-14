@@ -11,11 +11,12 @@ namespace CS.WebUI.Controllers.AJTM
     public class AjtmLeaderUnitController : FW.ABaseController
     {
         // GET: AjtmLeaderUnit
-        public ActionResult Index()
+        public ActionResult Index(int unitId = 0)
         {
             ViewBag.LeaderType = AJTM_LEADER_TYPE.Instance.GetListEntity();
             ViewBag.Unit = SerializeObject(AJTM_UNIT.Instance.GetDropTree());
             ViewBag.SetupLevel = SerializeObject(AJTM_SETUP_LEVEL.Instance.GetDropDownForDt());
+            ViewBag.UnitId = unitId;
             return View();
         }
         /// <summary>
@@ -26,7 +27,8 @@ namespace CS.WebUI.Controllers.AJTM
         public ActionResult Index(string Leader, string LeaderTypeUnit, int UNIT_ID = 0, string UNIT_NAME = "", int UNIT_PARENT_ID = 0, string UNIT_PARENT = "")
         {
             JsonResultData result = new JsonResultData();
-            if (UNIT_ID > 0) {
+            if (UNIT_ID > 0)
+            {
 
                 var luEntity = DeserializeObject<List<BLL.Model.AJTM_LEADER_UNIT.Entity>>(LeaderTypeUnit);
                 //删除所有配置信息
@@ -88,7 +90,8 @@ namespace CS.WebUI.Controllers.AJTM
         /// </summary>
         /// <param name="UnitID"></param>
         /// <returns></returns>
-        public string GetLeaderInfoByUnit(int UnitID) {
+        public string GetLeaderInfoByUnit(int UnitID)
+        {
 
             var r = AJTM_LEADER_UNIT.Instance.GetTable(" UNIT_ID=?", new object[] { UnitID }); ;
             var r2 = AJTM_LEADER.Instance.GetTable(" UNIT_ID=?", new object[] { UnitID });
@@ -106,4 +109,4 @@ namespace CS.WebUI.Controllers.AJTM
             return View();
         }
     }
-} 
+}

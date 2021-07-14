@@ -241,5 +241,24 @@ namespace CS.BLL.Model
             //修改
             return UpdateByKey(dic, keyId);
         }
+
+
+        public int BeginUse(string AsNo)
+        {
+            Dictionary<string, object> dic = new Dictionary<string, object>();
+            dic.Add("STATUS", ENUM_AS_DETAIL_STATUS.使用.ToString());
+            dic.Add("STATUS_TIME", DateTime.Now);
+            dic.Add("USE_TIME", DateTime.Now);
+            return Update(dic, " AS_NO=?", AsNo);
+        }
+
+        public int EndCancel(string AsNo)
+        {
+            Dictionary<string, object> dic = new Dictionary<string, object>();
+            dic.Add("STATUS", ENUM_AS_DETAIL_STATUS.销号.ToString());
+            dic.Add("STATUS_TIME", DateTime.Now);
+            dic.Add("CANCEL_TIME", DateTime.Now);
+            return Update(dic, " AS_NO=?", AsNo);
+        }
     }
 }

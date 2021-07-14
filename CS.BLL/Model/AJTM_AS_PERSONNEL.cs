@@ -277,6 +277,52 @@ namespace CS.BLL.Model
             }
             return dt;
         }
+
+        /// <summary>
+        ///添加
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public int Add(Entity entity)
+        {
+            Dictionary<string, object> dic = new Dictionary<string, object>();
+            dic.Add("HANDLNG", entity.HANDLNG);
+            dic.Add("ACTION_NO", entity.ACTION_NO);
+            dic.Add("ACTION", entity.ACTION);
+            dic.Add("UNIT_NAME", entity.UNIT_NAME);
+            dic.Add("UNIT_ID", entity.UNIT_ID);
+            dic.Add("UNIT_PARENT_ID", entity.UNIT_PARENT_ID);
+            dic.Add("UNIT_PARENT", entity.UNIT_PARENT);
+            dic.Add("ACCOUNT_NAME", entity.ACCOUNT_NAME);
+            dic.Add("ACCOUNT_AGE", entity.ACCOUNT_AGE);
+            dic.Add("ACCOUNT_EDUCATION", entity.ACCOUNT_EDUCATION);
+            dic.Add("POST_TYPE", entity.POST_TYPE);
+            dic.Add("AS_TYPE_ID", entity.AS_TYPE_ID);
+            dic.Add("AS_TYPE", entity.AS_TYPE);
+            dic.Add("AS_APPLY_NO", entity.AS_APPLY_NO);
+            dic.Add("ACCESS_MODE_ID", entity.ACCESS_MODE_ID);
+            dic.Add("ACCESS_MODE", entity.ACCESS_MODE);
+            dic.Add("AS_NO", entity.AS_NO);
+            dic.Add("FILE_NAME", entity.FILE_NAME);
+            if (entity.FILE_SEND > Convert.ToDateTime("1900-01-01"))
+                dic.Add("FILE_SEND", entity.FILE_SEND);
+            dic.Add("ACCOUNT_SOURCE", entity.ACCOUNT_SOURCE);
+            dic.Add("ACCOUNT_SITUATION", entity.ACCOUNT_SITUATION);
+            if (entity.AGREE_TIME > Convert.ToDateTime("1900-01-01"))
+                dic.Add("AGREE_TIME", entity.AGREE_TIME);
+            if (entity.CHECKIN_TIME > Convert.ToDateTime("1900-01-01"))
+                dic.Add("CHECKIN_TIME", entity.CHECKIN_TIME);
+            dic.Add("ACCOUNT_REMARK", entity.ACCOUNT_REMARK);
+            dic.Add("HANDLER", entity.HANDLER);
+            dic.Add("HANDLER_PHONE", entity.HANDLER_PHONE);
+            dic.Add("REMARKS", entity.REMARKS);
+            dic.Add("CREATE_UID", entity.CREATE_UID);
+            dic.Add("UPDATE_UID", entity.UPDATE_UID);
+            dic.Add("CREATE_TIME", DateTime.Now);
+            dic.Add("UPDATE_TIME", DateTime.Now);
+
+            return Add(dic, true);
+        }
     }
 
 }
