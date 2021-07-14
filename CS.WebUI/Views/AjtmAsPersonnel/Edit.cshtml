@@ -7,6 +7,7 @@
     <input hidden="hidden" value="@ViewBag.AsType" id="AsType" />
     <input hidden="hidden" value="@ViewBag.Unit" id="Unit" />
     <input hidden="hidden" value="@ViewBag.ModeAccess" id="ModeAccess" />
+    <input hidden="hidden" name="ID" id="ID" value="@Model.ID" />
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
         <legend>单位基本信息</legend>
     </fieldset>
@@ -33,48 +34,34 @@
     </div>
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">增加减少审批单号</label>
+            <label class="layui-form-label">增加减少审批单号<br />（不可编辑）</label>
             <div class="layui-input-inline">
-                <input type="text" name="ACTION_NO" id="ACTION_NO" value="" autocomplete="off" class="layui-input">
+                <input type="text" name="ACTION_NO" id="ACTION_NO" value="@Model.ACTION_NO" readonly="readonly" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
-            <label class="layui-form-label">上编/下编</label>
+            <label class="layui-form-label">上编/下编<br />（不可编辑）</label>
             <div class="layui-input-inline">
-                <select name="ACTION" id="ACTION" lay-filter="sACTION">
-                    <option value=""></option>
-                    @foreach (var item in ViewBag.Action)
-                    {
-                        if (Model.ACTION == item.Key)
-                        {
-                            <option value="@item.Key" selected="selected">@item.Value</option>
-                        }
-                        else
-                        {
-                            <option value="@item.Key">@item.Value</option>
-                        }
-                    }
-                </select>
+                <input type="text" name="ACTION" id="ACTION" value="@Model.ACTION" readonly="readonly" autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
         <legend>
             <span>人员信息</span>
-            <span type="reset" class="layui-btn layui-btn-primary btnAction btnActionDown" onclick="OpenDown()">下编</span>
         </legend>
     </fieldset>
     <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label">姓名</label>
             <div class="layui-input-inline">
-                <input type="text" name="ACCOUNT_NAME" id="ACCOUNT_NAME" value="" lay-verify="required|name" autocomplete="off" class="layui-input">
+                <input type="text" name="ACCOUNT_NAME" id="ACCOUNT_NAME" value="@Model.ACCOUNT_NAME" lay-verify="required|name" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">年龄</label>
             <div class="layui-input-inline">
-                <input type="text" name="ACCOUNT_AGE" id="ACCOUNT_AGE" value="" autocomplete="off" class="layui-input">
+                <input type="text" name="ACCOUNT_AGE" id="ACCOUNT_AGE" value="@Model.ACCOUNT_AGE" autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>
@@ -121,37 +108,34 @@
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
         <legend>
             <span>编制信息</span>
-            <span type="reset"  class="layui-btn layui-btn-primary btnAction btnActionUp" onclick="Open()">上编</span>
+
         </legend>
     </fieldset>
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">编制单位</label>
+            <label class="layui-form-label">编制单位<br />（不可编辑）</label>
             <div class="layui-input-inline">
-                <input hidden="hidden" name="UNIT_NAME" id="UNIT_NAME" value="" />
-                <input type="text" name="UNIT_ID" id="UNIT_ID" value="">
+                <input type="text" name="UNIT_NAME" id="UNIT_NAME" value="@Model.UNIT_NAME" readonly="readonly" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
-            <label class="layui-form-label">主管部门</label>
+            <label class="layui-form-label">主管部门<br />（不可编辑）</label>
             <div class="layui-input-inline">
-                <input hidden="hidden" name="UNIT_PARENT_ID" id="UNIT_PARENT_ID" value="" />
-                <input type="text" name="UNIT_PARENT" id="UNIT_PARENT" value="" autocomplete="off" class="layui-input" readonly="readonly">
+                <input type="text" name="UNIT_PARENT_ID" id="UNIT_PARENT_ID" value="@Model.UNIT_PARENT" readonly="readonly" autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">编制使用通知单号</label>
+            <label class="layui-form-label">编制使用通知单号<br />（不可编辑）</label>
             <div class="layui-input-inline">
-                <input hidden="hidden" name="AS_APPLY_ID" id="AS_APPLY_ID" />
-                <input type="text" name="AS_APPLY_NO" id="AS_APPLY_NO" value="" autocomplete="off" class="layui-input">
+                <input type="text" name="AS_APPLY_NO" id="AS_APPLY_NO" value="@Model.AS_APPLY_NO" readonly="readonly" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
-            <label class="layui-form-label">用编序号</label>
+            <label class="layui-form-label">用编序号<br />（不可编辑）</label>
             <div class="layui-input-inline">
-                <input type="text" name="AS_NO" id="AS_NO" value="" autocomplete="off" class="layui-input">
+                <input type="text" name="AS_NO" id="AS_NO" value="@Model.AS_NO" readonly="readonly" autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>
@@ -160,7 +144,7 @@
             <label class="layui-form-label">编制类型</label>
             <div class="layui-input-inline">
                 <input hidden="hidden" name="AS_TYPE" id="AS_TYPE" />
-                <input type="text" name="AS_TYPE_ID" id="AS_TYPE_ID" value="" />
+                <input type="text" name="AS_TYPE_ID" id="AS_TYPE_ID" value="@Model.AS_TYPE" />
             </div>
         </div>
         <div class="layui-inline">
@@ -178,13 +162,17 @@
         <div class="layui-inline">
             <label class="layui-form-label">人员增减文件依据</label>
             <div class="layui-input-inline">
-                <input type="text" name="FILE_NAME" id="FILE_NAME" value="" autocomplete="off" class="layui-input">
+                <input type="text" name="FILE_NAME" id="FILE_NAME" value="@Model.FILE_NAME" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">发文时间</label>
             <div class="layui-input-inline">
-                <input type="text" name="FILE_SEND" id="FILE_SEND" value="" autocomplete="off" class="layui-input">
+                @{
+                    string filetime = string.Empty;
+                    if (Model.FILE_SEND > Convert.ToDateTime("1990-01-01")) { filetime = Model.AGREE_TIME.ToString("yyyy-MM-dd"); }
+                }
+                <input type="text" name="FILE_SEND" id="FILE_SEND" value="@filetime" autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>
@@ -207,13 +195,21 @@
         <div class="layui-inline">
             <label class="layui-form-label">同意上下编时间</label>
             <div class="layui-input-inline">
-                <input type="text" name="AGREE_TIME" id="AGREE_TIME" value="" autocomplete="off" class="layui-input">
+                @{
+                    string agetime = string.Empty;
+                    if (Model.AGREE_TIME > Convert.ToDateTime("1990-01-01")) { agetime = Model.AGREE_TIME.ToString("yyyy-MM-dd"); }
+                }
+                <input type="text" name="AGREE_TIME" id="AGREE_TIME" value="@agetime" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">实名制信息入库登记时间</label>
             <div class="layui-input-inline">
-                <input type="text" name="CHECKIN_TIME" id="CHECKIN_TIME" value="" lay-verify="required|name" autocomplete="off" class="layui-input">
+                @{
+                    string checktime = string.Empty;
+                    if (Model.CHECKIN_TIME > Convert.ToDateTime("1990-01-01")) { checktime = Model.CHECKIN_TIME.ToString("yyyy-MM-dd"); }
+                }
+                <input type="text" name="CHECKIN_TIME" id="CHECKIN_TIME" value="@checktime" lay-verify="required|name" autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>
@@ -221,20 +217,20 @@
         <div class="layui-inline">
             <label class="layui-form-label">单位经办人</label>
             <div class="layui-input-inline">
-                <input type="text" name="HANDLER" id="HANDLER" value="" autocomplete="off" class="layui-input">
+                <input type="text" name="HANDLER" id="HANDLER" value="@Model.HANDLER" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">联系电话</label>
             <div class="layui-input-inline">
-                <input type="text" name="HANDLER_PHONE" id="HANDLER_PHONE" value="" autocomplete="off" class="layui-input">
+                <input type="text" name="HANDLER_PHONE" id="HANDLER_PHONE" value="@Model.HANDLER_PHONE" autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">上下编未完成原因</label>
         <div class="layui-input-block">
-            <textarea type="text" name="REMARKS" value="" lay-verify="required|name" autocomplete="off" class="layui-textarea">
+            <textarea type="text" name="REMARKS" value="@Model.REMARKS" lay-verify="required|name" autocomplete="off" class="layui-textarea">
             </textarea>
         </div>
     </div>
@@ -283,7 +279,7 @@
                 <input type="text" name="ADownUnitId" id="ADownUnitId" value="">
             </div>
             <div class="layui-input-inline">
-                <input type="text" name="ADwonAccountName"  id="ADwonAccountName" value="" placeholder="请输入上编用户姓名" autocomplete="off" class="layui-input">
+                <input type="text" name="ADwonAccountName" id="ADwonAccountName" value="" placeholder="请输入上编用户姓名" autocomplete="off" class="layui-input">
             </div>
             <button type="button" class="layui-btn" onclick="onSearch()">搜索</button>
         </div>

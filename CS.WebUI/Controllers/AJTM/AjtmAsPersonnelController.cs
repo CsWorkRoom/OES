@@ -135,6 +135,11 @@ namespace CS.WebUI.Controllers.AJTM
             ViewBag.Unit = SerializeObject(AJTM_UNIT.Instance.GetDropTree());
             ViewBag.AsType = SerializeObject(AJTM_AS_TYPE.Instance.GetDropTree());
             ViewBag.ModeAccess = SerializeObject(AJTM_ACCESS_MODE.Instance.GetDropDownForDt());
+            if (id > 0)
+            {
+                var entity = AJTM_AS_PERSONNEL.Instance.GetEntityByKey<Model.AsPersonnel>(id);
+                return View(entity);
+            }
             return View(new Model.AsPersonnel());
         }
         /// <summary>
@@ -150,22 +155,14 @@ namespace CS.WebUI.Controllers.AJTM
             {
                 Dictionary<string, object> dic = new Dictionary<string, object>();
                 dic.Add("HANDLNG", entity.HANDLNG);
-                dic.Add("ACTION_NO", entity.ACTION_NO);
-                dic.Add("ACTION", entity.ACTION);
-                dic.Add("UNIT_NAME", entity.UNIT_NAME);
-                dic.Add("UNIT_ID", entity.UNIT_ID);
-                dic.Add("UNIT_PARENT_ID", entity.UNIT_PARENT_ID);
-                dic.Add("UNIT_PARENT", entity.UNIT_PARENT);
                 dic.Add("ACCOUNT_NAME", entity.ACCOUNT_NAME);
                 dic.Add("ACCOUNT_AGE", entity.ACCOUNT_AGE);
                 dic.Add("ACCOUNT_EDUCATION", entity.ACCOUNT_EDUCATION);
                 dic.Add("POST_TYPE", entity.POST_TYPE);
                 dic.Add("AS_TYPE_ID", entity.AS_TYPE_ID);
                 dic.Add("AS_TYPE", entity.AS_TYPE);
-                dic.Add("AS_APPLY_NO", entity.AS_APPLY_NO);
                 dic.Add("ACCESS_MODE_ID", entity.ACCESS_MODE_ID);
                 dic.Add("ACCESS_MODE", entity.ACCESS_MODE);
-                dic.Add("AS_NO", entity.AS_NO);
                 dic.Add("FILE_NAME", entity.FILE_NAME);
                 if (entity.FILE_SEND > Convert.ToDateTime("1900-01-01"))
                     dic.Add("FILE_SEND", entity.FILE_SEND);
@@ -179,52 +176,9 @@ namespace CS.WebUI.Controllers.AJTM
                 dic.Add("HANDLER", entity.HANDLER);
                 dic.Add("HANDLER_PHONE", entity.HANDLER_PHONE);
                 dic.Add("REMARKS", entity.REMARKS);
-                dic.Add("CREATE_UID", entity.CREATE_UID);
                 dic.Add("UPDATE_UID", entity.UPDATE_UID);
-                dic.Add("CREATE_TIME", DateTime.Now);
                 dic.Add("UPDATE_TIME", DateTime.Now);
-                AJTM_AS_PERSONNEL.Instance.Add(dic);
-                if (!string.IsNullOrEmpty(entity.AS_NO))
-                {
-                    //查询AS_NO代码
-                    DataTable dt = AJTM_AS_DETAIL.Instance.GetTableFields("ID,AS_APPLY_NO,AS_APPLY_ID", " AS_NO=?", new object[] { entity.AS_NO });
-                    if (dt.Rows.Count > 0)
-                    {
-                        DataRow dr = dt.Rows[0];
-                        //用编序号清单装填
-                        Dictionary<string, object> dicAsDetailStatus = new Dictionary<string, object>();
-                        dicAsDetailStatus.Add("AS_DETAIL_ID", Convert.ToInt32(dr["ID"]));
-                        dicAsDetailStatus.Add("AS_APPLY_NO", dr["AS_APPLY_NO"].ToString());
-                        if (!string.IsNullOrEmpty(dr["AS_APPLY_ID"].ToString()))
-                            dicAsDetailStatus.Add("AS_APPLY_ID", Convert.ToInt32(dr["AS_APPLY_ID"]));
-                        dicAsDetailStatus.Add("STATUS_TIME", DateTime.Now);
-                        dicAsDetailStatus.Add("CREATE_UID", SystemSession.UserID);
-                        dicAsDetailStatus.Add("UPDATE_UID", SystemSession.UserID);
-                        dicAsDetailStatus.Add("CREATE_TIME", DateTime.Now);
-                        dicAsDetailStatus.Add("UPDATE_TIME", DateTime.Now);
-                        //待上编明细
-                        Dictionary<string, object> dicAsDetail = new Dictionary<string, object>();
-                        if (entity.ACTION == "上编")
-                        {
-                            dicAsDetailStatus.Add("STATUS", BLL.Model.ENUM_AS_DETAIL_STATUS.使用.ToString());
-                            dicAsDetail.Add("USE_TIME", DateTime.Now);
-
-                        }
-                        else
-                        {
-                            dicAsDetailStatus.Add("STATUS", BLL.Model.ENUM_AS_DETAIL_STATUS.销号.ToString());
-                            dicAsDetail.Add("CANCEL_TIME", DateTime.Now);
-                        }
-                        AJTM_AS_DETAIL.Instance.Update(dicAsDetail, " AS_NO=?", entity.AS_NO);
-                        AJTM_AS_DETAIL_STATUS.Instance.Add(dicAsDetailStatus);
-                    }
-                    else
-                    {
-                        result.IsSuccess = true;
-                        result.Message = "数据提交成功,但未找到待上编信息";
-                        return Json(result, JsonRequestBehavior.AllowGet);
-                    }
-                }
+                AJTM_AS_PERSONNEL.Instance.UpdateByKey(dic, entity.ID);
 
             }
             result.IsSuccess = true;
@@ -250,9 +204,9 @@ namespace CS.WebUI.Controllers.AJTM
         /// <param name="AccountName">用户名称</param>
         /// <param name="UnitId">集团信息</param>
         /// <returns></returns>
-        public string GetPersonnel(string AccountName,int UnitId = 0)
+        public string GetPersonnel(string AccountName, int UnitId = 0)
         {
-           return SerializeObject(AJTM_AS_PERSONNEL.Instance.GetTableByAccountName(AccountName, UnitId));
+            return SerializeObject(AJTM_AS_PERSONNEL.Instance.GetTableByAccountName(AccountName, UnitId));
         }
     }
 }
