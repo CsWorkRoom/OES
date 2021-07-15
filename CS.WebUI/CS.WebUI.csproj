@@ -1879,6 +1879,7 @@
     <Content Include="Views\AjtmConsideration\Approvel.cshtml" />
     <Content Include="Views\AjtmAsPersonnel\Add.cshtml" />
     <Content Include="Views\AjtmUnit\Show.cshtml" />
+    <Content Include="Views\AjtmLeaderUnit\Report.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

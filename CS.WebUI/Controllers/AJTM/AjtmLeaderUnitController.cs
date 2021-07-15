@@ -102,7 +102,14 @@ namespace CS.WebUI.Controllers.AJTM
                 Leader = r2
             });
         }
-
+        /// <summary>
+        /// 报表
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Report()
+        {
+            return View();
+        }
 
         public ActionResult Edit()
         {
