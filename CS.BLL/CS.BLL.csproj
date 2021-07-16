@@ -114,6 +114,7 @@
     <Compile Include="FW\BF_USER.cs" />
     <Compile Include="FW\BF_FIELD.cs" />
     <Compile Include="FW\SystemSession.cs" />
+    <Compile Include="ModelExtension\EX_LEADER_UNIT.cs" />
     <Compile Include="Model\AJTM_ACCESS_MODE.cs" />
     <Compile Include="Model\AJTM_AS_APPLY.cs" />
     <Compile Include="Model\AJTM_AS_APPLY_DETAIL.cs" />

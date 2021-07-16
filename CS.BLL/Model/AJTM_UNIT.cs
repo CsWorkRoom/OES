@@ -226,7 +226,7 @@ namespace CS.BLL.Model
         /// <returns></returns>
         public List<object> GetDropTree()
         {
-            var dt = GetTableFields("ID,PARENT_ID,NAME"," IS_USE = 1",new object[] { });
+            var dt = GetTableFields("ID,PARENT_ID,NAME", " IS_USE = 1", new object[] { });
             List<object> list = new List<object>();
             foreach (DataRow dr in dt.Rows)
             {
@@ -245,7 +245,7 @@ namespace CS.BLL.Model
         /// </summary>
         /// <param name="unitId"></param>
         /// <returns></returns>
-        public Dictionary<string,string> GetUnitByIdForShow(int unitId = 0)
+        public Dictionary<string, string> GetUnitByIdForShow(int unitId = 0)
         {
             string sql = string.Format(@"SELECT A.ID,
                    A.NAME,
@@ -359,7 +359,8 @@ namespace CS.BLL.Model
                      A.PARENT_ID,
                      A.NAME,
                      B.NAME AS RANGE_NAME,
-                     C.NAME AS LEVEL_NAME
+                     C.NAME AS LEVEL_NAME,
+                     C.LEVEL_ID AS LEVEL
                 FROM AJTM_UNIT A
                      LEFT JOIN AJTM_SETUP_RANGE B ON (A.SETUP_RANGE_ID = B.ID)
                      LEFT JOIN AJTM_SETUP_LEVEL C ON (A.SETUP_LEVEL_ID = C.ID)
@@ -370,6 +371,34 @@ namespace CS.BLL.Model
             {
                 return db.ExecuteDataTable(sql);
             }
+        }
+
+
+        public class TableForExcel
+        {
+            public int ID { get; set; }
+            public int PARENT_ID { get; set; }
+            public string NAME { get; set; }
+            public string RANGE_NAME { get; set; }
+            public string LEVEL_NAME { get; set; }
+        }
+
+        public IList<TableForExcel> GetListForExcel()
+        {
+            var dt = GetTableForExcel();
+            var list = new List<TableForExcel>();
+            foreach(DataRow dr in dt.Rows)
+            {
+                list.Add(new TableForExcel()
+                {
+                    ID = Convert.ToInt32(dr["ID"]),
+                    PARENT_ID = Convert.ToInt32(dr["PARENT_ID"]),
+                    NAME = dr["NAME"].ToString(),
+                    RANGE_NAME = dr["RANGE_NAME"].ToString(),
+                    LEVEL_NAME = dr["LEVEL_NAME"].ToString()
+                });
+            }
+            return list;
         }
     }
 }
