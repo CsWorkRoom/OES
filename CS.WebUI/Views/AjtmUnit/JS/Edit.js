@@ -27,7 +27,11 @@ $(function () {
         var trArr = $("#AsUnit").find("tr");
         if (trArr.length === 0) add();
     }, 0);
+
+    InitInputNumberEvent();
 });
+
+
 
 
 function add(e) {

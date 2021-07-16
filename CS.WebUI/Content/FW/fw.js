@@ -477,9 +477,26 @@ $(function () {
 
 
 
-
-//输入数字
-function InputNumber(e) {
-    var _this = e || this;
-    return _this.value = _this.value.replace(/[^\d]/g, '');
+function InitInputNumberEvent() {
+    //数字输入
+    $(".BenInputNumber").each(function (index, e) {
+        //完全禁用IME。对于有焦点的控件（如输入框），用户不可以激活IME
+        $(e).css("ime-mode", "disabled");
+        //某个键盘按键被按下并松开。
+        $(e).bind("keypress", function (event) {
+            return event.keyCode >= 48 && event.keyCode <= 57
+        });
+        //某个键盘按键被松开
+        $(e).bind("keyup", function () {
+            this.value = this.value.replace(/[^\d]/g, '');
+        });
+        //元素失去焦点时触发
+        $(e).bind("blur", function () {
+            this.value = this.value.replace(/[^\d]/g, '');
+        });
+        //该事件在用户粘贴元素内容时触发
+        $(e).bind("paste", function () {
+            this.value = this.value.replace(/[^\d]/g, '');
+        })
+    });
 }

@@ -226,7 +226,7 @@ namespace CS.BLL.Model
         /// <returns></returns>
         public List<object> GetDropTree()
         {
-            var dt = GetTableFields("ID,PARENT_ID,NAME");
+            var dt = GetTableFields("ID,PARENT_ID,NAME"," IS_USE = 1",new object[] { });
             List<object> list = new List<object>();
             foreach (DataRow dr in dt.Rows)
             {
