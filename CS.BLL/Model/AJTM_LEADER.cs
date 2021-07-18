@@ -102,6 +102,21 @@ namespace CS.BLL.Model
             [Field(IsNotNull = true, DefaultValue = "0", Comment = "是否在职")]
             public short IS_USE { get; set; }
             /// <summary>
+            /// 是否兼任
+            /// </summary>
+            [Field(IsNotNull = true, DefaultValue = "0", Comment = "是否兼任")]
+            public short IS_CONCURREENT_POST { get; set; }
+            /// <summary>
+            /// 是否占职
+            /// </summary>
+            [Field(IsNotNull = true, DefaultValue = "0", Comment = "是否占职")]
+            public short IS_ORG { get; set; }
+            /// <summary>
+            /// 是否预留
+            /// </summary>
+            [Field(IsNotNull = true, DefaultValue = "0", Comment = "是否预留")]
+            public short IS_RESERVE { get; set; }
+            /// <summary>
             /// 创建者ID
             /// </summary>
             [Field(IsNotNull = true, DefaultValue = "0", Comment = "创建者ID")]
@@ -129,12 +144,25 @@ namespace CS.BLL.Model
 
         public IList<Entity> GetListEntityByUnitId(int unitId)
         {
-           return GetList<Entity>(" UNIT_ID=?", new object[] { unitId });
+            return GetList<Entity>(" UNIT_ID=?", new object[] { unitId });
         }
 
         public IList<Entity> GetListEntity()
         {
             return GetList<Entity>();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="isUse">是否在用</param>
+        /// <param name="isOrg">是否占职</param>
+        /// <param name="isAs">是否兼任</param>
+        /// <param name="isCp">是否预留</param>
+        /// <returns></returns>
+        public short JudgeReserve(int isUse, int isOrg, int isAs, int isCp)
+        {
+            if (isUse == 1 && isOrg == 1 && isAs == 1 && isCp == 0) return 0;
+            return 1;
         }
     }
 }

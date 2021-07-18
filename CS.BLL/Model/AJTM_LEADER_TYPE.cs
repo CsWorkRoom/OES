@@ -77,7 +77,18 @@ namespace CS.BLL.Model
 
         }
         #endregion
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<int,string> GetDropDown()
+        {
+            return GetDictionary("ID", "NAME");
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public List<Entity> GetListEntity()
         {
             var arr = GetDictionary("ID", "NAME");

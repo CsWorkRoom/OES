@@ -23,11 +23,13 @@ namespace CS.WebUI.Controllers.AJTM
             ViewBag.OutLayMode = AJTM_OUTLAY_MODE.Instance.GetDropDown();
             ViewBag.AsType = SerializeObject(AJTM_AS_TYPE.Instance.GetDropTree());
             ViewBag.Unit = SerializeObject(AJTM_UNIT.Instance.GetDropTree());
+            ViewBag.LeaderType = AJTM_LEADER_TYPE.Instance.GetListEntity();
             if (id > 0)
             {
                 var r = BLL.Model.AJTM_UNIT.Instance.GetEntityByKey<BLL.Model.AJTM_UNIT.Entity>(id);
                 var model = Common.Fun.ClassToCopy<BLL.Model.AJTM_UNIT.Entity,Model.Unit>(r);
                 model.AsUnitJson = SerializeObject(AJTM_UNIT_AS.Instance.GetTableByUnitId(model.ID));
+                model.LeaderUnit = SerializeObject(AJTM_LEADER_UNIT.Instance.GetTableFields("ID,LEADER_TYPE_ID,NUM", " UNIT_ID = ?", new object[] { id }));
                 return View(model);
             }
             return View(new Model.Unit());
@@ -88,7 +90,7 @@ namespace CS.WebUI.Controllers.AJTM
                 dic.Add("UPDATE_TIME", DateTime.Now);
                 entity.ID = AJTM_UNIT.Instance.Add(dic, true);
             }
-            //
+            //编制用途
             var unitAs = DeserializeObject<List<AJTM_UNIT_AS.Entity>>(entity.AsUnitJson);
             foreach (var item in unitAs)
             {
@@ -98,6 +100,18 @@ namespace CS.WebUI.Controllers.AJTM
                 unitAsDic.Add("VERIFICATION_NUM", item.VERIFICATION_NUM);
                 unitAsDic.Add("BEGIN_NUM", item.BEGIN_NUM);
                 AJTM_UNIT_AS.Instance.Add(unitAsDic);
+            }
+            //添加领导职数
+            var leaderTypeDropdown = AJTM_LEADER_TYPE.Instance.GetDropDown();
+            var leaderUnitList = DeserializeObject<List<AJTM_LEADER_UNIT.Entity>>(entity.LeaderUnit);
+            AJTM_LEADER_UNIT.Instance.Delete("UNIT_ID=?", entity.ID);
+            foreach(var item in leaderUnitList)
+            {
+                var leaderType = leaderTypeDropdown[item.LEADER_TYPE_ID];
+                var unitParent = "";
+                if (entity.PARENT_ID > 0)
+                    unitParent = AJTM_UNIT.Instance.GetStringValueByKey(entity.PARENT_ID, "NAME");
+                AJTM_LEADER_UNIT.Instance.Add(item.LEADER_TYPE_ID, leaderType, entity.ID, entity.NAME, entity.PARENT_ID, unitParent, item.NUM);
             }
 
             result.IsSuccess = true;
@@ -177,10 +191,21 @@ namespace CS.WebUI.Controllers.AJTM
         {
             //CS.BLL.Extension.UnitLeaderExcel excel = new BLL.Extension.UnitLeaderExcel("I:\\OES\\DOC", "text");
             //excel.Save();
-            ViewBag.UnitInfo = AJTM_UNIT.Instance.GetUnitByIdForShow(unitid);
+            var userInfo  = AJTM_UNIT.Instance.GetUnitByIdForShow(unitid);
+            ViewBag.isLeaderUnit = false;
+            if (!string.IsNullOrEmpty(userInfo["SETUP_LEVEL_SEQ"]))
+            {
+                var res = Convert.ToInt32(userInfo["SETUP_LEVEL_SEQ"]);
+                if (res <= AJTM_SETUP_LEVEL.Instance.VICE_COUNTY_LEVEL_ID)
+                {
+                    ViewBag.isLeaderUnit = true;
+                }
+            }
+            ViewBag.UnitInfo = userInfo;
             ViewBag.UnitAs = AJTM_UNIT_AS.Instance.GetListByUnitId(unitid);
             ViewBag.Leader = AJTM_LEADER.Instance.GetListEntityByUnitId(unitid);
             ViewBag.leaderUnit = AJTM_LEADER_UNIT.Instance.GetListEntityByUnitId(unitid);
+         
             return View();
         }
     }
@@ -190,6 +215,13 @@ namespace CS.WebUI.Controllers.Model
 {
     public class Unit : BLL.Model.AJTM_UNIT.Entity
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public string AsUnitJson { get; set; }
+        /// <summary>
+        /// 领导信息核定
+        /// </summary>
+        public string LeaderUnit { get; set; }
     }
 }

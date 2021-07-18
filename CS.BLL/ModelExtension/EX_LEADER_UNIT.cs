@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,32 +10,48 @@ using CS.BLL.Model;
 namespace CS.BLL.ModelExtension
 {
 
-    public class test
-    {
-        public List<object> data { get; set; }
-    }
-
-    public class data
-    {
-        public List<object> cell { get; set; }
-    }
-
-    public class cell 
-    { 
-        public string value { get; set; }
-
-        public int mergeC { get; set; }
-    }
 
     public class EX_LEADER_UNIT
     {
-        public static List<object> GetLeaderUnitReportInfo()
+
+        public class UNIT_SINGLE
+        {
+            /// <summary>
+            /// 多少行
+            /// </summary>
+            public object row { get; set; }
+        }
+
+        public class UNIT_ROW
+        {
+            /// <summary>
+            /// 多少列
+            /// </summary>
+            public List<UNIT_CELL> cell { get; set; }
+        }
+
+        public class UNIT_CELL
+        {
+            /// <summary>
+            /// 值
+            /// </summary>
+            public object value { get; set; }
+            /// <summary>
+            /// 合并行
+            /// </summary>
+            public int rowspan { get; set; }
+        }
+
+   
+
+        public List<UNIT_ROW> GetLeaderUnitReportInfo()
         {
             var unitDt = AJTM_UNIT.Instance.GetTableForExcel();
             var leaderList = AJTM_LEADER.Instance.GetListEntity();
             var leaderTypedic = AJTM_LEADER_TYPE.Instance.GetDictionary("ID", "NAME");
             var leaderUitList = AJTM_LEADER_UNIT.Instance.GetListEntity();
-
+            //
+            List<UNIT_ROW> arr = new List<UNIT_ROW>();
             //写入
             foreach (DataRow dr in unitDt.Rows)
             {
@@ -71,44 +88,155 @@ namespace CS.BLL.ModelExtension
                 //计算最大值
                 var leaderNumArr = new int[] { leaderNum1.Count(), leaderNum2.Count(), leaderNum3.Count(), leaderNum4.Count(), leaderNUm5.Count() };
                 var maxCount = leaderNumArr.Max(); //
-                maxCount = maxCount > 1 ? maxCount : 1;
-                var mergeRCount = maxCount;    //需要合并的行
-                //创建单元格
-                //CreateExcelTable(_rowIndex, _rowIndex + maxCount, _colIndexMax);
-                //赋值
-                
-                //wrCell(unitId.ToString(), mergeRCount);
-                //wrCell(unitName, mergeRCount);
-                //wrCell(unitRange, mergeRCount);
-                //wrCell(unitLevel, mergeRCount);
-                ////副县级以上
-                //wrCell(string.Empty, mergeRCount);
-                //wrCell(string.Empty, mergeRCount);
-                ////领导正职
-                //wrCell(luNum1.ToString(), mergeRCount);
-                //wrCell(luValue1, mergeRCount);
-                //wrCell(luHS1, mergeRCount);
-                ////领导副职
-                //wrCell(luNum2.ToString(), mergeRCount);
-                //wrCell(luValue2, mergeRCount);
-                //wrCell(luHS2, mergeRCount);
-                ////纪委
-                //wrCell(luNum3.ToString(), mergeRCount);
-                //wrCell(luValue3.ToString(), mergeRCount);
-                ////机关
-                //wrCell(luNum4.ToString(), mergeRCount);
-                //wrCell(luValue4.ToString(), mergeRCount);
-                ////其他
-                //wrCell(luNum5.ToString(), mergeRCount);
-                //wrCell(luValue5, mergeRCount);
-                //wrCell(luHS5, mergeRCount);
-                ////备注
-                //wrCell("", mergeRCount);
-                ////下一行
-                //lineRow(mergeRCount);
+
+                if (maxCount > 0)
+                {
+                    //初始加载
+                    for (int i = 0; i < maxCount; i++)
+                    {
+                        UNIT_ROW row = new UNIT_ROW();
+                        row.cell = new List<UNIT_CELL>();
+                        if (i == 0)
+                        {
+                            //初始信息
+                            row.cell.Add(setCell(unitId.ToString(), maxCount));
+                            row.cell.Add(setCell(unitName, maxCount));
+                            row.cell.Add(setCell(unitRange, maxCount));
+                            row.cell.Add(setCell(unitLevel, maxCount));
+                            //副县级以上
+                            row.cell.Add(setCell(string.Empty, maxCount));
+                            row.cell.Add(setCell(string.Empty, maxCount));
+                            //领导正职
+                            row.cell.Add(setCell(luNum1.ToString(), maxCount));
+                            setCell(luValue1, i, maxCount, row);
+                            setCell(luHS1, i, maxCount, row);
+                            //领导副职
+                            row.cell.Add(setCell(luNum2.ToString(), maxCount));
+                            setCell(luValue2, i, maxCount, row);
+                            setCell(luHS2, i, maxCount, row);
+                            //纪委
+                            row.cell.Add(setCell(luNum3.ToString(), maxCount));
+                            row.cell.Add(setCell(luValue3.ToString(), maxCount));
+                            //机关
+                            row.cell.Add(setCell(luNum4.ToString(), maxCount));
+                            row.cell.Add(setCell(luValue4.ToString(), maxCount));
+                            //其他
+                            row.cell.Add(setCell(luNum5.ToString(), maxCount));
+                            setCell(luValue5, i, maxCount, row);
+                            setCell(luHS5, i, maxCount, row);
+                            //备注
+                            row.cell.Add(setCell("", maxCount));
+                        }
+                        else
+                        {
+                            //领导正职
+                            setCell(luValue1, i, maxCount, row);
+                            setCell(luHS1, i, maxCount, row);
+                            //领导副职
+                            setCell(luValue2, i, maxCount, row);
+                            setCell(luHS2, i, maxCount, row);
+                            //其他
+                            setCell(luValue5, i, maxCount, row);
+                            setCell(luHS5, i, maxCount, row);
+                        }
+                        arr.Add(row);
+                    }
+                }
+                else
+                {
+                    UNIT_ROW row = new UNIT_ROW();
+                    row.cell = new List<UNIT_CELL>();
+                    //初始信息
+                    row.cell.Add(setCell(unitId.ToString(), maxCount));
+                    row.cell.Add(setCell(unitName, maxCount));
+                    row.cell.Add(setCell(unitRange, maxCount));
+                    row.cell.Add(setCell(unitLevel, maxCount));
+                    //副县级以上
+                    row.cell.Add(setCell(string.Empty, maxCount));
+                    row.cell.Add(setCell(string.Empty, maxCount));
+                    //领导正职
+                    row.cell.Add(setCell(luNum1.ToString(), maxCount));
+                    setCell(luValue1, 0, maxCount, row);
+                    setCell(luHS1, 0, maxCount, row);
+                    //领导副职
+                    row.cell.Add(setCell(luNum2.ToString(), maxCount));
+                    setCell(luValue2, 0, maxCount, row);
+                    setCell(luHS2, 0, maxCount, row);
+                    //纪委
+                    row.cell.Add(setCell(luNum3.ToString(), maxCount));
+                    row.cell.Add(setCell(luValue3.ToString(), maxCount));
+                    //机关
+                    row.cell.Add(setCell(luNum4.ToString(), maxCount));
+                    row.cell.Add(setCell(luValue4.ToString(), maxCount));
+                    //其他
+                    row.cell.Add(setCell(luNum5.ToString(), maxCount));
+                    setCell(luValue5, 0, maxCount, row);
+                    setCell(luHS5, 0, maxCount, row);
+                    //备注
+                    row.cell.Add(setCell("", maxCount));
+                    arr.Add(row);
+                }
+
             }
-            return new List<object>();
+            return arr;
         }
 
+        public UNIT_CELL setCell(string value, int rowspan)
+        {
+            return new UNIT_CELL()
+            {
+                value = value,
+                rowspan = rowspan
+            };
+        }
+
+        public void setCell(List<string> valuelist, int index, int maxCount, UNIT_ROW row)
+        {
+
+            if(valuelist.Count > 0)
+            {
+                bool isSet = true;
+                int rowspan = 0;
+                var value = analysisValueList(valuelist, index, maxCount, ref rowspan, ref isSet);
+                if (isSet)
+                    row.cell.Add(setCell(value, rowspan));
+            }
+            else
+            {
+                if (index == 0)
+                {
+                    row.cell.Add(setCell("", maxCount));
+                }
+            }
+        }
+
+        public string analysisValueList(List<string> valuelist,int index,int maxCount,ref int rowspan,ref bool isSet)
+        {
+            int valueCount = valuelist.Count;
+            int pagesize = Convert.ToInt32(maxCount / valueCount);
+            int remainder = index % pagesize;
+            //当余数为0时
+            if (remainder == 0)
+            {
+                isSet = true;
+                int endindex = (valueCount - 1) * pagesize;
+                if (index >= endindex)
+                {
+                    rowspan = maxCount - endindex;
+                    return valuelist[valueCount - 1];
+                }
+                else
+                {
+                    rowspan = pagesize;
+                    int valueIndex = Convert.ToInt32(index / pagesize);
+                    return valuelist[valueIndex];
+                }
+            }
+            else
+            {
+                isSet = false;
+                return "";
+            }
+        } 
     }
 }

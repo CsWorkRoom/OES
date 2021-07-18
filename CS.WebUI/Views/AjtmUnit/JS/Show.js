@@ -20,7 +20,7 @@
 });
 
 
-function Open(type, id) {
+function Open(type, id, title) {
     $("#PAction", window.parent.document).val(type);
     switch (type) {
         case "Edit":
@@ -29,8 +29,9 @@ function Open(type, id) {
             localAjaxPost("/AjtmUnit/SetUnable?id=" + id);
             return;
         case "Leader":
-            return OpenTopWindow("领导信息编辑", 1400, 800, "/AjtmLeaderUnit/Index?unitId=" + id + "");
-            return;
+            console.log(title);
+            if (!title) title = "领导信息编辑";
+            return OpenTopWindow(title, 1500, 800, "/AjtmLeaderUnit/Index?unitId=" + id + "");
         default:
             return;
     }

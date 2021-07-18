@@ -18,21 +18,30 @@ $(function () {
         } else {
             $.comboztree("PARENT_ID", {});
         }
+        //
         if ($("#AsUnitJson").val()) {
             var AsUnit = JSON.parse($("#AsUnitJson").val());
             for (var i = 0; i < AsUnit.length; i++) {
                 add(AsUnit[i]);
             }
         }
+        //获取领导职数
+        var LeaderUnit = $("#LeaderUnit").val();
+        if (LeaderUnit) {
+            var leaderUnitList = JSON.parse(LeaderUnit);
+            for (var i = 0; i < leaderUnitList.length; i++) {
+                var lu = leaderUnitList[i];
+                var target = $(".BenLeaderType[data-Key='" + lu.LEADER_TYPE_ID + "']");
+                target.val(lu.NUM);
+            }
+        }
+        //编制用途
         var trArr = $("#AsUnit").find("tr");
         if (trArr.length === 0) add();
     }, 0);
 
     InitInputNumberEvent();
 });
-
-
-
 
 function add(e) {
     var r = { AS_TYPE_ID: 0, VERIFICATION_NUM: 0, BEGIN_NUM: 0 };
@@ -66,8 +75,6 @@ function remove() {
     $(this).closest("tr").remove();
 }
 
-
-
 function getRandomString(len) {
     len = len | 8;
     var str = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -78,8 +85,8 @@ function getRandomString(len) {
     return strRan;
 }
 
-
 function save() {
+    SaveBefore();
     layui.use(['form', 'layer', 'jquery'], function () {
         var form = layui.form, layer = layui.layer, $ = layui.$;
         let r = unitAsArr();
@@ -91,11 +98,6 @@ function save() {
         SaveForm('form', url);
         return;
         function unitAsArr() {
-            //let name = $("#NAME").val();
-            //if (name..length === 0) {
-            //    return { isErr: true, Msg: "提交失败,单位名称不能为空" };
-            //}
-            //
             var trArr = $("#AsUnit").find("tr");
             var rArr = [];
             for (var i = 0; i < trArr.length; i++) {
@@ -118,4 +120,21 @@ function save() {
             return { isErr: false };
         }
     });
+}
+
+function SaveBefore() {
+    var leaderUnitList = $(".BenLeaderType");
+    var arr = [];
+    for (var i = 0; i < leaderUnitList.length; i++) {
+        var target = leaderUnitList.eq(i);
+        var value = target.val().trim();
+        if (value > 0) {
+            var typeId = target.attr("data-Key");
+            arr.push({
+                LEADER_TYPE_ID: typeId,
+                NUM: value
+            });
+        }
+    }
+    $("#LeaderUnit").val(JSON.stringify(arr));
 }

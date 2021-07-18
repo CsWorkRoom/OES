@@ -14,6 +14,10 @@ namespace CS.BLL.Model
     public class AJTM_SETUP_LEVEL:BBaseQuery
     {
         /// <summary>
+        /// 副县级的序列号
+        /// </summary>
+        public int VICE_COUNTY_LEVEL_ID = 3;
+        /// <summary>
         /// 单例
         /// </summary>
         public static AJTM_SETUP_LEVEL Instance = new AJTM_SETUP_LEVEL();

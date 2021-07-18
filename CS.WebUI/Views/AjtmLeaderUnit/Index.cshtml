@@ -10,40 +10,25 @@
     <input hidden="hidden" id="SetupLevel" name="SetupLevel" value="@ViewBag.SetupLevel" />
     <input hidden="hidden" id="Leader" name="Leader" value="" />
     <input hidden="hidden" id="LeaderTypeUnit" name="LeaderTypeUnit" value="" />
-    <input hidden="hidden" id="UnitId"  value="@ViewBag.UnitId"/>
+    <input hidden="hidden" id="UNIT_ID" name="UNIT_ID" value="@ViewBag.UnitId" />
+
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
         <legend>选择单位</legend>
     </fieldset>
-    <div class="layui-form-item" id="LeaderStart">
-        <div class="layui-inline">
-            <label class="layui-form-label">编制单位</label>
-            <div class="layui-input-inline">
-                <input hidden="hidden" name="UNIT_NAME" id="UNIT_NAME" value="" />
-                <input type="text" name="UNIT_ID" id="UNIT_ID" value="">
-            </div>
-        </div>
-        <div class="layui-inline">
-            <label class="layui-form-label">主管单位</label>
-            <div class="layui-input-inline">
-                <input hidden="hidden" name="UNIT_PARENT_ID" id="UNIT_PARENT_ID" value="" />
-                <input type="text" name="UNIT_PARENT" id="UNIT_PARENT" value="" autocomplete="off" class="layui-input" readonly="readonly">
-            </div>
-        </div>
-    </div>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
         <legend>领导信息操作</legend>
     </fieldset>
-    <div class="layui-row">
+    <div class="layui-form-item">
         @foreach (var item in Typelist)
         {
-            <div class="layui-col-xs6 layui-col-sm6 layui-col-md4" style="margin-top:10px">
+            <div class="layui-inline">
                 <label class="layui-form-label">@item.NAME</label>
                 <div class="layui-input-inline">
-                    <input type="text" data-index="@item.ID" data-text="@item.NAME" value="" autocomplete="off" class="layui-input inputLeaderType">
+                    <input type="tel" value="" data-index="@item.ID" data-text="@item.NAME" autocomplete="off" disabled="disabled" class="layui-input inputLeaderType BenInputNumber">
                 </div>
             </div>
         }
-        <div class="layui-col-xs6 layui-col-sm6 layui-col-md4" style="margin-top:10px">
+        <div class="layui-inline">
             <button type="button" id="btnInit" class="layui-btn">初始化数量</button>
         </div>
     </div>

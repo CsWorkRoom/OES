@@ -113,5 +113,35 @@ namespace CS.BLL.Model
         {
             return GetList<Entity>();
         }
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="LeaderTypeID">领导类型ID</param>
+        /// <param name="LeaderType">领导类型</param>
+        /// <param name="UnitID">单位ID</param>
+        /// <param name="UnitName">单位</param>
+        /// <param name="UnitParentId">主管部门ID</param>
+        /// <param name="UnitParent">主管部门</param>
+        /// <param name="Num">数量</param>
+        /// <returns></returns>
+        public int Add(int LeaderTypeID, string LeaderType, int UnitID, string UnitName, int UnitParentId, string UnitParent, int Num)
+        {
+            Dictionary<string, object> dic = new Dictionary<string, object>();
+            dic.Add("LEADER_TYPE_ID", LeaderTypeID);
+            dic.Add("LEADER_TYPE", LeaderType);
+            dic.Add("UNIT_NAME", UnitName);
+            dic.Add("UNIT_ID", UnitID);
+            dic.Add("UNIT_PARENT_ID", UnitParentId);
+            dic.Add("UNIT_PARENT", UnitParent);
+            dic.Add("NUM", Num);
+            dic.Add("CREATE_UID", SystemSession.UserID);
+            dic.Add("UPDATE_UID", SystemSession.UserID);
+            dic.Add("CREATE_TIME", DateTime.Now);
+            dic.Add("UPDATE_TIME", DateTime.Now);
+            return Add(dic);
+        }
+
+
+        public string PATH = "../File/LEADERUNIT";
     }
 }

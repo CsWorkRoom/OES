@@ -8,6 +8,7 @@
     <input hidden="hidden" value="@ViewBag.Unit" id="Unit" />
     <input hidden="hidden" value="@Model.AsUnitJson" id="AsUnitJson" name="AsUnitJson" />
     <input hidden="hidden" value="@Model.ID" id="ID" name="ID" />
+    <input hidden="hidden" value="@Model.LeaderUnit" id="LeaderUnit" name="LeaderUnit" />
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
         <legend>单位基本信息</legend>
     </fieldset>
@@ -161,7 +162,7 @@
         <legend>单位编制信息</legend>
     </fieldset>
     <div class="layui-form-item">
-        <table class="layui-table" style="margin:0 auto">
+        <table class="layui-table" style="margin:0 auto; width:80%">
             <colgroup>
                 <col width="200">
                 <col width="100">
@@ -180,59 +181,63 @@
         </table>
     </div>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-        <legend>扩展信息</legend>
+        <legend>领导职数</legend>
     </fieldset>
     <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">内设机构领导正职核定数</label>
+        @foreach (var item in ViewBag.LeaderType)
+        {
+            <div class="layui-inline">
+                <label class="layui-form-label">@item.NAME</label>
+                <div class="layui-input-inline">
+                    <input type="tel" value="" data-key="@item.ID" autocomplete="off" class="layui-input BenLeaderType BenInputNumber">
+                </div>
+            </div>
+        } <div class="layui-inline">
+            <label class="layui-form-label">内设机构领导正职</label>
             <div class="layui-input-inline">
                 <input type="tel" name="WITHIN_MAIN_NUM" value="@Model.WITHIN_MAIN_NUM" autocomplete="off" class="layui-input BenInputNumber">
             </div>
         </div>
         <div class="layui-inline">
-            <label class="layui-form-label">内设机构领导副职核定数</label>
+            <label class="layui-form-label">内设机构领导副职</label>
             <div class="layui-input-inline">
                 <input type="text" name="WITHIN_VICE_NUM" value="@Model.WITHIN_VICE_NUM" autocomplete="off" class="layui-input BenInputNumber">
             </div>
         </div>
-    </div>
-    <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">部门其他工作机构领导核定数</label>
+            <label class="layui-form-label">部门其他工作机构领导</label>
             <div class="layui-input-inline">
                 <input type="text" name="OTHER_NUM" value="@Model.OTHER_NUM" autocomplete="off" class="layui-input BenInputNumber">
             </div>
         </div>
-        <div class="layui-inline">
-            <label class="layui-form-label"></label>
-            <div class="layui-input-inline">
-            </div>
-        </div>
+
     </div>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>领导职级</legend>
+    </fieldset>
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">厅局级正职核定数</label>
+            <label class="layui-form-label">厅局级正职</label>
             <div class="layui-input-inline">
                 <input type="tel" name="OFFICE_MIAN_NUM" value="@Model.OFFICE_MIAN_NUM" autocomplete="off" class="layui-input BenInputNumber">
             </div>
         </div>
         <div class="layui-inline">
-            <label class="layui-form-label">厅局级副职核定数</label>
+            <label class="layui-form-label">厅局级副职</label>
             <div class="layui-input-inline">
                 <input type="text" name="OFFICE_VICE_NUM" value="@Model.OFFICE_VICE_NUM" autocomplete="off" class="layui-input BenInputNumber">
             </div>
         </div>
-
     </div>
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">县处级正职核定数(领导)</label>
+            <label class="layui-form-label">县处级正职</label>
             <div class="layui-input-inline">
                 <input type="text" name="COUNTY_MIAN_L" value="@Model.COUNTY_MIAN_L" autocomplete="off" class="layui-input BenInputNumber">
             </div>
         </div>
         <div class="layui-inline">
-            <label class="layui-form-label">县处级副职核定数(领导)</label>
+            <label class="layui-form-label">县处级副职</label>
             <div class="layui-input-inline">
                 <input type="tel" name="COUNTY_VICE_L" value="@Model.COUNTY_VICE_L" autocomplete="off" class="layui-input BenInputNumber">
             </div>
@@ -240,27 +245,30 @@
     </div>
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">乡科级正职核定数(领导)</label>
+            <label class="layui-form-label">乡科级正职</label>
             <div class="layui-input-inline">
                 <input type="text" name="VILLAGE_MIAN_L" value="@Model.VILLAGE_MIAN_L" autocomplete="off" class="layui-input BenInputNumber">
             </div>
         </div>
         <div class="layui-inline">
-            <label class="layui-form-label">乡科级副职核定数(领导)</label>
+            <label class="layui-form-label">乡科级副职</label>
             <div class="layui-input-inline">
                 <input type="text" name="VILLAGE_VICE_L" value="@Model.VILLAGE_VICE_L" autocomplete="off" class="layui-input BenInputNumber">
             </div>
         </div>
     </div>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>中层职级</legend>
+    </fieldset>
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">县处级正职核定数(中层)</label>
+            <label class="layui-form-label">县处级正职</label>
             <div class="layui-input-inline">
                 <input type="tel" name="COUNTY_MIAN_MR" value="@Model.COUNTY_MIAN_MR" autocomplete="off" class="layui-input BenInputNumber">
             </div>
         </div>
         <div class="layui-inline">
-            <label class="layui-form-label">县处级副职核定数(中层)</label>
+            <label class="layui-form-label">县处级副职</label>
             <div class="layui-input-inline">
                 <input type="text" name="COUNTY_VICE_MR" value="@Model.COUNTY_VICE_MR" autocomplete="off" class="layui-input BenInputNumber">
             </div>
@@ -268,20 +276,20 @@
     </div>
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">乡科级副职核定数(中层)</label>
+            <label class="layui-form-label">乡科级副职</label>
             <div class="layui-input-inline">
                 <input type="text" name="VILLAGE_MIAN_MR" value="@Model.VILLAGE_MIAN_MR" autocomplete="off" class="layui-input BenInputNumber">
             </div>
         </div>
         <div class="layui-inline">
-            <label class="layui-form-label">乡科级正职核定数(中层)</label>
+            <label class="layui-form-label">乡科级正职</label>
             <div class="layui-input-inline">
                 <input type="tel" name="VILLAGE_VICE_MR" value="@Model.VILLAGE_VICE_MR" autocomplete="off" class="layui-input BenInputNumber">
             </div>
         </div>
     </div>
 </form>
-<div class="form-bottom-submit" style="text-align:right;">
+<div class="form-bottom-submit" style="text-align:center;margin:30px 0">
     <input type="hidden" id="msg" value="@ViewBag.Message" />
     <div class="layui-inline">
         <button type="button" class="layui-btn" onclick="save();">确定</button>

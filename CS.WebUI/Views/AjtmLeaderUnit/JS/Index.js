@@ -1,49 +1,49 @@
 ﻿$(function () {
-    initTree("Unit", "UNIT_ID", function (event, treeId, treeNode) {
-        $("#UNIT_NAME").val(treeNode.name);
-        let parentNode = treeNode.getParentNode();
-        if (parentNode) {
-            $("#UNIT_PARENT").val(parentNode.name);
-            $("#UNIT_PARENT_ID").val(parentNode.id);
-        } else {
-            $("#UNIT_PARENT").val("");
-            $("#UNIT_PARENT_ID").val(0);
-        }
+    //initTree("Unit", "UNIT_ID", function (event, treeId, treeNode) {
+    //    $("#UNIT_NAME").val(treeNode.name);
+    //    let parentNode = treeNode.getParentNode();
+    //    if (parentNode) {
+    //        $("#UNIT_PARENT").val(parentNode.name);
+    //        $("#UNIT_PARENT_ID").val(parentNode.id);
+    //    } else {
+    //        $("#UNIT_PARENT").val("");
+    //        $("#UNIT_PARENT_ID").val(0);
+    //    }
 
-        //$.get("../AjtmLeaderUnit/GetLeaderInfoByUnit", { UnitID: treeNode.id }, function (r) {
-        //    AjaxGetLeaderType(r.LeaderUnit);
-        //    AjaxGetLeader(r.Leader);
-        //}, "json");
-        AjaxGet(treeNode.id);
-    });
+    //    //$.get("../AjtmLeaderUnit/GetLeaderInfoByUnit", { UnitID: treeNode.id }, function (r) {
+    //    //    AjaxGetLeaderType(r.LeaderUnit);
+    //    //    AjaxGetLeader(r.Leader);
+    //    //}, "json");
+    //    AjaxGet(treeNode.id);
+    //});
     //通用方法
-    function initTree(inputId, treeId, onClick) {
-        if (typeof onClick !== "function") onClick = function (event, treeId, treeNode) { };
-        var json = $("#" + inputId).val();
-        if (json) {
-            var node = JSON.parse(json);
-            let obj = $.comboztree(treeId, { ztreenode: node, onClick: onClick });
-            $("#" + treeId).data("ztree", obj);
-        }
-    }
+    //function initTree(inputId, treeId, onClick) {
+    //    if (typeof onClick !== "function") onClick = function (event, treeId, treeNode) { };
+    //    var json = $("#" + inputId).val();
+    //    if (json) {
+    //        var node = JSON.parse(json);
+    //        let obj = $.comboztree(treeId, { ztreenode: node, onClick: onClick });
+    //        $("#" + treeId).data("ztree", obj);
+    //    }
+    //}
 
     $("#btnInit").bind("click", init);
 
-   
-    var UId = $("#UnitId").val();
+
+    var UId = $("#UNIT_ID").val();
     if (UId) {
-        var treeNode = $("#UNIT_ID").data("ztree").setValue(UId);
-        if (treeNode) {
-            $("#UNIT_NAME").val(treeNode.name);
-            let parentNode = treeNode.getParentNode();
-            if (parentNode) {
-                $("#UNIT_PARENT").val(parentNode.name);
-                $("#UNIT_PARENT_ID").val(parentNode.id);
-            } else {
-                $("#UNIT_PARENT").val("");
-                $("#UNIT_PARENT_ID").val(0);
-            }
-        }
+        //var treeNode = $("#UNIT_ID").data("ztree").setValue(UId);
+        //if (treeNode) {
+        //    $("#UNIT_NAME").val(treeNode.name);
+        //    let parentNode = treeNode.getParentNode();
+        //    if (parentNode) {
+        //        $("#UNIT_PARENT").val(parentNode.name);
+        //        $("#UNIT_PARENT_ID").val(parentNode.id);
+        //    } else {
+        //        $("#UNIT_PARENT").val("");
+        //        $("#UNIT_PARENT_ID").val(0);
+        //    }
+        //}
         AjaxGet(UId);
     }
 });
@@ -59,7 +59,7 @@ function AjaxGet(unitId) {
 
 function init() {
     var temp = TempLeaderInfo();
-   
+
     var temptbody = temp.find("tbody");
     var num = 0;
     var list = $(".inputLeaderType");
@@ -116,8 +116,10 @@ function initData(obj) {
         LEADER_LEVEL: "",
         LEADER_JOB: "",
         LEADER_NAME: "",
-        IS_AS: 1,
-        IS_USE: 1
+        IS_ORG: 0,
+        IS_AS: 0,
+        IS_USE: 0,
+        IS_CONCURREENT_POST: 0
     }, obj);
 }
 
@@ -135,15 +137,17 @@ function TempLeaderInfo() {
                     <col width="100">
                     <col width="100">
                     <col width="100">
+                    <col width="100">
                 </colgroup>
                 <thead>
                     <tr>
                         <th>领导类型</th>
                         <th>领导职务</th>
                         <th>领导级别</th>
-                        <th>是否占编</th>
-                        <th>是否在职</th>
                         <th>领导名称</th>
+                        <th>是否占编</th>
+                        <th>是否占职</th>
+                        <th>是否兼职</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -165,14 +169,17 @@ function TempLeaderByRow(r) {
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
     </tr>`);
     var tds = temp.find("td");
     tds.eq(0).append("<span>" + r.LEADER_TYPE + "</span>");
-    tds.eq(1).append(`<input type="text" value="` + r.LEADER_JOB+`" autocomplete="off" class="layui-input">`);
+    tds.eq(1).append(`<input type="text" value="` + r.LEADER_JOB + `" autocomplete="off" class="layui-input">`);
     tds.eq(2).append(tempSelectSetupLevel(r.LAEDER_LEVEL_ID));
-    tds.eq(3).append(tempSelectByIF(r.IS_AS));
-    tds.eq(4).append(tempSelectByIF(r.IS_USE));
-    tds.eq(5).append(`<input type="text" value="` + r.LEADER_NAME+`" autocomplete="off" class="layui-input">`);
+    tds.eq(3).append(`<input type="text" value="` + r.LEADER_NAME + `" autocomplete="off" class="layui-input">`);
+    tds.eq(4).append(tempSelectByIF(r.IS_AS));
+    tds.eq(5).append(tempSelectByIF(r.IS_ORG));
+    tds.eq(6).append(tempSelectByIF(r.IS_CONCURREENT_POST));
+
     var tr = temp.data("item", r);
     return temp;
 }
@@ -194,6 +201,7 @@ function tempSelectSetupLevel(currValue) {
             `);
         }
     }
+
     temp.find("option[value='" + currValue + "']").attr("selected", "selected");
     return temp;
 }
@@ -209,16 +217,18 @@ function getRandomString(len) {
 }
 
 function tempSelectByIF(currValue) {
-     
+
     var temp = $(`
       <select lay-ignore style="width:80%;height:30px">
-            <option value='1'>是</option>
             <option value='0'>否</option>
+            <option value='1'>是</option>
       </select>
    `);
+
     temp.find("option[value='" + currValue + "']").attr("selected", "selected");
     return temp;
 }
+
 
 function save() {
     if (saveBefore()) return;
@@ -247,15 +257,17 @@ function saveBeforeByLeader() {
         }
         var LAEDER_LEVEL_ID = tds.eq(2).find("select").val();
         if (LAEDER_LEVEL_ID.length === 0) {
-             layer.alert("请选择第" + (i + 1) + "行的领导级别");
+            layer.alert("请选择第" + (i + 1) + "行的领导级别");
             return true;
         }
         var LEADER_LEVEL = tds.eq(2).find("option:selected").text();
-        var IS_AS = tds.eq(3).find("select").val();
-        var IS_USE = tds.eq(4).find("select").val();
-        var LEADER_NAME = tds.eq(5).find("input").val();
+        var LEADER_NAME = tds.eq(3).find("input").val();
+        var IS_AS = tds.eq(4).find("select").val();
+        var IS_ORG = tds.eq(5).find("select").val();
+        var IS_CONCURREENT_POST = tds.eq(6).find("select").val();
 
-        item = $.extend(item, { LEADER_JOB, LAEDER_LEVEL_ID, LEADER_LEVEL, IS_AS, IS_USE, LEADER_NAME });
+
+        item = $.extend(item, { LEADER_JOB, LAEDER_LEVEL_ID, LEADER_LEVEL, IS_AS, IS_ORG, LEADER_NAME, IS_CONCURREENT_POST });
         arr.push(item);
     }
     $("#Leader").val(JSON.stringify(arr));

@@ -253,6 +253,7 @@ namespace CS.BLL.Model
                    C.NAME SETUP_NATRUE,
                    D.NAME SETUP_TYPE,
                    E.NAME SETUP_LEVEL,
+                   E.LEVEL_ID SETUP_LEVEL_SEQ,
                    F.NAME OUTLAY_MODE,
                    G.NAME SETUP_RANGE,
                    decode(a.IS_PUBLIC,1,'参公','') AS IS_PUBLIC,
@@ -296,6 +297,7 @@ namespace CS.BLL.Model
                     dic.Add("SETUP_NATRUE", dr["SETUP_NATRUE"].ToString());
                     dic.Add("SETUP_TYPE", dr["SETUP_TYPE"].ToString());
                     dic.Add("SETUP_LEVEL", dr["SETUP_LEVEL"].ToString());
+                    dic.Add("SETUP_LEVEL_SEQ", dr["SETUP_LEVEL_SEQ"].ToString());
                     dic.Add("OUTLAY_MODE", dr["OUTLAY_MODE"].ToString());
                     dic.Add("SETUP_RANGE", dr["SETUP_RANGE"].ToString());
                     dic.Add("IS_PUBLIC", dr["IS_PUBLIC"].ToString());
@@ -324,6 +326,7 @@ namespace CS.BLL.Model
                     dic.Add("SETUP_NATRUE", "");
                     dic.Add("SETUP_TYPE", "");
                     dic.Add("SETUP_LEVEL", "");
+                    dic.Add("SETUP_LEVEL_SEQ", "");
                     dic.Add("OUTLAY_MODE", "");
                     dic.Add("SETUP_RANGE", "");
                     dic.Add("IS_PUBLIC", "");
@@ -348,6 +351,24 @@ namespace CS.BLL.Model
             }
         }
 
+
+
+        public DataTable GetUnitAndParent(int unitId)
+        {
+            string sql = string.Format(@"SELECT A.ID,
+                   A.NAME,
+                   A.PARENT_ID,
+                   B.NAME AS PANRET
+              FROM AJTM_UNIT A
+                   LEFT JOIN AJTM_UNIT B ON (A.PARENT_ID = B.ID)
+            WHERE A.ID = {0}
+            ", unitId);
+            using (BDBHelper dbHelper = new BDBHelper())
+            {
+                return dbHelper.ExecuteDataTable(sql);
+            }
+        }
+
         /// <summary>
         /// 获取单位信息
         /// </summary>
@@ -360,11 +381,11 @@ namespace CS.BLL.Model
                      A.NAME,
                      B.NAME AS RANGE_NAME,
                      C.NAME AS LEVEL_NAME,
-                     C.LEVEL_ID AS LEVEL
+                     C.LEVEL_ID AS SETUP_LEVEL_SEQ
                 FROM AJTM_UNIT A
                      LEFT JOIN AJTM_SETUP_RANGE B ON (A.SETUP_RANGE_ID = B.ID)
                      LEFT JOIN AJTM_SETUP_LEVEL C ON (A.SETUP_LEVEL_ID = C.ID)
-            WHERE A.IS_USE = 1
+            WHERE A.IS_USE = 1 
             ORDER BY A.ID, A.PARENT_ID ASC
             ";
             using (BDBHelper db = new BDBHelper())

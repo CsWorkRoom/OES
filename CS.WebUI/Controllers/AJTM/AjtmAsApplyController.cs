@@ -266,7 +266,7 @@ namespace CS.WebUI.Controllers.AJTM
                 var model = BLL.Model.AJTM_AS_APPLY.Instance.GetEntityByKey<AJTM_AS_APPLY.Entity>(id);
                 if (model.ID > 0)
                 {
-                    string filename = HttpUtility.UrlEncode(string.Format("{2}_{1}_{0}.doc", DateTime.Now.ToString("yyyyMMddHHmmss"), "编制通知书", model.UNIT_NAME), Encoding.UTF8);
+                    string filename = HttpUtility.UrlEncode(string.Format("{2}_{1}_{0}.xlxs", DateTime.Now.ToString("yyyyMMddHHmmss"), "编制通知书", model.UNIT_NAME), Encoding.UTF8);
                     string fullName = Server.MapPath(model.AS_APPLY_PATH);
                     if (op == 1) fullName = Server.MapPath(model.AS_APPLY_PATH2);
                     System.Web.HttpContext.Current.Response.Buffer = true;
