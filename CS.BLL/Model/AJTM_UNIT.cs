@@ -92,6 +92,11 @@ namespace CS.BLL.Model
             [Field(IsNotNull = true, DefaultValue = "0", Comment = "内设机构数")]
             public int DEP_NUM { get; set; }
             /// <summary>
+            /// 其他预留
+            /// </summary>
+            [Field(IsNotNull = true, DefaultValue = "0", Comment = "其他预留")]
+            public int RESERVE_NUM { get; set; }
+            /// <summary>
             /// 是否启用
             /// </summary>
             [Field(IsNotNull = true, DefaultValue = "0", Comment = "是否启用")]

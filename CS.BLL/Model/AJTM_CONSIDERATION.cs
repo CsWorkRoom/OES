@@ -101,12 +101,12 @@ namespace CS.BLL.Model
         public DataTable GetApplyConsideration(string IDs)
         {
             string sql = string.Format(@"
-               SELECT A.ID,A.UNIT_NAME,A.UNIT_PARENT,C.NAME SETUP_LEVEL, D.NAME SETUP_TYPE,DECODE(B.IS_PUBLIC,1,'是','否') IS_PUBLIC,E.VERIFICATION_NUM,F.ACTUAL_NUM,
-                0 AS LEADER_NULL_NUM,
+                 SELECT A.ID,A.UNIT_NAME,A.UNIT_PARENT,C.NAME SETUP_LEVEL, D.NAME SETUP_TYPE,DECODE(B.IS_PUBLIC,1,'是','否') IS_PUBLIC,E.VERIFICATION_NUM,F.ACTUAL_NUM,
+                H.LEADER_NULL_NUM,
                 G.AS_DEAIL_NUM,
-                0 AS PRINCIPLE_RESERVE_NUM,
-                0 AS ORTHER_NUM,
-                0 AS USABLE_AS_NUM,
+                H.PRINCIPLE_RESERVE_NUM,
+                B.RESERVE_NUM AS ORTHER_NUM,
+                (E.VERIFICATION_NUM-F.ACTUAL_NUM-H.LEADER_NULL_NUM-G.AS_DEAIL_NUM-H.PRINCIPLE_RESERVE_NUM-NVL(B.RESERVE_NUM,0)) AS USABLE_AS_NUM,
                 A.APPLY_NUM,
                 0 AS SUGGEST_NUM,
                 '' AS REASON,
@@ -122,6 +122,10 @@ namespace CS.BLL.Model
                 LEFT JOIN (
                     SELECT UNIT_ID,COUNT(1) AS AS_DEAIL_NUM FROM AJTM_AS_DETAIL WHERE USE_TIME IS NULL GROUP BY UNIT_ID
                 )G ON(A.UNIT_ID = G.UNIT_ID)
+                LEFT JOIN (  
+                 SELECT UNIT_ID, (LEADER_NUM - LEADER_ACTUAL_NUM) AS LEADER_NULL_NUM,PRINCIPLE_RESERVE_NUM  FROM(
+                 SELECT UNIT_ID,COUNT(1) AS LEADER_NUM,SUM(IS_USE) AS LEADER_ACTUAL_NUM,SUM(CASE WHEN IS_USE =0 AND IS_RESERVE = 1 THEN 1 ELSE 0 END) AS PRINCIPLE_RESERVE_NUM FROM AJTM_LEADER GROUP BY UNIT_ID)
+                ) H ON(A.UNIT_ID = H.UNIT_ID)
               WHERE A.ID IN({0})
             ", IDs);
             using (BDBHelper dbHelper = new BDBHelper())
