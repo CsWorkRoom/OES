@@ -42,7 +42,7 @@ namespace CS.BLL.ModelExtension
             public int rowspan { get; set; }
         }
 
-   
+
 
         public List<UNIT_ROW> GetLeaderUnitReportInfo()
         {
@@ -60,18 +60,20 @@ namespace CS.BLL.ModelExtension
                 var unitName = dr["NAME"].ToString();
                 var unitRange = dr["RANGE_NAME"].ToString();
                 var unitLevel = dr["LEVEL_NAME"].ToString();
+                var unitNum = leaderUitList.Where(x => x.UNIT_ID == unitId).Sum(x => x.NUM);
+                var unitHS = leaderList.Where(x => x.IS_USE == 1 && x.UNIT_ID == unitId).Count();
                 //领导正职,领导副职,纪委,机关
                 var typeArr = new int[] { 1, 2, 3, 4 };
                 //领导正职
                 IList<AJTM_LEADER.Entity> leaderNum1 = leaderList.Where(x => x.LEADER_TYPE_ID == 1 && x.UNIT_ID == unitId).ToList();
                 var luNum1 = leaderUitList.Where(x => x.LEADER_TYPE_ID == 1 && x.UNIT_ID == unitId).Sum(x => x.NUM);
                 var luValue1 = leaderNum1.Select(x => x.LEADER_JOB).ToList();
-                var luHS1 = leaderNum1.Select(x => 1.ToString()).ToList();
+                var luHS1 = leaderNum1.Select(x => x.IS_USE.ToString()).ToList();
                 //领导副职
                 IList<AJTM_LEADER.Entity> leaderNum2 = leaderList.Where(x => x.LEADER_TYPE_ID == 2 && x.UNIT_ID == unitId).ToList();
                 var luNum2 = leaderUitList.Where(x => x.LEADER_TYPE_ID == 2 && x.UNIT_ID == unitId).Sum(x => x.NUM);
                 var luValue2 = leaderNum2.Select(x => x.LEADER_JOB).ToList();
-                var luHS2 = leaderNum2.Select(x => 1.ToString()).ToList();
+                var luHS2 = leaderNum2.Select(x => x.IS_USE.ToString()).ToList();
                 //纪委
                 IList<AJTM_LEADER.Entity> leaderNum3 = leaderList.Where(x => x.LEADER_TYPE_ID == 4 && x.UNIT_ID == unitId).ToList();
                 var luNum3 = leaderUitList.Where(x => x.LEADER_TYPE_ID == 4 && x.UNIT_ID == unitId).Sum(x => x.NUM);
@@ -84,7 +86,7 @@ namespace CS.BLL.ModelExtension
                 IList<AJTM_LEADER.Entity> leaderNUm5 = leaderList.Where(x => !typeArr.Contains(x.LEADER_TYPE_ID) && x.UNIT_ID == unitId).ToList();
                 var luNum5 = leaderUitList.Where(x => !typeArr.Contains(x.LEADER_TYPE_ID) && x.UNIT_ID == unitId).Sum(x => x.NUM);
                 var luValue5 = leaderNUm5.Select(x => x.LEADER_JOB).ToList();
-                var luHS5 = leaderNUm5.Select(x => 1.ToString()).ToList();
+                var luHS5 = leaderNUm5.Select(x => x.IS_USE.ToString()).ToList();
                 //计算最大值
                 var leaderNumArr = new int[] { leaderNum1.Count(), leaderNum2.Count(), leaderNum3.Count(), leaderNum4.Count(), leaderNUm5.Count() };
                 var maxCount = leaderNumArr.Max(); //
@@ -104,8 +106,8 @@ namespace CS.BLL.ModelExtension
                             row.cell.Add(setCell(unitRange, maxCount));
                             row.cell.Add(setCell(unitLevel, maxCount));
                             //副县级以上
-                            row.cell.Add(setCell(string.Empty, maxCount));
-                            row.cell.Add(setCell(string.Empty, maxCount));
+                            row.cell.Add(setCell(unitNum.ToString(), maxCount));
+                            row.cell.Add(setCell(unitHS.ToString(), maxCount));
                             //领导正职
                             row.cell.Add(setCell(luNum1.ToString(), maxCount));
                             setCell(luValue1, i, maxCount, row);
@@ -183,6 +185,7 @@ namespace CS.BLL.ModelExtension
 
         public UNIT_CELL setCell(string value, int rowspan)
         {
+            value = value == "0" ? "" : value;
             return new UNIT_CELL()
             {
                 value = value,
@@ -193,7 +196,7 @@ namespace CS.BLL.ModelExtension
         public void setCell(List<string> valuelist, int index, int maxCount, UNIT_ROW row)
         {
 
-            if(valuelist.Count > 0)
+            if (valuelist.Count > 0)
             {
                 bool isSet = true;
                 int rowspan = 0;
@@ -210,7 +213,7 @@ namespace CS.BLL.ModelExtension
             }
         }
 
-        public string analysisValueList(List<string> valuelist,int index,int maxCount,ref int rowspan,ref bool isSet)
+        public string analysisValueList(List<string> valuelist, int index, int maxCount, ref int rowspan, ref bool isSet)
         {
             int valueCount = valuelist.Count;
             int pagesize = Convert.ToInt32(maxCount / valueCount);
@@ -237,6 +240,6 @@ namespace CS.BLL.ModelExtension
                 isSet = false;
                 return "";
             }
-        } 
+        }
     }
 }

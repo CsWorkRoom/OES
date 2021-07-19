@@ -3,6 +3,11 @@
     Layout = "~/Views/Shared/_Content.cshtml";
     var dicInfo = ViewBag.UnitInfo as Dictionary<string, string>;
 }
+<style>
+    .center {
+        text-align: center
+    }
+</style>
 <div class="layui-tab larryms-tab" lay-filter="AsUrl" style="height:98%">
     <ul class="layui-tab-title larryms-tab-title">
         <li class="layui-this" lay-id="AsUnit" id="tabAsUnit">单位信息</li>
@@ -36,32 +41,33 @@
                     </colgroup>
                     <tbody>
                         <tr>
-                            <td>单位名称</td>
+                            <td class="center">单位名称</td>
                             <td colspan="3">@dicInfo["NAME"]</td>
-                            <td>主管部门</td>
+                            <td class="center">主管部门</td>
                             <td colspan="3">@dicInfo["PANRET"]</td>
                         </tr>
                         <tr>
-                            <td>机构类别</td>
+                            <td class="center">机构类别</td>
                             <td>@dicInfo["SETUP_TYPE"]</td>
-                            <td>机构性质</td>
+                            <td class="center">机构性质</td>
                             <td>@dicInfo["SETUP_NATRUE"]</td>
-                            <td>机构级别</td>
+                            <td class="center">机构级别</td>
                             <td>@dicInfo["SETUP_LEVEL"]</td>
-                            <td></td>
-                            <td></td>
+                            <td class="center">参公情况</td>
+                            <td>@dicInfo["IS_PUBLIC"]</td>
                         </tr>
                         <tr>
-                            <td>经费形式</td>
+                            <td class="center">经费形式</td>
                             <td>@dicInfo["OUTLAY_MODE"]</td>
-                            <td>
+                            <td class="center">
                                 行政/群团/事业
                             </td>
                             <td>@dicInfo["SETUP_RANGE"]</td>
-                            <td>参公情况</td>
-                            <td>@dicInfo["IS_PUBLIC"]</td>
-                            <td>内设机构数</td>
+
+                            <td class="center">内设机构数</td>
                             <td>@dicInfo["DEP_NUM"]</td>
+                            <td></td>
+                            <td></td>
                         </tr>
                     </tbody>
                 </table>
@@ -74,15 +80,25 @@
             </fieldset>
             <div>
                 <table class="layui-table" lay-size="lg" style="width:90%;margin:20px auto;">
+                    <colgroup>
+                        <col width="140" />
+                        <col width="150" />
+                        <col width="160" />
+                        <col width="150" />
+                        <col width="140" />
+                        <col width="150" />
+                        <col width="160" />
+                        <col width="150" />
+                    </colgroup>
                     <tbody>
                         <tr>
-                            <td>行政或事业上编数<span style="color:red;font-weight:bold;">(待核算)</span></td>
+                            <td class="center">行政或事业<br />上编数</td>
                             <td>@dicInfo["UP_NUM"]</td>
-                            <td>行政或事业下编数<span style="color:red;font-weight:bold;">(待核算)</span></td>
+                            <td class="center">行政或事业<br />下编数</td>
                             <td>@dicInfo["DOWN_NUM"]</td>
-                            <td>行政或事业正在上编<span style="color:red;font-weight:bold;">(待核算)</span></td>
+                            <td class="center">行政或事业<br />正在上编</td>
                             <td>@dicInfo["UP_NUM"]</td>
-                            <td>行政或事业正在下编<span style="color:red;font-weight:bold;">(待核算)</span></td>
+                            <td class="center">行政或事业<br />正在下编</td>
                             <td>@dicInfo["DOWN_NUM"]</td>
                         </tr>
                     </tbody>
@@ -120,112 +136,83 @@
                 </table>
             </div>
             <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-                <legend>单位信息-领导/中层</legend>
+                <legend>领导职级</legend>
             </fieldset>
             <div>
-                <table class="layui-table" lay-size="sm" style="width:90%;margin:20px auto;">
-                    <tr>
-                        <td>内设机构领导正职核定数</td>
-                        <td>@dicInfo["WITHIN_MAIN_NUM"]</td>
-                        <td>内设机构领导副职核定数</td>
-                        <td>@dicInfo["WITHIN_VICE_NUM"]</td>
-                        <td>部门其他工作机构领导核定数</td>
-                        <td>@dicInfo["OTHER_NUM"]</td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>厅局级正职核定数</td>
-                        <td>@dicInfo["OFFICE_MIAN_NUM"]</td>
-                        <td>厅局级副职核定数</td>
-                        <td>@dicInfo["OFFICE_VICE_NUM"]</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            县处级正职核定数(领导)
-                        </td>
-                        <td>@dicInfo["COUNTY_MIAN_L"]</td>
-                        <td>
-                            县处级副职核定数（领导）
-                        </td>
-                        <td>@dicInfo["COUNTY_VICE_L"]</td>
-                        <td>县处级正职核定数（中层）</td>
-                        <td>@dicInfo["COUNTY_MIAN_MR"]</td>
-                        <td>县处级副职核定数（中层）</td>
-                        <td>@dicInfo["COUNTY_VICE_MR"]</td>
-                    </tr>
-                    <tr>
-                        <td>乡科级正职核定数（领导）</td>
-                        <td>@dicInfo["VILLAGE_MIAN_L"]</td>
-                        <td>乡科级副职核定数（领导）</td>
-                        <td>@dicInfo["VILLAGE_VICE_L"]</td>
-                        <td>乡科级正职核定数（中层）</td>
-                        <td>@dicInfo["VILLAGE_MIAN_MR"]</td>
-                        <td>乡科级副职核定数（中层）</td>
-                        <td>@dicInfo["VILLAGE_VICE_MR"]</td>
-                    </tr>
+                <table class="layui-table" lay-size="lg" style="width:90%;margin:20px auto;">
+                    <colgroup>
+                        <col width="140" />
+                        <col width="150" />
+                        <col width="160" />
+                        <col width="150" />
+                        <col width="140" />
+                        <col width="150" />
+                        <col width="160" />
+                        <col width="150" />
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <td>厅局级正职</td>
+                            <td>@dicInfo["OFFICE_MIAN_NUM"]</td>
+                            <td>厅局级副职</td>
+                            <td>@dicInfo["OFFICE_VICE_NUM"]</td>
+                            <td>
+                                县处级正职)
+                            </td>
+                            <td>@dicInfo["COUNTY_MIAN_L"]</td>
+                            <td>
+                                县处级副职
+                            </td>
+                            <td>@dicInfo["COUNTY_VICE_L"]</td>
+                        </tr>
+                        <tr>
+                            <td>乡科级正职</td>
+                            <td>@dicInfo["VILLAGE_MIAN_L"]</td>
+                            <td>乡科级副职</td>
+                            <td>@dicInfo["COUNTY_VICE_MR"]</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
             <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-                <legend>职数信息</legend>
+                <legend>中层职数</legend>
             </fieldset>
             <div>
-                <table class="layui-table Btable" lay-size="sm" style="width:90%;margin:20px auto;">
-                    <thead>
-                        <tr>
-                            <th colspan="16">职数信息</th>
-                        </tr>
-                        <tr>
-                            <th colspan="8">领导职数</th>
-                            <th colspan="8">中层职数</th>
-                        </tr>
-                        <tr>
-                            <th colspan="3">职数数量</th>
-                            <th colspan="5">核定职数级别</th>
-                            <th colspan="4">职数数量</th>
-                            <th colspan="4">核定职数级别</th>
-                        </tr>
-                        <tr>
-                            <th>核定</th>
-                            <th>实配</th>
-                            <th>空缺</th>
-                            <th>副厅</th>
-                            <th>正县</th>
-                            <th>副县</th>
-                            <th>正科</th>
-                            <th>副科</th>
-                            <th>正职核定</th>
-                            <th>正职实配</th>
-                            <th>副职核定</th>
-                            <th>副职实配</th>
-                            <th>正县</th>
-                            <th>副县</th>
-                            <th>正科</th>
-                            <th>副科</th>
-                        </tr>
-                    </thead>
+                <table class="layui-table" lay-size="lg" style="width:90%;margin:20px auto;">
+                    <colgroup>
+                        <col width="140" />
+                        <col width="150" />
+                        <col width="160" />
+                        <col width="150" />
+                        <col width="140" />
+                        <col width="150" />
+                        <col width="160" />
+                        <col width="150" />
+                    </colgroup>
                     <tbody>
                         <tr>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
+                            <td>内设机构领导正职</td>
+                            <td>@dicInfo["WITHIN_MAIN_NUM"]</td>
+                            <td>内设机构领导副职</td>
+                            <td>@dicInfo["WITHIN_VICE_NUM"]</td>
+                            <td>部门其他工作机构领导</td>
+                            <td>@dicInfo["OTHER_NUM"]</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>县处级正职</td>
+                            <td>@dicInfo["COUNTY_MIAN_MR"]</td>
+                            <td>县处级副职</td>
+                            <td>@dicInfo["COUNTY_VICE_MR"]</td>
+                            <td>乡科级正职</td>
+                            <td>@dicInfo["VILLAGE_MIAN_MR"]</td>
+                            <td>乡科级副职</td>
+                            <td>@dicInfo["VILLAGE_VICE_MR"]</td>
                         </tr>
                     </tbody>
                 </table>
@@ -245,10 +232,14 @@
                     <table class="layui-table" lay-size="sm" style="width:90%;margin:20px auto;">
                         <thead style="text-align:center">
                             <tr>
-                                <th></th>
-                                <th>名称</th>
-                                <th>核对数</th>
-                                <th>实配数</th>
+                                <th rowspan="2" style="text-align:center">领导职数分类</th>
+                                <th colspan="2" style="text-align:center">副县级以上领导职数总计</th>
+                                <th rowspan="2" style="text-align:center">领导职数名称</th>
+                                <th rowspan="2" style="text-align:center">领导名称</th>
+                            </tr>
+                            <tr>
+                                <th style="text-align:center">核对数</th>
+                                <th style="text-align:center">实配数</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -261,21 +252,24 @@
                                 var first = leaderList.FirstOrDefault(x => x.LEADER_TYPE_ID == item.LEADER_TYPE_ID);
                                 var list = leaderList.Where(x => x.LEADER_TYPE_ID == item.LEADER_TYPE_ID).ToList();
                                 var leaderjoib = "";
-                                if (first != null) { leaderjoib = first.LEADER_JOB; }
-
+                                var leaderName = "";
+                                if (first != null) { leaderjoib = first.LEADER_JOB; leaderName = first.LEADER_NAME; }
                                 <tr>
                                     <td rowspan="@item.NUM">@item.LEADER_TYPE</td>
+                                    <td rowspan="@item.NUM">@item.NUM</td>
+                                    <td rowspan="@item.NUM">@list.Where(x => x.IS_USE == 1).Count()</td>
                                     <td>
                                         @leaderjoib
                                     </td>
-                                    <td rowspan="@item.NUM">@item.NUM</td>
-                                    <td rowspan="@item.NUM">@list.Count</td>
+                                    <td>
+                                        @leaderName
+                                    </td>
                                 </tr>
-
                                 for (var i = 1; i < list.Count; i++)
                                 {
                                     <tr>
                                         <td>@list[i].LEADER_JOB</td>
+                                        <td>@list[i].LEADER_NAME</td>
                                     </tr>
                                 }
                             }

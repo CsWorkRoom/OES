@@ -108,6 +108,7 @@ namespace CS.BLL.Extension
         /// <param name="mergeC"></param>
         protected void wrContent(string value, int rowIndex, int colIndex, int mergeR = 0, int mergeC = 0)
         {
+            value = value == "0" ? "" : value;
             mergeR = mergeR < 0 ? 0 : mergeR;
             mergeC = mergeC < 0 ? 0 : mergeC;
             //设置值

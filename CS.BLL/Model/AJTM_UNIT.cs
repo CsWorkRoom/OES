@@ -385,7 +385,7 @@ namespace CS.BLL.Model
                 FROM AJTM_UNIT A
                      LEFT JOIN AJTM_SETUP_RANGE B ON (A.SETUP_RANGE_ID = B.ID)
                      LEFT JOIN AJTM_SETUP_LEVEL C ON (A.SETUP_LEVEL_ID = C.ID)
-            WHERE A.IS_USE = 1 
+            WHERE A.IS_USE = 1 AND C.LEVEL_ID <=3
             ORDER BY A.ID, A.PARENT_ID ASC
             ";
             using (BDBHelper db = new BDBHelper())

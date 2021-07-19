@@ -149,6 +149,8 @@ namespace CS.BLL.Extension
                 var unitName = dr["NAME"].ToString();
                 var unitRange = dr["RANGE_NAME"].ToString();
                 var unitLevel = dr["LEVEL_NAME"].ToString();
+                var unitNum = leaderUitList.Where(x => x.UNIT_ID == unitId).Sum(x => x.NUM);
+                var unitHS = leaderList.Where(x => x.IS_USE == 1 && x.UNIT_ID == unitId).Count();
                 //领导正职,领导副职,纪委,机关
                 var typeArr = new int[] { 1, 2, 3, 4 };
                 //领导正职
@@ -187,8 +189,8 @@ namespace CS.BLL.Extension
                 wrCell(unitRange, mergeRCount);
                 wrCell(unitLevel, mergeRCount);
                 //副县级以上
-                wrCell(string.Empty, mergeRCount);
-                wrCell(string.Empty, mergeRCount);
+                wrCell(unitNum.ToString(), mergeRCount);
+                wrCell(unitHS.ToString(), mergeRCount);
                 //领导正职
                 wrCell(luNum1.ToString(), mergeRCount);
                 wrCell(luValue1, mergeRCount);
