@@ -86,6 +86,7 @@ namespace CS.WebUI.Controllers.AJTM
                     dic.Add("IS_ORG", entity.IS_ORG);
                     dic.Add("IS_CONCURREENT_POST", entity.IS_CONCURREENT_POST);
                     dic.Add("IS_RESERVE", entity.IS_RESERVE);
+                    dic.Add("IS_INIT", 1);
                     dic.Add("LEADER_NAME", LEADER_NAME);
                     dic.Add("CREATE_UID", SystemSession.UserID);
                     dic.Add("UPDATE_UID", SystemSession.UserID);

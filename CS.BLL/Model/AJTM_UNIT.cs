@@ -97,6 +97,21 @@ namespace CS.BLL.Model
             [Field(IsNotNull = true, DefaultValue = "0", Comment = "其他预留")]
             public int RESERVE_NUM { get; set; }
             /// <summary>
+            /// 领导备注
+            /// </summary>
+            [Field(IsNotNull = true, Length = 1000, Comment = "领导备注")]
+            public string LEADER_REAMRK { get; set; }
+            /// <summary>
+            /// 其他预留备注
+            /// </summary>
+            [Field(IsNotNull = true, Length = 1000, Comment = "其他预留备注")]
+            public string RESERVE_REAMRK { get; set; }
+            /// <summary>
+            /// 其他备注
+            /// </summary>
+            [Field(IsNotNull = true, Length = 1000, Comment = "其他备注")]
+            public string REMARK { get; set; }
+            /// <summary>
             /// 是否启用
             /// </summary>
             [Field(IsNotNull = true, DefaultValue = "0", Comment = "是否启用")]

@@ -29,9 +29,10 @@ function Open(type, id, title) {
             localAjaxPost("/AjtmUnit/SetUnable?id=" + id);
             return;
         case "Leader":
-            console.log(title);
             if (!title) title = "领导信息编辑";
             return OpenTopWindow(title, 1500, 800, "/AjtmLeaderUnit/Index?unitId=" + id + "");
+        case "Remark":
+            return OpenTopWindow("备注", 1050, 600, "/AfForm/Template?formId=61&op=1&rowkey=" + id + "");
         default:
             return;
     }

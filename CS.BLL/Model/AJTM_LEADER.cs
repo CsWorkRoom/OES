@@ -116,6 +116,12 @@ namespace CS.BLL.Model
             /// </summary>
             [Field(IsNotNull = true, DefaultValue = "0", Comment = "是否预留")]
             public short IS_RESERVE { get; set; }
+
+            /// <summary>
+            /// 是否初始化
+            /// </summary>
+            [Field(IsNotNull = true, DefaultValue = "0", Comment = "是否初始化")]
+            public short IS_INIT { get; set; }
             /// <summary>
             /// 创建者ID
             /// </summary>
@@ -164,5 +170,6 @@ namespace CS.BLL.Model
             if (isUse == 1 && isOrg == 1 && isAs == 1 && isCp == 0) return 0;
             return 1;
         }
+
     }
 }

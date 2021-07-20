@@ -73,6 +73,8 @@ namespace CS.WebUI.Controllers.AJTM
             dic.Add("VILLAGE_MIAN_MR", entity.VILLAGE_MIAN_MR);
             dic.Add("VILLAGE_VICE_MR", entity.VILLAGE_VICE_MR);
             dic.Add("RESERVE_NUM", entity.RESERVE_NUM);
+            dic.Add("RESERVE_REAMRK", entity.RESERVE_REAMRK);
+            dic.Add("REMARK", entity.REMARK);
             //
             if (entity.ID > 0)
             {
