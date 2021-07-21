@@ -1,0 +1,180 @@
+﻿@model CS.WebUI.Controllers.Model.Leader
+@{
+    Layout = "~/Views/Shared/_Content.cshtml";
+    Dictionary<int, string> dic = new Dictionary<int, string>();
+    dic.Add(0, "否");
+    dic.Add(1, "是");
+}
+<form id="form" class="layui-form" action="" method="post">
+    <script src="~/Content/FW/LayuiZtree.js?v=20210610"></script>
+    <input id="Unit" name="Unit" value="@ViewBag.Unit" hidden="hidden" />
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>领导信息配置</legend>
+    </fieldset>
+    <div class="layui-form-item">
+        @if (Model.ID > 0)
+        {
+            <div class="layui-inline">
+                <label class="layui-form-label">单位名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="UNIT_NAME" id="UNIT_NAME" value="@Model.UNIT_NAME" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">主管单位(上级)</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="UNIT_PARENT" id="UNIT_PARENT" value="@Model.UNIT_PARENT" class="layui-input">
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="layui-inline">
+                <label class="layui-form-label">编制单位</label>
+                <div class="layui-input-inline">
+                    <input hidden="hidden" name="UNIT_NAME" id="UNIT_NAME" value="" />
+                    <input type="text" name="UNIT_ID" id="UNIT_ID" value="">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">主管部门</label>
+                <div class="layui-input-inline">
+                    <input hidden="hidden" name="UNIT_PARENT_ID" id="UNIT_PARENT_ID" value="" />
+                    <input type="text" name="UNIT_PARENT" id="UNIT_PARENT" value="" autocomplete="off" class="layui-input" readonly="readonly">
+                </div>
+            </div>
+        }
+    </div>
+    <div class="layui-form-item">
+        @if (Model.IS_INIT == 1)
+        {
+            <div class="layui-inline">
+                <label class="layui-form-label">领导类型</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="LEADER_TYPE" disabled="disabled" id="LEADER_TYPE" value="@Model.LEADER_TYPE" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="layui-inline">
+                <label class="layui-form-label">领导类型</label>
+                <div class="layui-input-inline">
+                    <select name="LEADER_TYPE_ID">
+                        <option value=""></option>
+                        @foreach (var item in ViewBag.LeaderType)
+                        {
+                            if (Model.LEADER_TYPE_ID == item.ID)
+                            {
+                                <option value="@item.ID" selected="selected">@item.NAME</option>
+                            }
+                            else
+                            {
+                                <option value="@item.ID">@item.NAME</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+        }
+        <div class="layui-inline">
+            <label class="layui-form-label">领导级别</label>
+            <div class="layui-input-inline">
+                <select name="LAEDER_LEVEL_ID">
+                    <option value="">请选择</option>
+                    @foreach (var item in ViewBag.SetupLevel)
+                    {
+                        if (item.Key == Model.LAEDER_LEVEL_ID)
+                        {
+                            <option value="@item.Key" selected="selected">@item.Value</option>
+                        }
+                        else
+                        {
+                            <option value="@item.Key">@item.Value</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">领导职务</label>
+            <div class="layui-input-inline">
+                <input type="text" name="LEADER_JOB" value="@Model.LEADER_JOB" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">领导名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="LEADER_NAME" value="@Model.LEADER_NAME" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">是否占编</label>
+            <div class="layui-input-inline">
+                <select name="IS_AS" lay-verify="required">
+                    @foreach (var item in dic)
+                    {
+                        if (Model.IS_AS == item.Key)
+                        {
+                            <option value="@item.Key" selected="selected">@item.Value</option>
+                        }
+                        else
+                        {
+                            <option value="@item.Key">@item.Value</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">是否占职</label>
+            <div class="layui-input-inline">
+                <select name="IS_ORG" lay-verify="required">
+                    @foreach (var item in dic)
+                    {
+                        if (Model.IS_ORG == item.Key)
+                        {
+                            <option value="@item.Key" selected="selected">@item.Value</option>
+                        }
+                        else
+                        {
+                            <option value="@item.Key">@item.Value</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">是否兼任</label>
+            <div class="layui-input-inline">
+                <select name="IS_CONCURREENT_POST" lay-verify="required">
+                    @foreach (var item in dic)
+                    {
+                        if (Model.IS_CONCURREENT_POST == item.Key)
+                        {
+                            <option value="@item.Key" selected="selected">@item.Value</option>
+                        }
+                        else
+                        {
+                            <option value="@item.Key">@item.Value</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="form-bottom-submit" style="text-align:center;">
+    <input type="hidden" id="msg" value="@ViewBag.Message" />
+    <div class="layui-inline">
+        <button type="button" class="layui-btn" onclick="save();">确定</button>
+        <button type="reset" class="layui-btn layui-btn-primary" onclick="CloseForm();">关闭</button>
+    </div>
+</div>
+<script src="~/Views/AjtmLeader/JS/Edit.js?v=20210424"></script>

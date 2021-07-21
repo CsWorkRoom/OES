@@ -171,5 +171,97 @@ namespace CS.BLL.Model
             return 1;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="entity"></param>
+        public int Add(Entity entity)
+        {
+            Dictionary<string, object> dic = new Dictionary<string, object>();
+            dic.Add("LEADER_TYPE_ID", entity.LEADER_TYPE_ID);
+            dic.Add("LEADER_TYPE", entity.LEADER_TYPE);
+            dic.Add("UNIT_ID", entity.UNIT_ID);
+            dic.Add("UNIT_NAME", entity.UNIT_NAME);
+            dic.Add("UNIT_PARENT_ID", entity.UNIT_PARENT_ID);
+            dic.Add("UNIT_PARENT", entity.UNIT_PARENT);
+            dic.Add("LAEDER_LEVEL_ID", entity.LAEDER_LEVEL_ID);
+            dic.Add("LEADER_LEVEL", entity.LEADER_LEVEL);
+            dic.Add("LEADER_JOB", entity.LEADER_JOB);
+            dic.Add("LEADER_NAME", entity.LEADER_NAME);
+            dic.Add("IS_AS", entity.IS_AS);
+            //
+            if (string.IsNullOrEmpty(entity.LEADER_NAME)) entity.IS_USE = 0;
+            else entity.IS_USE = 1;
+            //
+            dic.Add("IS_USE", entity.IS_USE);
+            dic.Add("IS_CONCURREENT_POST", entity.IS_CONCURREENT_POST);
+            dic.Add("IS_ORG", entity.IS_ORG);
+            //
+            entity.IS_RESERVE = JudgeReserve(entity.IS_USE, entity.IS_ORG,entity.IS_AS, entity.IS_CONCURREENT_POST);
+            //
+            dic.Add("IS_RESERVE", entity.IS_RESERVE);
+            dic.Add("IS_INIT", 0);
+            dic.Add("CREATE_UID", SystemSession.UserID);
+            dic.Add("UPDATE_UID", SystemSession.UserID);
+            dic.Add("CREATE_TIME", DateTime.Now);
+            dic.Add("UPDATE_TIME", DateTime.Now);
+            return Add(dic);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public int UpdateInit(Entity entity)
+        {
+            Dictionary<string, object> dic = new Dictionary<string, object>();
+            dic.Add("LAEDER_LEVEL_ID", entity.LAEDER_LEVEL_ID);
+            dic.Add("LEADER_LEVEL", entity.LEADER_LEVEL);
+            dic.Add("LEADER_JOB", entity.LEADER_JOB);
+            dic.Add("LEADER_NAME", entity.LEADER_NAME);
+            dic.Add("IS_AS", entity.IS_AS);
+            //
+            if (string.IsNullOrEmpty(entity.LEADER_NAME)) entity.IS_USE = 0;
+            else entity.IS_USE = 1;
+            //
+            dic.Add("IS_USE", entity.IS_USE);
+            dic.Add("IS_CONCURREENT_POST", entity.IS_CONCURREENT_POST);
+            dic.Add("IS_ORG", entity.IS_ORG);
+            //
+            entity.IS_RESERVE = JudgeReserve(entity.IS_USE, entity.IS_ORG, entity.IS_AS, entity.IS_CONCURREENT_POST);
+            //
+            dic.Add("IS_RESERVE", entity.IS_RESERVE);
+            dic.Add("UPDATE_UID", SystemSession.UserID);
+            dic.Add("UPDATE_TIME", DateTime.Now);
+            return UpdateByKey(dic, entity.ID);
+        }
+
+        public int UpdateNotInit(Entity entity)
+        {
+            Dictionary<string, object> dic = new Dictionary<string, object>();
+            dic.Add("LEADER_TYPE_ID", entity.LEADER_TYPE_ID);
+            dic.Add("LEADER_TYPE", entity.LEADER_TYPE);
+            dic.Add("LAEDER_LEVEL_ID", entity.LAEDER_LEVEL_ID);
+            dic.Add("LEADER_LEVEL", entity.LEADER_LEVEL);
+            dic.Add("LEADER_JOB", entity.LEADER_JOB);
+            dic.Add("LEADER_NAME", entity.LEADER_NAME);
+            dic.Add("IS_AS", entity.IS_AS);
+            //
+            if (string.IsNullOrEmpty(entity.LEADER_NAME)) entity.IS_USE = 0;
+            else entity.IS_USE = 1;
+            //
+            dic.Add("IS_USE", entity.IS_USE);
+            dic.Add("IS_CONCURREENT_POST", entity.IS_CONCURREENT_POST);
+            dic.Add("IS_ORG", entity.IS_ORG);
+            //
+            entity.IS_RESERVE = JudgeReserve(entity.IS_USE, entity.IS_ORG, entity.IS_AS, entity.IS_CONCURREENT_POST);
+            //
+            dic.Add("IS_RESERVE", entity.IS_RESERVE);
+            dic.Add("IS_INIT", 0);
+            dic.Add("UPDATE_UID", SystemSession.UserID);
+            dic.Add("UPDATE_TIME", DateTime.Now);
+            return UpdateByKey(dic, entity.ID);
+        }
     }
 }

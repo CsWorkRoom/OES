@@ -1606,6 +1606,7 @@
     <Content Include="Views\AjtmConsideration\JS\Approval.js" />
     <Content Include="Views\AjtmConsideration\JS\Index.js" />
     <Content Include="Views\AjtmLeaderUnit\JS\Index.js" />
+    <Content Include="Views\AjtmLeader\JS\Edit.js" />
     <Content Include="Views\AjtmUnit\JS\Edit.js" />
     <Content Include="Views\AjtmUnit\JS\Show.js" />
     <Content Include="Views\FormulaHelp.html" />
@@ -1639,7 +1640,9 @@
     <Content Include="Views\Home\JS\Login.js" />
     <Content Include="Views\Home\JS\manager.js" />
     <Content Include="Views\ImportApproval\JS\Approval.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -1647,6 +1650,7 @@
     <Compile Include="Controllers\AJTM\AjtmAsDetailController.cs" />
     <Compile Include="Controllers\AJTM\AjtmAsPersonnelController.cs" />
     <Compile Include="Controllers\AJTM\AjtmConsiderationController.cs" />
+    <Compile Include="Controllers\AJTM\AjtmLeaderController.cs" />
     <Compile Include="Controllers\AJTM\AjtmLeaderUnitController.cs" />
     <Compile Include="Controllers\FW\AfRdlcReportController.cs" />
     <Compile Include="Controllers\ImportApprovalController.cs" />
@@ -1880,6 +1884,7 @@
     <Content Include="Views\AjtmAsPersonnel\Add.cshtml" />
     <Content Include="Views\AjtmUnit\Show.cshtml" />
     <Content Include="Views\AjtmLeaderUnit\Report.cshtml" />
+    <Content Include="Views\AjtmLeader\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

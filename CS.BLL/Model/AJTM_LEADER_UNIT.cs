@@ -142,6 +142,21 @@ namespace CS.BLL.Model
         }
 
 
+
+        public int SplusNum(int LeaderTypeId, int UnitId)
+        {
+            var dt = GetTableFields("ID,NUM", " LEADER_TYPE_ID=? AND UNIT_ID=?", LeaderTypeId, UnitId);
+            if (dt.Rows.Count > 0)
+            {
+                var ID = Convert.ToInt32(dt.Rows[0][1]);
+                var NUM = Convert.ToInt32(dt.Rows[0][1]);
+                Dictionary<string, object> dic = new Dictionary<string, object>();
+                dic.Add("NUM", NUM - 1);
+                return UpdateByKey(dic, ID);
+            }
+            return -1;
+        }
+
         public string PATH = "../File/LEADERUNIT";
     }
 }
