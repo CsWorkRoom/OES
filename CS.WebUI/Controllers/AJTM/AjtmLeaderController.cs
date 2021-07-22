@@ -60,7 +60,7 @@ namespace CS.WebUI.Controllers.AJTM
             {
                 AJTM_LEADER.Instance.Add(entity);
             }
-            result.IsSuccess = false;
+            result.IsSuccess = true;
             result.Message = "数据提交成功";
             return Json(result, JsonRequestBehavior.AllowGet);
         }
