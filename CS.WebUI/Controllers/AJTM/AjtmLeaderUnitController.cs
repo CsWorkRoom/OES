@@ -61,9 +61,13 @@ namespace CS.WebUI.Controllers.AJTM
                 //    dic.Add("UPDATE_TIME", DateTime.Now);
                 //    BLL.Model.AJTM_LEADER_UNIT.Instance.Add(dic);
                 //}
+                //
+                
                 //新增所有配置信息
                 BLL.Model.AJTM_LEADER.Instance.Delete(" UNIT_ID=?", UNIT_ID);
                 var lEntity = DeserializeObject<List<BLL.Model.AJTM_LEADER.Entity>>(Leader);
+
+                Dictionary<string, int> dicI = new Dictionary<string, int>();
                 foreach (var entity in lEntity)
                 {
                     var LEADER_NAME = entity.LEADER_NAME.Trim();
@@ -93,7 +97,14 @@ namespace CS.WebUI.Controllers.AJTM
                     dic.Add("CREATE_TIME", DateTime.Now);
                     dic.Add("UPDATE_TIME", DateTime.Now);
                     BLL.Model.AJTM_LEADER.Instance.Add(dic);
+
+                   
                 }
+                //更新领导预留信息
+                string leaderremark = AJTM_LEADER.Instance.GetLeaderRemark(UNIT_ID);
+                Dictionary<string, object> dicUnit = new Dictionary<string, object>();
+                dicUnit.Add("LEADER_REAMRK", leaderremark);
+                AJTM_UNIT.Instance.UpdateByKey(dicUnit, UNIT_ID);
 
                 result.IsSuccess = true;
                 result.Message = "数据提交成功";

@@ -241,6 +241,7 @@ namespace CS.WebUI.Controllers.AJTM
                         AsD.Add("AS_TYPE", AsType[item.AS_TYPE_ID]);
                         AsD.Add("AS_PURPOSE_REMARK", item.AS_PURPOSE_REMARK);
                         AsD.Add("AS_NO", ASNO);
+                        AsD.Add("STATUS", ENUM_AS_DETAIL_STATUS.创建.ToString());
                         AsD.Add("APPROVAL_NUM", 1);
                         AsD.Add("CREATE_TIME", DateTime.Now);
 

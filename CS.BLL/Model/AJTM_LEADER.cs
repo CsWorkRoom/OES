@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CS.Library.BaseQuery;
 using CS.Common.FW;
 using CS.BLL.FW;
+using CS.Base.DBHelper;
 
 namespace CS.BLL.Model
 {
@@ -262,6 +263,37 @@ namespace CS.BLL.Model
             dic.Add("UPDATE_UID", SystemSession.UserID);
             dic.Add("UPDATE_TIME", DateTime.Now);
             return UpdateByKey(dic, entity.ID);
+        }
+
+
+        public string GetLeaderRemark(int unitid)
+        {
+            string sql = string.Format(@"
+                  SELECT wm_concat (remark) AS remark
+                    FROM (  SELECT unit_id,
+                                      leader_type
+                                   || '('
+                                   || leader_level
+                                   || ')'
+                                   || COUNT (1)
+                                   || '名'
+                                      AS remark,
+                                   leader_type_id,
+                                   leader_level,
+                                   COUNT (1) AS num
+                              FROM ajtm_leader
+                             WHERE is_use = 1 AND is_reserve = 1 and unit_id={0}
+                          GROUP BY unit_id,
+                                   leader_type,
+                                   leader_type_id,
+                                   leader_level)
+                GROUP BY unit_id
+            ", unitid);
+
+            using (BDBHelper dbHelper = new BDBHelper())
+            {
+                return dbHelper.ExecuteScalarString(sql);
+            }
         }
     }
 }

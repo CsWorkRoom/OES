@@ -206,6 +206,7 @@ namespace CS.BLL.Extension
                 wrCell(dr["SY_ZZSY_NUM"].ToString());
                 wrCell(dr["GQ_KZ_NUM"].ToString());
                 wrCell(dr["ZF_KY_NUM"].ToString());
+                wrCell(dr["YR_KY_NUM"].ToString());
                 wrCell(dr["P_XZ_YBXZ_NUM"].ToString());
                 wrCell(dr["P_XZ_ZFZX_NUM"].ToString());
                 wrCell(dr["P_SY_YBSY_NUM"].ToString());
@@ -215,18 +216,18 @@ namespace CS.BLL.Extension
                 wrCell(dr["P_GQ_KZ_NUM"].ToString());
                 wrCell(dr["P_ZF_KY_NUM"].ToString());
                 wrCell(dr["P_YR_KY_NUM"].ToString());
-                wrCell("领导预留");
+                wrCell(dr["LEADER_RESVEST_NUM"].ToString());
                 wrCell(dr["D_XZ_NUM"].ToString());
                 wrCell(dr["D_SY_YBSY_NUM"].ToString());
-                wrCell(dr["D_SY_CGSY_NUM"].ToString());
+                //wrCell(dr["D_SY_CGSY_NUM"].ToString());
                 wrCell(dr["D_GQ_KZ_NUM"].ToString());
                 wrCell(dr["D_ZF_KY_NUM"].ToString());
-                wrCell("其他预留");
+                wrCell(dr["RESERVE_NUM"].ToString());
                 wrCell("空缺编制");
                 wrCell(dr["LEADER_UNIT_NUM"].ToString());
                 wrCell(dr["LEADER_SJ_NUM"].ToString());
                 wrCell(dr["LEADER_NULL_NUM"].ToString());
-                wrCell(dr["OFFICE_MIAN_NUM"].ToString());
+                //wrCell(dr["OFFICE_MIAN_NUM"].ToString());
                 wrCell(dr["OFFICE_VICE_NUM"].ToString());
                 wrCell(dr["COUNTY_MIAN_L"].ToString());
                 wrCell(dr["COUNTY_VICE_L"].ToString());
@@ -240,10 +241,11 @@ namespace CS.BLL.Extension
                 wrCell(dr["COUNTY_VICE_MR"].ToString());
                 wrCell(dr["VILLAGE_MIAN_MR"].ToString());
                 wrCell(dr["VILLAGE_VICE_MR"].ToString());
-                wrCell("备注");
-                wrCell("备注");
-                wrCell("备注");
-                wrCell("备注");
+                wrCell(dr["TOTAL_REMARK"].ToString());
+                wrCell(dr["AS_DETAIL_REAMRK"].ToString());
+                wrCell(dr["LEADER_REAMRK"].ToString());
+                wrCell(dr["RESERVE_REAMRK"].ToString());
+                wrCell(dr["REMARK"].ToString());
                 //
                 lineRow(1);
             }

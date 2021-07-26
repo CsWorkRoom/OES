@@ -459,7 +459,7 @@ namespace CS.BLL.Model
         public DataTable GetUnitInfo()
         {
             string sql = @"
-              SELECT a.id parent_id,
+                SELECT a.id parent_id,
                      a.name panret_name,
                      b.id,
                      b.name,
@@ -471,6 +471,7 @@ namespace CS.BLL.Model
                      D.OUTLAY_MODE,
                      D.SETUP_RANGE,
                      D.IS_PUBLIC,
+                     D.LEADER_RESVEST_NUM,
                      D.LEADER_UNIT_NUM,
                      D.LEADER_SJ_NUM,
                      D.LEADER_NULL_NUM,
@@ -511,14 +512,21 @@ namespace CS.BLL.Model
                      SY_ZZSY_NUM,
                      GQ_KZ_NUM,
                      ZF_KY_NUM,
-                     YR_KY_NUM
+                     YR_KY_NUM,
+                     B.RESERVE_NUM,
+                     H.AS_DETAIL_REAMRK||chr(13)||chr(10)||B.LEADER_REAMRK||chr(13)||chr(10)||B.RESERVE_REAMRK||chr(13)||chr(10)||B.LEADER_REAMRK||chr(13)||chr(10)||B.REMARK AS TOTAL_REMARK,
+                     B.LEADER_REAMRK,
+                     B.REMARK,
+                     B.RESERVE_REAMRK,
+                     H.AS_DETAIL_REAMRK
                 FROM ajtm_unit a
                      LEFT JOIN ajtm_unit b ON (a.id = b.parent_id OR a.id = b.id)
-                      LEFT JOIN (select parent_id,count(1) as nun from ajtm_unit where parent_id <> 0 group by parent_id) c ON (a.id = c.parent_id)
+                     LEFT JOIN (select parent_id,count(1) as nun from ajtm_unit where parent_id <> 0 group by parent_id) c ON (a.id = c.parent_id)
                      LEFT JOIN VIEW_UNIT_INFO D ON (B.ID = D.ID)
                      LEFT JOIN VIEWS_UNIT_AS E ON (D.ID = E.UNIT_ID)
                      LEFT JOIN VIEWS_PERSONNEL F ON (D.ID = F.UNIT_ID)
                      LEFT JOIN VIEWS_AS_DETAIL G ON (D.ID = G.UNIT_ID)
+                     LEFT JOIN VIEW_AS_DETAIL_REMARK H ON(D.ID = H.UNIT_ID)
                WHERE C.nun IS NOT NULL
                ORDER BY parent_id ASC,id ASC
             ";

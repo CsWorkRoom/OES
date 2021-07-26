@@ -60,6 +60,12 @@ namespace CS.WebUI.Controllers.AJTM
             {
                 AJTM_LEADER.Instance.Add(entity);
             }
+            //更新领导预留信息
+            string leaderremark = AJTM_LEADER.Instance.GetLeaderRemark(entity.UNIT_ID);
+            Dictionary<string, object> dicUnit = new Dictionary<string, object>();
+            dicUnit.Add("LEADER_REAMRK", leaderremark);
+            AJTM_UNIT.Instance.UpdateByKey(dicUnit, entity.UNIT_ID);
+            //
             result.IsSuccess = true;
             result.Message = "数据提交成功";
             return Json(result, JsonRequestBehavior.AllowGet);
