@@ -83,6 +83,11 @@ namespace CS.BLL.Model
             [Field(IsNotNull = true, Length = 128, Comment = "来文文件名")]
             public string APPLY_FILE { get; set; }
             /// <summary>
+            /// 来文文件号
+            /// </summary>
+            [Field(IsNotNull = true, Length = 128, Comment = "来文文件名")]
+            public string APPLY_FILE_NO { get; set; }
+            /// <summary>
             /// 来文时间
             /// </summary>
             [Field(IsNotNull = true, DefaultValue = "NOW", Comment = "来文时间")]
@@ -97,6 +102,12 @@ namespace CS.BLL.Model
             /// </summary>
             [Field(IsNotNull = false, Length = 512, Comment = "联系方式")]
             public string ACCOUNT_PHONE { get; set; }
+
+            /// <summary>
+            /// 人员来源
+            /// </summary>
+            [Field(IsNotNull = true, DefaultValue = "0", Comment = "人员来源")]
+            public int PERSONNER_SOURCE { get; set; }
             /// <summary>
             /// 是否为年度用编
             /// </summary>

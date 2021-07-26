@@ -62,8 +62,10 @@ namespace CS.WebUI.Controllers.AJTM
             dic.Add("UNIT_PARENT", entity.UNIT_PARENT);
             dic.Add("APPLY_FILE", entity.APPLY_FILE);
             dic.Add("APPLY_TIME", entity.APPLY_TIME);
+            dic.Add("APPLY_FILE_NO", entity.APPLY_FILE_NO);
             dic.Add("ACCOUNT_PEOPLE", entity.ACCOUNT_PEOPLE);
             dic.Add("ACCOUNT_PHONE", entity.ACCOUNT_PHONE);
+            dic.Add("PERSONNER_SOURCE", entity.PERSONNER_SOURCE);
             dic.Add("IS_YEAR", entity.IS_YEAR);
             dic.Add("APPLY_NUM", AsApplyDetail.Sum(x => x.APPLY_NUM));
             dic.Add("APPROVAL_NUM", 0);

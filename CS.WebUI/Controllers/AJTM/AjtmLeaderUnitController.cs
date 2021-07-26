@@ -150,7 +150,7 @@ namespace CS.WebUI.Controllers.AJTM
             string fullName = excel.Save();
             try
             {
-                string filename = HttpUtility.UrlEncode(string.Format("{1}_{0}.xlxs", DateTime.Now.ToString("yyyyMMddHHmmss"), "单位核定领导职数情况表"), Encoding.UTF8);
+                string filename = HttpUtility.UrlEncode(string.Format("{1}_{0}.xlsx", DateTime.Now.ToString("yyyyMMddHHmmss"), "单位核定领导职数情况表"), Encoding.UTF8);
                 System.Web.HttpContext.Current.Response.Buffer = true;
                 System.Web.HttpContext.Current.Response.Clear();//清除缓冲区所有内容
                 System.Web.HttpContext.Current.Response.ContentType = "application/octet-stream";

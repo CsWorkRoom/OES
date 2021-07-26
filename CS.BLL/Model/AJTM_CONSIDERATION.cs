@@ -101,7 +101,7 @@ namespace CS.BLL.Model
         public DataTable GetApplyConsideration(string IDs)
         {
             string sql = string.Format(@"
-                 SELECT A.ID,A.UNIT_NAME,A.UNIT_PARENT,C.NAME SETUP_LEVEL, D.NAME SETUP_TYPE,DECODE(B.IS_PUBLIC,1,'是','否') IS_PUBLIC,E.VERIFICATION_NUM,F.ACTUAL_NUM,
+                 SELECT A.ID,A.UNIT_NAME,A.UNIT_PARENT,C.NAME SETUP_LEVEL, Z.NAME SETUP_TYPE,DECODE(B.IS_PUBLIC,1,'是','否') IS_PUBLIC,E.VERIFICATION_NUM,F.ACTUAL_NUM,
                 H.LEADER_NULL_NUM,
                 G.AS_DEAIL_NUM,
                 H.PRINCIPLE_RESERVE_NUM,
@@ -115,6 +115,7 @@ namespace CS.BLL.Model
                 LEFT JOIN AJTM_UNIT B ON(A.UNIT_ID = B.ID) 
                 LEFT JOIN AJTM_SETUP_LEVEL C ON(B.SETUP_LEVEL_ID = C.ID)
                 LEFT JOIN AJTM_SETUP_TYPE D ON(B.SETUP_TYPE_ID =D.ID)
+                LEFT JOIN AJTM_SETUP_NATRUE Z ON(B.SETUP_NATRUE_ID = Z.ID)
                 LEFT JOIN (
                     SELECT UNIT_ID,SUM(VERIFICATION_NUM) VERIFICATION_NUM FROM AJTM_UNIT_AS GROUP BY UNIT_ID
                 )E ON(A.UNIT_ID = E.UNIT_ID)

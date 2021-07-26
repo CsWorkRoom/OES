@@ -30,19 +30,25 @@
     </div>
     <div class="layui-form-item">
         <div class="layui-inline">
+            <label class="layui-form-label">申报文号</label>
+            <div class="layui-input-inline">
+                <input type="tel" name="APPLY_FILE_NO" value='@Model.APPLY_FILE_NO' id="APPLY_FILE_NO" lay-verify="required |ApplyTime" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
             <label class="layui-form-label">来文文件名(必填)</label>
             <div class="layui-input-inline">
                 <input type="tel" name="APPLY_FILE" value='@Model.APPLY_FILE' id="APPLY_FILE" lay-verify="required |ApplyFile" autocomplete="off" class="layui-input">
             </div>
         </div>
+    </div>
+    <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label">来文时间(必填)</label>
             <div class="layui-input-inline">
                 <input type="tel" name="APPLY_TIME" value='@Model.APPLY_TIME.ToString("yyyy-MM-dd")' id="APPLY_TIME" lay-verify="required |ApplyTime" autocomplete="off" class="layui-input">
             </div>
         </div>
-    </div>
-    <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label">是否为年度用编</label>
             <div class="layui-input-inline">
@@ -66,6 +72,33 @@
                 </select>
             </div>
         </div>
+
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">人员来源</label>
+            <div class="layui-input-inline">
+                @{
+                    Dictionary<int, string> dics = new Dictionary<int, string>();
+                    dics.Add(2, "市本级");
+                    dics.Add(1, "县（市、区）");
+                    dics.Add(0, "其他");
+                }
+                <select name="IS_YEAR" lay-verify="required">
+                    @foreach (var item in dics)
+                    {
+                        if (Model.PERSONNER_SOURCE == item.Key)
+                        {
+                            <option value="@item.Key" selected="selected">@item.Value</option>
+                        }
+                        else
+                        {
+                            <option value="@item.Key">@item.Value</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
         <div class="layui-inline">
             <label class="layui-form-label">联系人</label>
             <div class="layui-input-inline">
@@ -74,7 +107,6 @@
         </div>
     </div>
     <div class="layui-form-item">
-
         <div class="layui-inline">
             <label class="layui-form-label">联系方式</label>
             <div class="layui-input-inline">

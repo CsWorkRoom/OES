@@ -209,7 +209,7 @@ commit;
             //work.ReplaceKeyword(dic);
             //work.Save("E:\\OES\\CS.TestForm\\test\\temp_" + DateTime.Now.Ticks + ".doc");
 
-            CS.BLL.Extension.ExcelLeaderUnit excel = new BLL.Extension.ExcelLeaderUnit("I:\\OES\\DOC", "text");
+            CS.BLL.Extension.ExcelUnit excel = new BLL.Extension.ExcelUnit("E:\\垃圾\\", "text");
            
             excel.Save();
         }

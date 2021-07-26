@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using CS.BLL.Extension;
 using CS.BLL.FW;
 using CS.BLL.Model;
 
@@ -210,6 +212,44 @@ namespace CS.WebUI.Controllers.AJTM
             ViewBag.leaderUnit = AJTM_LEADER_UNIT.Instance.GetListEntityByUnitId(unitid);
          
             return View();
+        }
+
+        /// <summary>
+        /// 报表
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Report()
+        {
+            ViewBag.UnitInfo = AJTM_UNIT.Instance.GetUnitInfo();
+            return View();
+        }
+
+        /// <summary>
+        /// 下载
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Export()
+        {
+            string path = Server.MapPath(AJTM_UNIT.Instance.PATH);
+            ExcelUnit excel = new ExcelUnit(path, "市本级机关事业单位机构编制职数情况一览表");
+            string fullName = excel.Save();
+            try
+            {
+                string filename = HttpUtility.UrlEncode(string.Format("{1}_{0}.xlsx", DateTime.Now.ToString("yyyyMMddHHmmss"), "市本级机关事业单位机构编制职数情况一览表"), Encoding.UTF8);
+                System.Web.HttpContext.Current.Response.Buffer = true;
+                System.Web.HttpContext.Current.Response.Clear();//清除缓冲区所有内容
+                System.Web.HttpContext.Current.Response.ContentType = "application/octet-stream";
+                System.Web.HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment;filename=" + filename);
+                System.Web.HttpContext.Current.Response.WriteFile(fullName);
+                System.Web.HttpContext.Current.Response.Flush();
+                System.Web.HttpContext.Current.Response.End();
+            }
+            catch (Exception ex)
+            {
+                return ShowAlert("导出数据到Excel出现未知错误：" + ex.Message);
+            }
+            //
+            return ShowAlert("导出成功！");
         }
     }
 }

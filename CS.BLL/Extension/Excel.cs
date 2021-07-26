@@ -106,15 +106,31 @@ namespace CS.BLL.Extension
         /// <param name="value"></param>
         /// <param name="mergeR"></param>
         /// <param name="mergeC"></param>
-        protected void wrContent(string value, int rowIndex, int colIndex, int mergeR = 0, int mergeC = 0)
+        protected void wrContent(string value, int rowIndex, int colIndex, int mergeR = 0, int mergeC = 0,bool isMerge = true)
         {
             value = value == "0" ? "" : value;
             mergeR = mergeR < 0 ? 0 : mergeR;
             mergeC = mergeC < 0 ? 0 : mergeC;
             //设置值
             setCell(value, rowIndex, colIndex);
+
+            //用于value为null时，避免自动合并单元格
+            if (isMerge)
+                _sheet.AddMergedRegion(new NPOI.SS.Util.CellRangeAddress(rowIndex, rowIndex + mergeR, colIndex, colIndex + mergeC));
+        }
+
+        protected void Merged(int rowIndex, int colIndex, int mergeR = 0, int mergeC = 0)
+        {
+            mergeR = mergeR < 0 ? 0 : mergeR;
+            mergeC = mergeC < 0 ? 0 : mergeC;
             //用于value为null时，避免自动合并单元格
             _sheet.AddMergedRegion(new NPOI.SS.Util.CellRangeAddress(rowIndex, rowIndex + mergeR, colIndex, colIndex + mergeC));
+            //获取行
+            var row = GetRow(rowIndex);
+            //获取列
+            var cell = GetCell(row, colIndex);
+            //设置样式
+            cell.CellStyle = getStyle();
         }
         /// <summary>
         /// 批量写入单元格

@@ -1885,6 +1885,7 @@
     <Content Include="Views\AjtmUnit\Show.cshtml" />
     <Content Include="Views\AjtmLeaderUnit\Report.cshtml" />
     <Content Include="Views\AjtmLeader\Edit.cshtml" />
+    <Content Include="Views\AjtmUnit\Report.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

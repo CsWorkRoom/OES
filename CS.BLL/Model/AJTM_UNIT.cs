@@ -428,7 +428,7 @@ namespace CS.BLL.Model
         {
             var dt = GetTableForExcel();
             var list = new List<TableForExcel>();
-            foreach(DataRow dr in dt.Rows)
+            foreach (DataRow dr in dt.Rows)
             {
                 list.Add(new TableForExcel()
                 {
@@ -441,5 +441,127 @@ namespace CS.BLL.Model
             }
             return list;
         }
+
+
+        //public DataTable GetUnitInfo()
+        //{
+        //    string sql = @"
+        //       SELECT * FROM VIEW_UNIT_INFO A LEFT JOIN VIEWS_UNIT_AS B ON(A.ID = B.UNIT_ID)
+        //        LEFT JOIN VIEWS_PERSONNEL C ON(A.ID= C.UNIT_ID)
+        //        LEFT JOIN VIEWS_AS_DETAIL D ON(A.ID =D.UNIT_ID)
+        //    ";
+        //    using (BDBHelper db = new BDBHelper())
+        //    {
+        //        return db.ExecuteDataTable(sql);
+        //    }
+        //}
+
+        public DataTable GetUnitInfo()
+        {
+            string sql = @"
+              SELECT a.id parent_id,
+                     a.name panret_name,
+                     b.id,
+                     b.name,
+                     b.setup_range_id,
+                     D.SETUP_NATRUE,
+                     D.SETUP_TYPE,
+                     D.SETUP_LEVEL,
+                     D.SETUP_LEVEL_SEQ,
+                     D.OUTLAY_MODE,
+                     D.SETUP_RANGE,
+                     D.IS_PUBLIC,
+                     D.LEADER_UNIT_NUM,
+                     D.LEADER_SJ_NUM,
+                     D.LEADER_NULL_NUM,
+                     D.OFFICE_MIAN_NUM,
+                     D.OFFICE_VICE_NUM,
+                     D.COUNTY_MIAN_L,
+                     D.COUNTY_VICE_L,
+                     D.VILLAGE_MIAN_L,
+                     D.VILLAGE_VICE_L,
+                     D.WITHIN_MAIN_NUM,
+                     D.WITHIN_MAIN_SP_NUM,
+                     D.WITHIN_VICE_NUM,
+                     D.WITHIN_VICE_SP_NUM,
+                     D.COUNTY_MIAN_MR,
+                     D.COUNTY_VICE_MR,
+                     D.VILLAGE_MIAN_MR,
+                     D.VILLAGE_VICE_MR,
+                     D_XZ_NUM,
+                     D_SY_YBSY_NUM,
+                     D_SY_CGSY_NUM,
+                     D_GQ_KZ_NUM,
+                     D_ZF_KY_NUM,
+                     D_YR_KY_NUM,
+                     P_XZ_YBXZ_NUM,
+                     P_XZ_ZFZX_NUM,
+                     P_SY_YBSY_NUM,
+                     P_SY_CGSY_NUM,
+                     P_SY_CBSY_NUM,
+                     P_SY_ZZSY_NUM,
+                     P_GQ_KZ_NUM,
+                     P_ZF_KY_NUM,
+                     P_YR_KY_NUM,
+                     XZ_YBXZ_NUM,
+                     XZ_ZFZX_NUM,
+                     SY_YBSY_NUM,
+                     SY_CGSY_NUM,
+                     SY_CBSY_NUM,
+                     SY_ZZSY_NUM,
+                     GQ_KZ_NUM,
+                     ZF_KY_NUM,
+                     YR_KY_NUM
+                FROM ajtm_unit a
+                     LEFT JOIN ajtm_unit b ON (a.id = b.parent_id OR a.id = b.id)
+                      LEFT JOIN (select parent_id,count(1) as nun from ajtm_unit where parent_id <> 0 group by parent_id) c ON (a.id = c.parent_id)
+                     LEFT JOIN VIEW_UNIT_INFO D ON (B.ID = D.ID)
+                     LEFT JOIN VIEWS_UNIT_AS E ON (D.ID = E.UNIT_ID)
+                     LEFT JOIN VIEWS_PERSONNEL F ON (D.ID = F.UNIT_ID)
+                     LEFT JOIN VIEWS_AS_DETAIL G ON (D.ID = G.UNIT_ID)
+               WHERE C.nun IS NOT NULL
+               ORDER BY parent_id ASC,id ASC
+            ";
+            using (BDBHelper db = new BDBHelper())
+            {
+                var dt = db.ExecuteDataTable(sql);
+                dt.Columns.Add("NO1");
+                dt.Columns.Add("NO2");
+                int currNo = 1;
+                int currParentId = 0;
+                int currParentNo = 1;
+                foreach (DataRow dr in dt.Rows)
+                {
+                    //待修改
+                    var SetupRange = Convert.ToInt32(dr["setup_range_id"]);
+                    if (false)
+                    {
+
+                    }
+                    else
+                    {
+                        dr["NO1"] = currNo;
+                        currNo++;
+                    }
+                    //匹配
+                    int parent_id = Convert.ToInt32(dr["parent_id"]);
+                    if (currParentId == parent_id)
+                    {
+                        dr["NO2"] = currParentNo;
+                        currParentNo++;
+                    }
+                    else
+                    {
+                        currParentId = parent_id;
+                        currParentNo = 1;
+                    }
+
+                }
+
+                return dt;
+            }
+        }
+
+        public string PATH = "../File/UNIT_REPORT";
     }
 }
