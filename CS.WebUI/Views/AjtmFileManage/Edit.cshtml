@@ -1,0 +1,59 @@
+﻿@model CS.WebUI.Controllers.Model.AsPersonnel
+@{
+    Layout = "~/Views/Shared/_Content.cshtml";
+}
+
+<form id="form" class="layui-form" action="" method="post">
+    <div class="layui-form-item">
+        <div class="layui-form-item" id="REMARK" style="width:90%;margin:0 auto">
+        </div>
+        <div class="layui-form-item" style="margin-top:20px">
+            <div class="layui-inline">
+                <label class="layui-form-label"></label>
+                <div class="layui-input-inline">
+                    <button type="button" class="layui-btn" id="upload">
+                        <i class="layui-icon">&#xe67c;</i>上传图片
+                    </button>
+                </div>
+            </div>
+            <div class="layui-inline"></div>
+            </div>
+            <div class="layui-form-item">
+                <table class="layui-table" style="width:90%;margin:0 auto">
+                    <thead>
+                        <tr>
+                            <th>文件名</th>
+                            <th>大小</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+</form>
+<script type="text/javascript" src="https://unpkg.com/wangeditor/dist/wangEditor.min.js"></script>
+<script type="text/javascript">
+
+    var E = window.wangEditor
+    var editor = new E('#REMARK');
+    editor.config.height = 300;
+    // 或者 const editor = new E(document.getElementById('div1'))
+    editor.create()
+
+    layui.use('upload', function () {
+        var upload = layui.upload;
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#upload' //绑定元素
+            , url: '/upload/' //上传接口
+            , done: function (res) {
+                //上传完毕回调
+            }
+            , error: function () {
+                //请求异常回调
+            }
+        });
+    });
+</script>

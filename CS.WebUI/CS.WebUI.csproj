@@ -1650,6 +1650,7 @@
     <Compile Include="Controllers\AJTM\AjtmAsDetailController.cs" />
     <Compile Include="Controllers\AJTM\AjtmAsPersonnelController.cs" />
     <Compile Include="Controllers\AJTM\AjtmConsiderationController.cs" />
+    <Compile Include="Controllers\AJTM\AjtmFileManageController.cs" />
     <Compile Include="Controllers\AJTM\AjtmLeaderController.cs" />
     <Compile Include="Controllers\AJTM\AjtmLeaderUnitController.cs" />
     <Compile Include="Controllers\FW\AfRdlcReportController.cs" />
@@ -1886,6 +1887,7 @@
     <Content Include="Views\AjtmLeaderUnit\Report.cshtml" />
     <Content Include="Views\AjtmLeader\Edit.cshtml" />
     <Content Include="Views\AjtmUnit\Report.cshtml" />
+    <Content Include="Views\AjtmFileManage\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
