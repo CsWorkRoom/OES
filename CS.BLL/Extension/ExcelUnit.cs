@@ -193,10 +193,10 @@ namespace CS.BLL.Extension
                     wrCell(dr["NO2"].ToString());
                     wrCell(dr["NAME"].ToString());
                 }
-                wrCell(dr["SETUP_NATRUE"].ToString());
+                wrCell(dr["SETUP_TYPE"].ToString());
                 wrCell(dr["SETUP_LEVEL"].ToString());
                 wrCell(dr["OUTLAY_MODE"].ToString());
-                wrCell(dr["SETUP_TYPE"].ToString());
+                wrCell(dr["SETUP_NATRUE"].ToString());
                 wrCell(dr["IS_PUBLIC"].ToString());
                 wrCell(dr["XZ_YBXZ_NUM"].ToString());
                 wrCell(dr["XZ_ZFZX_NUM"].ToString());
