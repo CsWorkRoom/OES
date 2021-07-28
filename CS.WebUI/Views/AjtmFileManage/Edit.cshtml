@@ -1,12 +1,20 @@
-﻿@model CS.WebUI.Controllers.Model.AsPersonnel
+﻿@model CS.WebUI.Controllers.Model.FileManage
 @{
     Layout = "~/Views/Shared/_Content.cshtml";
 }
-
+<script src="~/Content/xheditor/jquery/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="~/Content/xheditor/xheditor-1.1.14-en.min.js"></script>
 <form id="form" class="layui-form" action="" method="post">
+    <input hidden="hidden" id="field" name="field" />
+    <input hidden="hidden" id="ID" name="ID" value="@Model.ID" />
     <div class="layui-form-item">
-        <div class="layui-form-item" id="REMARK" style="width:90%;margin:0 auto">
+        <div class="layui-form-item" style="width:90%;margin:0 auto;margin-top:20px" ">
+            <input type="text" name="title" id="title" placeholder="请输入标题" autocomplete="off" value="@Model.TITLE" class="layui-input">
         </div>
+        <div class="layui-form-item" style="width:90%;margin:0 auto;margin-top:20px" ">
+            <textarea id="content" name="content" class="xheditor" rows="20" cols="80" style="width: 100%">@Model.CONTENT</textarea>
+        </div>
+
         <div class="layui-form-item" style="margin-top:20px">
             <div class="layui-inline">
                 <label class="layui-form-label"></label>
@@ -17,43 +25,126 @@
                 </div>
             </div>
             <div class="layui-inline"></div>
-            </div>
-            <div class="layui-form-item">
-                <table class="layui-table" style="width:90%;margin:0 auto">
-                    <thead>
-                        <tr>
-                            <th>文件名</th>
-                            <th>大小</th>
-                            <th>状态</th>
-                            <th>操作</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
         </div>
+
+        <div class="layui-form-item">
+            <table class="layui-table" style="width:90%;margin:0 auto">
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>文件名</th>
+                        <th>大小</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="fileTbody">
+                    @foreach (System.Data.DataRow dr in Model.FileTable.Rows)
+                    {
+                        <tr>
+                            <td class="FileID">@dr["ID"]</td>
+                            <td>@dr["NAME"]</td>
+                            <td>@dr["LENGTH"]</td>
+                            <td>
+                                <button type="button" class="layui-btn deleteBtn">删除</button>
+                            </td>
+                        </tr>
+                    }
+                    <tr></tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
 </form>
-<script type="text/javascript" src="https://unpkg.com/wangeditor/dist/wangEditor.min.js"></script>
+<div class="form-bottom-submit" style="text-align:center;">
+    <input type="hidden" id="msg" value="@ViewBag.Message" />
+    <div class="layui-inline">
+        <button type="button" class="layui-btn" onclick="save();">确定</button>
+        <button type="reset" class="layui-btn layui-btn-primary" onclick="CloseForm();">关闭</button>
+    </div>
+</div>
 <script type="text/javascript">
-
-    var E = window.wangEditor
-    var editor = new E('#REMARK');
-    editor.config.height = 300;
-    // 或者 const editor = new E(document.getElementById('div1'))
-    editor.create()
-
     layui.use('upload', function () {
         var upload = layui.upload;
 
         //执行实例
         var uploadInst = upload.render({
             elem: '#upload' //绑定元素
-            , url: '/upload/' //上传接口
+            , url: '/AjtmFileManage/upload' //上传接口
             , done: function (res) {
                 //上传完毕回调
+                console.log(res);
+                if (res.IsSuccess) {
+                    var r = JSON.parse(res.Result);
+                    $("#fileTbody").prepend(TempTr(r));
+                } else {
+                    layer.alert(res.Message);
+                }
             }
-            , error: function () {
+            , error: function (r) {
                 //请求异常回调
+                console.log(r);
             }
         });
+
+
+        function TempTr(r) {
+            var temp = $(`
+                   <tr>
+                            <td class="FileID">`+ r.ID + `</td>
+                            <td>`+ r.NAME + `</td>
+                            <td>`+ r.LENGTH + `</td>
+                            <td>
+                                <button type="button" class="layui-btn deleteBtn">删除</button>
+                            </td>
+                   </tr>
+           `);
+
+            temp.find(".deleteBtn").bind("click", bindDelete);
+            return temp;
+        }
+
+        $(".deleteBtn").bind("click", bindDelete);
+        function bindDelete() {
+            $(this).closest("tr").remove();
+        }
     });
+
+
+    function save() {
+        layui.use(['form', 'layer', 'jquery'], function () {
+            var form = layui.form, layer = layui.layer, $ = layui.$;
+
+            if (beforeSave()) return;
+
+            var url = "../AjtmFileManage/Edit";
+            SaveForm('form', url);
+            return;
+
+            function beforeSave() {
+                if (!$("#title").val()) {
+                    layer.alert("请输入标题");
+                    return true;
+                }
+                $("#content").val();
+                if (!$("#content").val()) {
+                    layer.alert("请输入内容或者关键字");
+                    return true;
+                }
+                var eArr = $(".FileID");
+                if (eArr.length === 0) {
+                    layer.alert("请上传所需的附件信息");
+                    return true;
+                }
+                var FileIds = [];
+                for (var i = 0; i < eArr.length; i++) {
+                    FileIds.push(eArr.eq(i).text());
+                }
+                $("#field").val(FileIds.toString());
+                return false;
+            }
+        });
+
+
+    }
 </script>

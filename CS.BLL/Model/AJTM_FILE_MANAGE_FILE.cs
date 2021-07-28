@@ -27,5 +27,24 @@ namespace CS.BLL.Model
             this.KeyField = "FILE_MANAGE_ID";
             this.OrderbyFields = "FILE_MANAGE_ID";
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <param name="fileManageId"></param>
+        /// <returns></returns>
+        public void Add(string ids,int fileManageId)
+        {
+            Delete(" FILE_MANAGE_ID = ?", new object[] { fileManageId });
+            string[] idArr = ids.Split(',');
+            for(int i=0;i< idArr.Length; i++)
+            {
+                Dictionary<string, object> dic = new Dictionary<string, object>();
+                dic.Add("FILE_MANAGE_ID", fileManageId);
+                dic.Add("FILE_ID", Convert.ToInt32(idArr[i]));
+                Add(dic);
+            }
+        }
     }
 }

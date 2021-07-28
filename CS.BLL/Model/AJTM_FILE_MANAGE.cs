@@ -67,5 +67,42 @@ namespace CS.BLL.Model
 
             public short IS_USE { get; set; }
         }
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="tilte"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
+
+        public int Add(string tilte,string content)
+        {
+            Dictionary<string, object> dic = new Dictionary<string, object>();
+            dic.Add("TITLE", tilte);
+            dic.Add("CONTENT", content);
+            dic.Add("CREATE_UID", SystemSession.UserID);
+            dic.Add("UPDATE_UID",SystemSession.UserID);
+            dic.Add("CREATE_TIME", DateTime.Now);
+            dic.Add("UPDATE_TIME", DateTime.Now);
+
+           return Add(dic, true);
+        }
+
+        /// <summary>
+        /// 修改
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="content"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public int Update(string title,string content,int id)
+        {
+            Dictionary<string, object> dic = new Dictionary<string, object>();
+            dic.Add("TITLE", title);
+            dic.Add("CONTENT", content);
+            dic.Add("UPDATE_UID", SystemSession.UserID);
+            dic.Add("CREATE_TIME", DateTime.Now);
+
+            return UpdateByKey(dic, id);
+        }
     }
 }

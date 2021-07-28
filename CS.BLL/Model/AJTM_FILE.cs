@@ -82,7 +82,7 @@ namespace CS.BLL.Model
             dic.Add("USER_ID", SystemSession.UserID);
             dic.Add("UPLOAD_TIME", DateTime.Now);
             dic.Add("FILE_TYPE", entity.FILE_TYPE);
-            entity.ID = Add(dic);
+            entity.ID = Add(dic, true);
             return entity;
         }
         /// <summary>
@@ -102,6 +102,17 @@ namespace CS.BLL.Model
                 return "";
             }
             return filePath.Substring(index + 1);
+        }
+
+        public DataTable GetTable(int FilemManageId)
+        {
+            string sql = string.Format(@"
+                SELECT A.* FROM AJTM_FILE A ,AJTM_FILE_MANAGE_FILE B WHERE A.ID =B.FILE_ID AND B.FILE_MANAGE_ID = {0}
+            ", FilemManageId);
+            using(BDBHelper db=new BDBHelper())
+            {
+               return db.ExecuteDataTable(sql);
+            }
         }
     }
     
