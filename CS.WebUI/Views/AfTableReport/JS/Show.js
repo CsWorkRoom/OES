@@ -50,7 +50,9 @@ function Query() {
 
 //刷新表格
 function RefreshData() {
+  
     layui.use(['table', 'jquery'], function () {
+      
         var table = layui.table, $ = layui.jquery;
         //自定义输入项
         var index = 0;
@@ -85,11 +87,10 @@ function RefreshData() {
             }
         });
         wherestring = JSON.stringify(filterArray);
-        //执行重载
-        var t = table.reload('reporttable', {
-            initSort: sort
-            , where: {
-                  count: rowscount
+
+        var loadObj = {
+            where: {
+                count: rowscount
                 , input: inputstring
                 , where: wherestring
                 , orderByField: sort.field
@@ -107,6 +108,11 @@ function RefreshData() {
                 $('.layui-table-body').height($(window).height() - $('#divTop').height() - 96);
                 layer.close(loading);//关闭加载中
             }
-        });
+        }
+        if (sort && sort.field !== "") {
+            loadObj.initSort = sort
+        }
+        //执行重载
+        var t = table.reload('reporttable', loadObj);
     });
 }
