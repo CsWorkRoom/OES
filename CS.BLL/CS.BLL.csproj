@@ -125,6 +125,9 @@
     <Compile Include="Model\AJTM_AS_TYPE.cs" />
     <Compile Include="Model\AJTM_CONSIDERATION.cs" />
     <Compile Include="Model\AJTM_CONSIDERATION_APPLY.cs" />
+    <Compile Include="Model\AJTM_FILE.cs" />
+    <Compile Include="Model\AJTM_FILE_MANAGE.cs" />
+    <Compile Include="Model\AJTM_FILE_MANAGE_FILE.cs" />
     <Compile Include="Model\AJTM_LEADER.cs" />
     <Compile Include="Model\AJTM_LEADER_TYPE.cs" />
     <Compile Include="Model\AJTM_LEADER_UNIT.cs" />
