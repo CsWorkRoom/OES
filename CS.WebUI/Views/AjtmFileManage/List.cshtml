@@ -1,0 +1,306 @@
+﻿@{
+    Layout = "~/Views/Shared/_Content.cshtml";
+}
+<style type="text/css">
+    .addnews_btn {
+        text-align: right;
+        line-height: 40px
+    }
+
+        .addnews_btn i {
+            margin-right: 5px
+        }
+
+    .box_w {
+        position: absolute;
+        width: 100%;
+        min-height: 100%;
+        height: auto;
+        background: #f8f8f9
+    }
+
+    .news-pic-l {
+        height: 150px;
+        float: left;
+        text-align: center;
+        width: 220px
+    }
+
+    .newsico {
+        padding-right: 5px;
+        color: #666;
+        font-size: 6px
+    }
+
+    .more {
+        text-align: right
+    }
+
+        .more a {
+            margin-right: 5px;
+            color: #666666
+        }
+
+    .news li {
+        line-height: 35px;
+        margin-bottom: 10px
+    }
+
+        .news li a:hover {
+            color: #1890ff
+        }
+
+    .titfont {
+        font-size: 16px;
+        font-weight: 400
+    }
+
+    .news-pic-l {
+        height: 150px;
+        float: left;
+        text-align: center;
+        width: 260px
+    }
+
+    .tit_c {
+        color: #333;
+        font-size: 18px
+    }
+
+    .tit_n {
+        line-height: 25px;
+        font-size: 14px;
+        color: #666
+    }
+
+        .tit_n a {
+            color: #666
+        }
+
+    .tit_t {
+        font-size: 12px;
+        color: #666
+    }
+
+        .tit_t span {
+            margin-right: 3px;
+            color: #666
+        }
+
+    .newsbtn {
+        display: inline-block;
+        margin-bottom: 0;
+        font-weight: 400;
+        text-align: center;
+        vertical-align: middle;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        cursor: pointer;
+        background-image: none;
+        border: 1px solid transparent;
+        white-space: nowrap;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        height: 32px;
+        line-height: 32px;
+        padding: 0 15px;
+        font-size: 14px;
+        border-radius: 4px;
+        transition: color .2s linear,background-color .2s linear,border .2s linear,box-shadow .2s linear;
+        color: #fff;
+        background-color: #36D8A6;
+        border-color: #36D8A6;
+        margin-left: 5px
+    }
+
+        .newsbtn:hover {
+            color: #fff
+        }
+
+    .layuithis {
+        border-bottom: solid 2px #2d8cf0
+    }
+
+    .news-pic-l img {
+        width: 240px;
+        height: 150px
+    }
+
+    .page {
+        text-align: center;
+        position: absolute;
+        margin-bottom: 0;
+        width: 95%;
+        margin: 0 auto
+    }
+
+    .newsbtn i {
+        margin-right: 3px
+    }
+
+    .layuipage {
+        width: 100%;
+        position: inherit;
+        bottom: 0;
+        text-align: center
+    }
+
+    .search {
+        width: 100%;
+        padding-top: 100px;
+        text-align: center
+    }
+
+    .layui-input, .layui-select, .layui-textarea {
+        width: 400px;
+        height: 44px;
+        line-height: 44px
+    }
+
+    .layui-btn {
+        height: 44px;
+        line-height: 44px;
+        width: 90px
+    }
+
+    .serch_num {
+        line-height: 50px
+    }
+
+    .num {
+        color: #ed4014
+    }
+
+    .high {
+        color: red
+    }
+</style>
+<div class="box_w">
+    <div class="search">
+        <div class="layui-input-inline">
+            <input id="search" type="text" name="title" required lay-verify="required" placeholder="请输入要搜索的内容" autocomplete="off" class="layui-input" value="@ViewBag.Search">
+        </div>
+        <div class="layui-input-inline">
+            <button class="layui-btn search_btn layui-btn-small" onclick="Query();"><i class="layui-icon  layui-icon-search layui-icon-small"></i>搜索</button>
+        </div>
+        <div class="serch_num">
+            <span>共找到</span> <span class="num">@ViewBag.COUNT</span>  <span>条数据</span>
+        </div>
+    </div>
+    <div class="layui-row">
+        <div class="layui-main">
+            <div class="divNewsList">
+                <div class="layui-panel">
+                    <div class="layui-card-body">
+                        <ul class="news">
+                            @if (ViewBag.TABLE != null)
+                            {
+                                foreach (var row in ViewBag.TABLE.Rows)
+                                {
+                                    var createtime = Convert.ToDateTime(row["CREATE_TIME"]).ToString("yyyy-MM-dd");
+                                    <li>
+                                        <div class="layui-row newContent" data-content="@row["CONTENT"]">
+                                            <div class="news-pic-l">
+                                                <a href="../AjtmFileManage/Read?id=@row["ID"]" target="_blank"><img class="loadimg" src="../Content/images/none.png" onerror="javascript:this.src='../Content/images/none.png';" title="@row["TITLE"]" style=""></a>
+                                            </div>
+                                            <div class="con_m">
+                                                <div><a href="../AjtmFileManage/Read?id=@row["ID"]" target="_blank" class="tit_c">@row["TITLE"]</a></div>
+                                                <div class="tit_t"><span>创建时间:</span><span>@createtime</span></div>
+                                                <div class="tit_n">
+                                                    <a class="NContent" href="../AjtmFileManage/Read?id=@row["ID"]" target="_blank">
+                                                        描述
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <input hidden="hidden" id="newtypePage" />
+            <input hidden="hidden" id="newtypePageIndex" value="1" />
+            <div class="layuipage" id="page"></div>
+        </div>
+
+
+    </div>
+</div>
+<script type="text/javascript">
+    layui.use(['carousel', 'form', 'element', 'laypage'], function () {
+        var carousel = layui.carousel, form = layui.form, element = layui.element, laypage = layui.laypage;
+
+        //常规轮播
+        carousel.render({
+            elem: '#loopplay'
+            , arrow: 'always'
+        });
+
+        laypage.render({
+            elem: 'page',//注意，这里的 test1 是 ID，不用加 # 号
+            count: @ViewBag.COUNT, //数据总数，从服务端得到
+            limit: @ViewBag.PAGE_SIZE,
+            curr:@ViewBag.PAGE_INDEX,
+            jump: function (obj, first) {
+                if (obj.curr != '@ViewBag.PAGE_INDEX') {
+                    pageChange(obj.curr);
+                }
+            }
+        });
+    });
+
+    function Query() {
+
+        var search = document.getElementById("search").value;
+        var url = "../AjtmFileManage/List?search=" + search;
+        window.location.href = url;
+    }
+
+    function pageChange(pageindex) {
+        var type = document.getElementById("InfoType").value;
+        var search = document.getElementById("search").value;
+        var url = "../AjtmFileManage/List?search=" + search + "&pageIndex=" + pageindex;
+        window.location.href = url;
+    }
+
+
+    //获取内容首张图片
+    function imgUrlFun(content) {
+        var data = '';
+        content.replace(/<img [^>]*src=['"]([^'"]+)[^>]*>/, function (match, capture) {
+            data = capture;
+        });
+        if (!data) data = "../Content/images/none.png";
+        else {
+            data = data.replace(/&amp;/g, '&');
+        }
+        return data
+    }
+    $(".loadimg").each(function (i, e) {
+        var content = $(e).closest(".newContent");
+        var imgurl = imgUrlFun(content.attr("data-content"));
+        $(e).attr("src", imgurl);
+    })
+
+    $(".NContent").each(function (i, e) {
+        var content = $(e).closest(".newContent");
+        var con = ContentFunc(content.attr("data-content"));
+        con = con.length > 100 ? con.substr(0, 100) : con;
+        $(e).html(con);
+    });
+
+    //获取内容简介
+    function ContentFunc(tcontent) {
+        var content = tcontent;
+        content = content.replace(/<\/?[^>]*>/g, ''); //去除HTML tag
+        content = content.replace(/[ | ]*\n/g, '\n'); //去除行尾空白
+        content = content.replace(/ /ig, '');//去掉
+
+        if (content.length > 100) return content.substr(0, 160) + "...";
+        return content.substr(0, content.length);
+    }
+</script>

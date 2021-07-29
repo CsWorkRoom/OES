@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using CS.BLL.Model;
 using System.Data;
+using System.Text;
 
 namespace CS.WebUI.Controllers.AJTM
 {
@@ -33,7 +34,8 @@ namespace CS.WebUI.Controllers.AJTM
         /// <param name="field"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult Edit(string title, string content, string field,int ID = 0)
+        [ValidateInput(false)]
+        public ActionResult Edit(string title, string content, string field, int ID = 0)
         {
             JsonResultData result = new JsonResultData();
             if (ID > 0)
@@ -49,6 +51,51 @@ namespace CS.WebUI.Controllers.AJTM
             result.IsSuccess = true;
             result.Message = "提交成功！";
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// 搜索
+        /// </summary>
+        /// <returns></returns>
+
+        public ActionResult List(string search = "", int pageSize = 5, int pageIndex = 1)
+        {
+            ViewBag.Search = search;
+            Library.BaseQuery.BBaseQuery.Order order = new Library.BaseQuery.BBaseQuery.Order("ID", "DESC");
+            int count = 0;
+            DataTable dt = new DataTable();
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                count = AJTM_FILE_MANAGE.Instance.GetCount("", new object[] { });
+                dt = AJTM_FILE_MANAGE.Instance.GetTablePage(pageSize, pageIndex, "", new object[] { });
+            }
+            else
+            {
+                string kw = search.Replace('\'', ' ');
+                count = AJTM_FILE_MANAGE.Instance.GetCount("(TITLE LIKE '%" + kw + "%' OR CONTENT LIKE '%" + kw + "%')", new object[] { });
+                dt = AJTM_FILE_MANAGE.Instance.GetTablePage(pageSize, pageIndex, order,
+                    " (TITLE LIKE '%" + kw + "%' OR CONTENT LIKE '%" + kw + "%')", new object[] { });
+            }
+            ViewBag.COUNT = count;
+            ViewBag.TABLE = dt;
+            ViewBag.PAGE_SIZE = pageSize;
+            ViewBag.PAGE_INDEX = pageIndex;
+            return View();
+        }
+        /// <summary>
+        /// 阅读
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult Read(int id = 0)
+        {
+            Model.FileManage entity = new Model.FileManage();
+            entity.FileTable = new DataTable();
+            if (id > 0)
+            {
+                entity = AJTM_FILE_MANAGE.Instance.GetEntityByKey<Model.FileManage>(id);
+                entity.FileTable = AJTM_FILE.Instance.GetTable(id);
+            }
+            return View(entity);
         }
 
         /// <summary>
@@ -193,6 +240,33 @@ namespace CS.WebUI.Controllers.AJTM
             result.IsSuccess = true;
             result.Result = SerializeObject(fileEntity);
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public ActionResult Download(string id)
+        {
+            string file = AJTM_FILE.Instance.GetStringValueByKey(id, "URL");
+            string fileName = Server.MapPath(file);
+
+
+            if (System.IO.File.Exists(fileName) == false)
+            {
+                throw new Exception("文件不存在，请确认是否已经上传或是已经被删除。");
+            }
+
+            int index = fileName.IndexOf('_');
+
+            string saveName = fileName.Substring(index + 1, fileName.Length - index - 1);
+
+            System.Web.HttpContext.Current.Response.Buffer = true;
+            System.Web.HttpContext.Current.Response.Clear();//清除缓冲区所有内容
+            System.Web.HttpContext.Current.Response.ContentType = "application/octet-stream";
+            System.Web.HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment;filename=" + HttpUtility.UrlEncode(saveName, Encoding.UTF8));
+            System.Web.HttpContext.Current.Response.WriteFile(fileName);
+            System.Web.HttpContext.Current.Response.Flush();
+            System.Web.HttpContext.Current.Response.End();
+
+            return null;
         }
     }
 }

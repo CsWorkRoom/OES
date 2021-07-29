@@ -74,17 +74,18 @@ namespace CS.BLL.Model
         /// <param name="content"></param>
         /// <returns></returns>
 
-        public int Add(string tilte,string content)
+        public int Add(string tilte, string content)
         {
             Dictionary<string, object> dic = new Dictionary<string, object>();
             dic.Add("TITLE", tilte);
             dic.Add("CONTENT", content);
+            dic.Add("IS_USE", 1);
             dic.Add("CREATE_UID", SystemSession.UserID);
-            dic.Add("UPDATE_UID",SystemSession.UserID);
+            dic.Add("UPDATE_UID", SystemSession.UserID);
             dic.Add("CREATE_TIME", DateTime.Now);
             dic.Add("UPDATE_TIME", DateTime.Now);
 
-           return Add(dic, true);
+            return Add(dic, true);
         }
 
         /// <summary>
@@ -94,7 +95,7 @@ namespace CS.BLL.Model
         /// <param name="content"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        public int Update(string title,string content,int id)
+        public int Update(string title, string content, int id)
         {
             Dictionary<string, object> dic = new Dictionary<string, object>();
             dic.Add("TITLE", title);

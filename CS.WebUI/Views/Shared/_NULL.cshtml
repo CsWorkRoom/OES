@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="Author" content="larry" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    @RenderSection("Styles", false)
+    @RenderSection("Scripts", false)
+</head>
+<body>
+    @RenderBody()
+</body>
+</html>
+<script type="text/javascript">
+    // 当前系统名
+    var sysName = "@MvcApplication.SystemName";
+
+    // 当前UserName
+    var userName = "@MvcApplication.UserName";
+
+    // 当前发布网站的虚拟目录
+    var applicationPath = "@MvcApplication.ApplicationPath";
+</script>

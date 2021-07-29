@@ -1,0 +1,97 @@
+﻿@model CS.WebUI.Controllers.Model.FileManage
+@{
+    Layout = "~/Views/Shared/_Content.cshtml";
+}
+<style type="text/css">
+    .topm {
+        background-color: #2d8cf0;
+        height: 48px;
+        width: 100%;
+        color: #fff;
+        text-align: left
+    }
+
+    .layui-logo {
+        height: 48px;
+        line-height: 48px;
+        font-size: 14px
+    }
+
+        .layui-logo i {
+            font-size: 16px;
+            margin-left: 5px;
+            margin-right: 5px
+        }
+
+    .page {
+        position: absolute;
+        width: 100%;
+        min-height: 100%;
+        font-family: Arial,"Microsoft YaHei","WenQuanYi Micro Hei","Open Sans","Hiragino Sans GB",Verdana,sans-serif;
+        height: auto
+    }
+
+    .post-article-title {
+        font-size: 22px;
+        letter-spacing: -1px;
+        line-height: 50px;
+        margin-bottom: 15px;
+        text-align: center
+    }
+
+    .type {
+        line-height: 30px;
+        color: #506664;
+        text-align: center;
+        margin-bottom: 30px
+    }
+
+    .bt {
+        margin-left: 5px
+    }
+
+    .layui-main {
+        background-color: #fff;
+        min-height: 600px;
+        height: auto
+    }
+
+        .layui-main img {
+            width: auto
+        }
+
+    .content {
+        padding: 10px;
+        line-height: 35px
+    }
+</style>
+
+<div class="page">
+    <div class="topm"><span class="layui-logo"><i class="layui-icon layui-icon-zhongguoyidonglogo logo"></i>@MvcApplication.SystemName</span></div>
+    <div class="layui-main">
+        <div class="post-article-title">@Model.TITLE</div>
+
+        <div class="type">
+            <span class="time"><span class="bt">创建时间:</span>@Model.CREATE_TIME.ToString("yyyy年MM月dd日")</span>
+            @if (Model.FileTable.Rows.Count > 0)
+            {
+                <div class="filename">
+                    <span>附件下载:</span>
+                    @foreach (System.Data.DataRow dr in Model.FileTable.Rows)
+                    {
+                        <a href="../AjtmFileManage/Download?id=@dr["ID"]" target="_blank">@dr["NAME"]</a>
+                    }
+                </div>
+            }
+        </div>
+        @Html.Raw(Model.CONTENT)
+    </div>
+
+</div>
+<script>
+    //function down_file(file) {
+    //    $.post("../Aattach/Download", {
+    //        file: file
+    //    }, function () { }, "json");
+    //}
+</script>
