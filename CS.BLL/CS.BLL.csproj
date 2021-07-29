@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="com.force.json">
+      <HintPath>..\packages\com.force.json\com.force.json.dll</HintPath>
+    </Reference>
     <Reference Include="CS.Base">
       <HintPath>..\CS.Common\Include\CS.Base.dll</HintPath>
     </Reference>
@@ -83,6 +86,7 @@
     <Compile Include="Extension\ExcelFile.cs" />
     <Compile Include="Extension\ExcelLeaderUnit.cs" />
     <Compile Include="Extension\ExcelUnit.cs" />
+    <Compile Include="Extension\LuckSheetByExcel.cs" />
     <Compile Include="Extension\UnitLeaderExcel.cs" />
     <Compile Include="Extension\WordFile.cs" />
     <Compile Include="FW\BF_RDLC_REPORT.cs" />

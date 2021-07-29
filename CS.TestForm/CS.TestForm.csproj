@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="com.force.json">
+      <HintPath>..\packages\com.force.json\com.force.json.dll</HintPath>
+    </Reference>
     <Reference Include="CS.Base, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\CS.Common\Include\CS.Base.dll</HintPath>

@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using NPOI.XWPF.UserModel;
 using NPOI.OpenXmlFormats.Wordprocessing;
+using com.force.json;
 
 namespace CS.TestForm
 {
@@ -187,7 +188,7 @@ commit;
             DataTable dt = new DataTable();
             dt.Columns.Add("ID");
 
-            for(int i = 0; i < 10; i++)
+            for (int i = 0; i < 10; i++)
             {
                 DataRow dr = dt.NewRow();
                 dr[0] = i;
@@ -210,7 +211,19 @@ commit;
             //work.Save("E:\\OES\\CS.TestForm\\test\\temp_" + DateTime.Now.Ticks + ".doc");
 
             CS.BLL.Extension.ExcelUnit excel = new BLL.Extension.ExcelUnit("E:\\垃圾\\", "text");
+
+            excel.Save();
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            //var s = new JSONObject("{a:1,b:2,c:{d:1,c:2}}");
+            //var a = s.Get("a");
+            //var b = s.GetJSONObject("c");
+            //var g = b.Get("d");
+            string str = File.ReadAllText("I:\\垃圾\\123.txt");
            
+            CS.BLL.Extension.LuckSheetByExcel excel = new BLL.Extension.LuckSheetByExcel("I:\\垃圾\\", str);
             excel.Save();
         }
     }

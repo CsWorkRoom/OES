@@ -13,6 +13,7 @@
 <script src="~/Content/Luckysheet/luckyexcel.umd.js"></script>
 <form id="form" action="" method="post">
     <button type="button" class="layui-btn layui-btn-radius layui-btn-normal " id="upload">excel附件上传</button>
+    <button type="button" class="layui-btn layui-btn-radius layui-btn-normal " id="text">测试</button>
     <input id="importExcel_input" hidden="hidden" type="file" name="file" placeholder="导入" />
     <div id="luckysheet" style="margin:0px;padding:0px;position:absolute;width:100%;height:90%;left: 0px;top: 40px;"></div>
 </form>
@@ -23,6 +24,7 @@
             container: 'luckysheet', //luckysheet为容器id
         }
         luckysheet.create(options)
+
     })
     //监听文件上传
     var input = document.querySelector('input');
@@ -31,8 +33,9 @@
     $("#upload").bind("click", function () {
         $(input).click();
     });
-
-
+    $("#text").bind("click", function () {
+        console.log(JSON.stringify(luckysheet.toJson()));
+    });
     /**
     * 获取excel数据加載到頁面上
     */
@@ -49,8 +52,9 @@
                 alert("无法读取excel文件的内容，当前不支持xls文件！只支持xlsx");
                 return;
             }
+            LuckyExcel.transformLuckyToExcel(file);
             window.luckysheet.destroy();
-            console.log(JSON.stringify(exportJson.sheets));
+        
             window.luckysheet.create({
                 container: 'luckysheet', //luckysheet is the container id
                 showinfobar: false,
@@ -70,6 +74,8 @@
                 functionButton: '<button id="" class="btn btn-primary" style=" padding:3px 6px; font-size: 16px;width: 100px;height: 27px; margin-right: 85px;" οnclick="downExcelData()">導出</button>',
 
             });
+
+
         });
 
     }

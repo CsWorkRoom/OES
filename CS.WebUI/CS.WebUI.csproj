@@ -2242,7 +2242,6 @@
   <ItemGroup>
     <Folder Include="API\" />
     <Folder Include="Content\Luckysheet\expendPlugins\print\" />
-    <Folder Include="Views\NewFolder1\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CS.BLL\CS.BLL.csproj">
