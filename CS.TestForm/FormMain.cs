@@ -221,9 +221,9 @@ commit;
             //var a = s.Get("a");
             //var b = s.GetJSONObject("c");
             //var g = b.Get("d");
-            string str = File.ReadAllText("I:\\垃圾\\123.txt");
+            string str = File.ReadAllText("E:\\垃圾\\123.txt");
            
-            CS.BLL.Extension.LuckSheetByExcel excel = new BLL.Extension.LuckSheetByExcel("I:\\垃圾\\", str);
+            CS.BLL.Extension.LuckSheetByExcel excel = new BLL.Extension.LuckSheetByExcel("E:\\垃圾\\", str);
             excel.Save();
         }
     }

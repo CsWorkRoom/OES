@@ -366,6 +366,7 @@
     <Content Include="Content\plugins\jquery-1.12.4.min.js" />
     <Content Include="Content\plugins\jquery-3.2.1.min.js" />
     <Content Include="Content\plugins\jquery-migrate.min.js" />
+    <Content Include="Content\plugins\jquery.form.js" />
     <Content Include="Content\plugins\jquery.leoweather.min.js" />
     <Content Include="Content\plugins\jquery.supersized.min.js" />
     <Content Include="Content\plugins\respond.min.js" />
@@ -1970,7 +1971,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\AjtmEduacationController.cs" />
+    <Compile Include="Controllers\AJTM\AjtmEduacationController.cs" />
     <Compile Include="Controllers\AJTM\AjtmAsApplyController.cs" />
     <Compile Include="Controllers\AJTM\AjtmAsDetailController.cs" />
     <Compile Include="Controllers\AJTM\AjtmAsPersonnelController.cs" />
@@ -2232,6 +2233,7 @@
     <Content Include="Views\Shared\_NULL.cshtml" />
     <Content Include="Views\AjtmFileManage\List.cshtml" />
     <Content Include="Views\AjtmFileManage\Read.cshtml" />
+    <Content Include="Views\AjtmEduacation\Look.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

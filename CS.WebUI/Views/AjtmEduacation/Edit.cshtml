@@ -1,7 +1,8 @@
 ﻿
 @{
-    Layout = "~/Views/Shared/_Content.cshtml";
+    Layout = "";
 }
+@model CS.WebUI.Controllers.Model.Eduacation
 <script src="~/Content/plugins/jquery-3.2.1.min.js"></script>
 <link href="~/Content/Luckysheet/plugins/css/pluginsCss.css" rel="stylesheet" />
 <link href="~/Content/Luckysheet/css/luckysheet.css" rel="stylesheet" />
@@ -11,31 +12,72 @@
 <link href="~/Content/Luckysheet/assets/iconfont/iconfont.css" rel="stylesheet" />
 @*<script src="https://cdn.jsdelivr.net/npm/luckyexcel/dist/luckyexcel.umd.js"></script>*@
 <script src="~/Content/Luckysheet/luckyexcel.umd.js"></script>
-<form id="form" action="" method="post">
-    <button type="button" class="layui-btn layui-btn-radius layui-btn-normal " id="upload">excel附件上传</button>
-    <button type="button" class="layui-btn layui-btn-radius layui-btn-normal " id="text">测试</button>
-    <input id="importExcel_input" hidden="hidden" type="file" name="file" placeholder="导入" />
-    <div id="luckysheet" style="margin:0px;padding:0px;position:absolute;width:100%;height:90%;left: 0px;top: 40px;"></div>
+<form id="form" action="" method="post" enctype="multipart/form-data">
+    <input hidden="hidden" id="id" name="id" value="@Model.ID" />
+    <input hidden="hidden" id="excelJson" name="excelJson" value="@Model.LUCKY_EXCEL" />
+    <input hidden="hidden" id="excelName" name="excelName" value="@Model.TITLE" />
+    <input id="file" hidden="hidden" type="file" name="file" placeholder="导入" />
+    <div id="luckysheet" style="margin:0px;padding:0px;position:absolute;width:100%;height:100%;left: 0px;top: 0px;"></div>
 </form>
 <script>
     $(function () {
-        //配置项
-        var options = {
-            container: 'luckysheet', //luckysheet为容器id
+        var json = $("#excelJson").val();
+        if (json) {
+            json = JSON.parse(json);
+            luckysheet.create(json);
+        } else {
+            luckysheet.create(luckySheetData());
         }
-        luckysheet.create(options)
-
+        
     })
     //监听文件上传
-    var input = document.querySelector('input');
-    input.addEventListener('change', importExcel);
+    $("#file").bind("change", importExcel);
 
-    $("#upload").bind("click", function () {
-        $(input).click();
-    });
-    $("#text").bind("click", function () {
-        console.log(JSON.stringify(luckysheet.toJson()));
-    });
+    //上传附件
+    function OnUpload() {
+        $("#file").click();
+    }
+    //保存
+    function Save() {
+        var content = luckysheet.toJson();
+        $("#excelName").val(content.title);
+        $("#excelJson").val(JSON.stringify(content));
+        var url = "../AjtmEduacation/Edit"
+        SaveForm1('form', url);
+    }
+
+    //保存表单
+    function SaveForm1(formid, url) {
+        var form = document.getElementById(formid);
+        var formFile = new FormData(form);
+        var file = document.getElementById("file").files;
+        if (file.length > 0)
+            formFile.append("file", file[0]);
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: formFile,
+            processData: false,  // 告诉jQuery不要去处理发送的数据
+            contentType: false,   // 告诉jQuery不要去设置Content-Type请求头
+            success: function (result) {
+                if (result.IsSuccess == true) {
+                    var msg = result.Message + "<br/> 刷新列表数据吗？";
+                    if (confirm(msg)) {
+                        parent.layer.closeAll();
+                        parent.RefreshData();
+                    }
+                } else {
+                    var msg = "保存失败<br/>" + result.Message;
+                    alert(msg, { icon: 2 });
+                }
+            },
+            error: function (data) {
+                alert(aa);
+            }
+        });
+    }
+
     /**
     * 获取excel数据加載到頁面上
     */
@@ -47,36 +89,44 @@
         console.log(fileName);
         //將文件加載到頁面上
         LuckyExcel.transformExcelToLucky(file, function (exportJson, luckysheetfile) {
-
             if (exportJson.sheets == null || exportJson.sheets.length == 0) {
                 alert("无法读取excel文件的内容，当前不支持xls文件！只支持xlsx");
                 return;
             }
             LuckyExcel.transformLuckyToExcel(file);
             window.luckysheet.destroy();
-        
-            window.luckysheet.create({
-                container: 'luckysheet', //luckysheet is the container id
-                showinfobar: false,
-                lang: 'zh', // 设定表格语言
-                allowEdit: true,//作用：是否允许前台编辑
-                // allowUpdate: true,
-                allowCopy: true, //是否允许拷贝
-                showtoolbar: false, //是否第二列显示工具栏
-                showinfobar: true, //是否显示顶部名称栏
-                showsheetbar: false, //是否显示底部表格名称区域
-                showstatisticBar: true, //是否显示底部计数栏
-                pointEdit: false, //是否是编辑器插入表格模式
-                pointEditUpdate: null, //编辑器表格更新函数
-                data: exportJson.sheets,
-                title: exportJson.info.name,
-                userInfo: exportJson.info.name.creator,
-                functionButton: '<button id="" class="btn btn-primary" style=" padding:3px 6px; font-size: 16px;width: 100px;height: 27px; margin-right: 85px;" οnclick="downExcelData()">導出</button>',
-
-            });
-
-
+            var _object = luckySheetData(exportJson.sheets, exportJson.info.name, exportJson.info.name.creator)
+            window.luckysheet.create(_object);
         });
 
     }
-  </script>
+
+    //加载初始数据
+    function luckySheetData(data, title, userInfo) {
+        var temp = `
+            <button type="button" class="btn btn-primary" onclick="OnUpload()" id="upload">excel附件上传</button>&nbsp;&nbsp;
+            <button type="button" class="btn btn-primary"  onclick="Save()" id="text">保存</button>
+        `;
+
+        var obj = {
+            container: 'luckysheet', //luckysheet is the container id
+            showinfobar: false,
+            lang: 'zh', // 设定表格语言
+            allowEdit: true,//作用：是否允许前台编辑
+            // allowUpdate: true,
+            allowCopy: true, //是否允许拷贝
+            showtoolbar: true, //是否第二列显示工具栏
+            showinfobar: true, //是否显示顶部名称栏
+            showsheetbar: false, //是否显示底部表格名称区域
+            showstatisticBar: true, //是否显示底部计数栏
+            pointEdit: false, //是否是编辑器插入表格模式
+            functionButton: temp
+        }
+
+        if (data) obj.data = data;
+        if (title) obj.title = title.replace(".xlsx", "");
+        if (userInfo) obj.userInfo = userInfo;
+        console.log(obj);
+        return obj;
+    }
+</script>

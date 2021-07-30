@@ -1,0 +1,68 @@
+﻿@model CS.WebUI.Controllers.Model.Eduacation
+@{
+    Layout = "";
+}
+<script src="~/Content/plugins/jquery-3.2.1.min.js"></script>
+<link href="~/Content/Luckysheet/plugins/css/pluginsCss.css" rel="stylesheet" />
+<link href="~/Content/Luckysheet/css/luckysheet.css" rel="stylesheet" />
+<link href="~/Content/Luckysheet/plugins/css/pluginsCss.css" rel="stylesheet" />
+<script src="~/Content/Luckysheet/luckysheet.umd.js"></script>
+<script src="~/Content/Luckysheet/plugins/js/plugin.js"></script>
+<link href="~/Content/Luckysheet/assets/iconfont/iconfont.css" rel="stylesheet" />
+<form id="form" action="" method="post">
+    <input hidden="hidden" id="excel" name="excel" value="@Model.LUCKY_EXCEL" />
+    <div id="luckysheet" style="margin:0px;padding:0px;position:absolute;width:100%;height:90%;left: 0px;top: 40px;"></div>
+</form>
+<script>
+    $(function () {
+        var data = JSON.parse($("#excel").val());
+        //配置项
+        var options = {
+            container: 'luckysheet', //luckysheet is the container id
+            showinfobar: false,
+            lang: 'zh', // 设定表格语言
+            allowEdit: false,//作用：是否允许前台编辑
+            // allowUpdate: true,
+            allowCopy: true, //是否允许拷贝
+            showtoolbar: false, //是否第二列显示工具栏
+            showinfobar: true, //是否显示顶部名称栏
+            showsheetbar: false, //是否显示底部表格名称区域
+            showstatisticBar: true, //是否显示底部计数栏
+            pointEdit: false, //是否是编辑器插入表格模式
+            pointEditUpdate: null, //编辑器表格更新函数
+            data: data.data,
+            title: '@Model.TITLE',
+            functionButton: downTemp()
+
+        }
+        luckysheet.create(options)
+
+    })
+
+    function downTemp() {
+        var button = [];
+        if ('@Model.EXCEL_DOWN'.length > 0) {
+            button.push(`
+                <a href="../AjtmEduacation/Export?id=@Model.ID&isSource=1" target="_blank" class="btn btn-primary" >导出原件</a>
+            `);
+        }
+        if ('@Model.EXCEL_PATH'.length > 0) {
+            button.push(`
+                <a href="../AjtmEduacation/Export?id=@Model.ID&isSource=0" target="_blank" class="btn btn-primary" >导出</a>
+            `);
+        }
+        return button.join("&nbsp;&nbsp;&nbsp;");
+    }
+
+
+</script>
+<style>
+
+    a:link, a:visited {
+        text-decoration: none; /*超链接无下划线*/
+    }
+
+    a:hover {
+        text-decoration: underline; /*鼠标放上去有下划线*/
+
+</style>

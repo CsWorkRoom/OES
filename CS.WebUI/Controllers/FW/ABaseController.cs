@@ -10,6 +10,7 @@ using CS.Library.Export;
 using CS.BLL.FW;
 using System.Text.RegularExpressions;
 using System.IO;
+using System.Text;
 
 namespace CS.WebUI.Controllers.FW
 {
@@ -514,6 +515,123 @@ qss_lurun,
 qss_wangchunxiong";
             var userList = effectUser.Split(',').ToList();
             return userList.Contains(userNo);
+        }
+        /// <summary>
+        /// 上传
+        /// </summary>
+        protected string UploadExcel(HttpPostedFileBase file,string basePath,string upext="")
+        {
+            //本地文件名
+            string localname = "";
+            //保存文件名
+            string saveName = "";
+            //最大上传大小，单位是M
+            int maxAttachSize = 5;
+            //表单文件域name
+            string inputname = "file";
+            //上传扩展名
+            if (string.IsNullOrEmpty(upext))
+                upext = ",txt,rar,zip,jpg,jpeg,gif,png,txt,pdf,ppt,pptx,doc,docx,xls,xlsx,avi,wma,mp3,mid,";
+            //立即上传模式，仅为演示用
+            string immediate = Request.QueryString["immediate"];
+            //
+            string err = "";
+            try
+            {
+                string savePath = Server.MapPath(basePath);
+
+                if (string.IsNullOrWhiteSpace(savePath))
+                {
+                    throw new Exception("未配置附件存放路径，请联系管理员配置AttachmentPath。");
+                }
+                if (Directory.Exists(savePath) == false)
+                {
+                    Directory.CreateDirectory(savePath);
+                }
+
+                string disposition = Request.ServerVariables["HTTP_CONTENT_DISPOSITION"];
+                if (disposition != null)
+                {
+                    //HTML5上传
+                    if (Request.TotalBytes > maxAttachSize * 1024 * 1024)
+                    {
+                        throw new Exception("文件大小超过" + maxAttachSize + "M");
+                    }
+
+                    //读取原始文件名
+                    localname = Server.UrlDecode(Regex.Match(disposition, "filename=\"(.+?)\"").Groups[1].Value);
+                    //后缀名
+                    string extension = BLL.Model.AJTM_FILE.GetSuffixByPath(localname);
+                    if (upext.IndexOf("," + extension + ",") < 0)
+                    {
+                        throw new Exception("不允许的附件类型：" + extension);
+                    }
+                    saveName = string.Format("{0}-{1}", DateTime.Now.ToString("yyyyMMdd-HHmmss"), SystemSession.UserName);
+                    byte[] fileByte = Request.BinaryRead(Request.TotalBytes);
+                    FileStream fs = new FileStream(savePath + "\\" + saveName, FileMode.Create, FileAccess.Write);
+                    fs.Write(fileByte, 0, fileByte.Length);
+                    fs.Flush();
+                    fs.Close();
+                }
+                else
+                {
+                    HttpPostedFileBase postedfile = Request.Files.Get(inputname);
+                    if (postedfile == null)
+                    {
+                        postedfile = file;
+                    }
+                    if (postedfile == null)
+                    {
+                        throw new Exception("未收到上传文件");
+                    }
+                    if (postedfile.ContentLength > maxAttachSize * 1024 * 1024)
+                    {
+                        throw new Exception("文件大小超过" + maxAttachSize + "M");
+                    }
+                    localname = Path.GetFileName(postedfile.FileName).Replace('%', '_');
+
+                    //后缀名
+                    string extension = BLL.Model.AJTM_FILE.GetSuffixByPath(localname);
+                    if (upext.IndexOf("," + extension + ",") < 0)
+                    {
+                        throw new Exception("不允许的附件类型：" + extension);
+                    }
+                    saveName = string.Format("{0}-{1}-{2}_{3}", DateTime.Now.ToString("yyyyMMdd-HHmmss"), SystemSession.UserName, postedfile.ContentLength, localname);
+                    postedfile.SaveAs(savePath + "\\" + saveName);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                err = ex.Message;
+                throw ex;
+            }
+
+            return basePath + "\\" + saveName;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="title"></param>
+        protected void Export(string path,string title)
+        {
+            string fullName = path;
+            try
+            {
+                string filename = HttpUtility.UrlEncode(string.Format("{1}_{0}.xlsx", DateTime.Now.ToString("yyyyMMddHHmmss"), title), Encoding.UTF8);
+                System.Web.HttpContext.Current.Response.Buffer = true;
+                System.Web.HttpContext.Current.Response.Clear();//清除缓冲区所有内容
+                System.Web.HttpContext.Current.Response.ContentType = "application/octet-stream";
+                System.Web.HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment;filename=" + filename);
+                System.Web.HttpContext.Current.Response.WriteFile(fullName);
+                System.Web.HttpContext.Current.Response.Flush();
+                System.Web.HttpContext.Current.Response.End();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }
