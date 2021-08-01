@@ -76,6 +76,7 @@ $(function () {
                     default:
                         break;
                 }
+                $(".LeaderBtn").show();
                 form.render("select");
             }
 
@@ -362,3 +363,6 @@ function getRandomString(len) {
     }
     return strRan;
 }
+
+
+

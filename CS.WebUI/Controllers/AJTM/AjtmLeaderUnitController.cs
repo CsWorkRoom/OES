@@ -62,7 +62,7 @@ namespace CS.WebUI.Controllers.AJTM
                 //    BLL.Model.AJTM_LEADER_UNIT.Instance.Add(dic);
                 //}
                 //
-                
+
                 //新增所有配置信息
                 BLL.Model.AJTM_LEADER.Instance.Delete(" UNIT_ID=?", UNIT_ID);
                 var lEntity = DeserializeObject<List<BLL.Model.AJTM_LEADER.Entity>>(Leader);
@@ -98,7 +98,7 @@ namespace CS.WebUI.Controllers.AJTM
                     dic.Add("UPDATE_TIME", DateTime.Now);
                     BLL.Model.AJTM_LEADER.Instance.Add(dic);
 
-                   
+
                 }
                 //更新领导预留信息
                 string leaderremark = AJTM_LEADER.Instance.GetLeaderRemark(UNIT_ID);
@@ -117,6 +117,86 @@ namespace CS.WebUI.Controllers.AJTM
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="unitId"></param>
+        /// <returns></returns>
+        public ActionResult Edit(int unitId = 0)
+        {
+            ViewBag.LeaderType = AJTM_LEADER_TYPE.Instance.GetListEntity();
+            ViewBag.Unit = SerializeObject(AJTM_UNIT.Instance.GetDropTree());
+            ViewBag.SetupLevel = SerializeObject(AJTM_SETUP_LEVEL.Instance.GetDropDownForDt());
+            ViewBag.UnitId = unitId;
+            return View();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="leader"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult Edit(string Leader, int UNIT_ID = 0)
+        {
+            JsonResultData result = new JsonResultData();
+            if (UNIT_ID > 0)
+            {
+                var unit = AJTM_UNIT.Instance.GetUnitAndParent(UNIT_ID);
+                if (unit.Rows.Count == 0)
+                {
+                    result.IsSuccess = false;
+                    result.Message = "未找到该单位";
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
+
+                //新增所有配置信息
+                var lEntity = DeserializeObject<List<BLL.Model.AJTM_LEADER.Entity>>(Leader);
+
+                Dictionary<string, int> dicI = new Dictionary<string, int>();
+                foreach (var entity in lEntity)
+                {
+                    if (entity.ID == 0) continue;
+                    var LEADER_NAME = entity.LEADER_NAME.Trim();
+                    if (string.IsNullOrEmpty(LEADER_NAME)) entity.IS_USE = 0;
+                    else entity.IS_USE = 1;
+                    entity.IS_RESERVE = AJTM_LEADER.Instance.JudgeReserve(entity.IS_USE, entity.IS_ORG, entity.IS_AS, entity.IS_CONCURREENT_POST);
+                    Dictionary<string, object> dic = new Dictionary<string, object>();
+                    dic.Add("LEADER_TYPE_ID", entity.LEADER_TYPE_ID);
+                    dic.Add("LEADER_TYPE", entity.LEADER_TYPE);
+                    dic.Add("LAEDER_LEVEL_ID", entity.LAEDER_LEVEL_ID);
+                    dic.Add("LEADER_LEVEL", entity.LEADER_LEVEL);
+                    dic.Add("LEADER_JOB", entity.LEADER_JOB);
+                    dic.Add("IS_AS", entity.IS_AS);
+                    dic.Add("IS_USE", entity.IS_USE);
+                    dic.Add("IS_ORG", entity.IS_ORG);
+                    dic.Add("IS_CONCURREENT_POST", entity.IS_CONCURREENT_POST);
+                    dic.Add("IS_RESERVE", entity.IS_RESERVE);
+                    dic.Add("IS_INIT", 1);
+                    dic.Add("LEADER_NAME", LEADER_NAME);
+                    dic.Add("UPDATE_UID", SystemSession.UserID);
+                    dic.Add("CREATE_TIME", DateTime.Now);
+                    BLL.Model.AJTM_LEADER.Instance.UpdateByKey(dic, entity.ID);
+                }
+                //更新领导预留信息
+                string leaderremark = AJTM_LEADER.Instance.GetLeaderRemark(UNIT_ID);
+                Dictionary<string, object> dicUnit = new Dictionary<string, object>();
+                dicUnit.Add("LEADER_REAMRK", leaderremark);
+                AJTM_UNIT.Instance.UpdateByKey(dicUnit, UNIT_ID);
+
+                result.IsSuccess = true;
+                result.Message = "数据提交成功";
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                result.IsSuccess = false;
+                result.Message = "未选择单位";
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -142,11 +222,6 @@ namespace CS.WebUI.Controllers.AJTM
 
             CS.BLL.ModelExtension.EX_LEADER_UNIT model = new BLL.ModelExtension.EX_LEADER_UNIT();
             ViewBag.ARR = model.GetLeaderUnitReportInfo();
-            return View();
-        }
-
-        public ActionResult Edit()
-        {
             return View();
         }
 

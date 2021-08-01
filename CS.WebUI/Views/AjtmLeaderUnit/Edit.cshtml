@@ -1,0 +1,25 @@
+﻿@{
+    Layout = "~/Views/Shared/_Content.cshtml";
+    //
+    var Typelist = ViewBag.LeaderType as List<CS.BLL.Model.AJTM_LEADER_TYPE.Entity>;
+}
+<form id="form" class="layui-form" action="" method="post">
+    <script src="~/Content/FW/LayuiZtree.js?v=20210310"></script>
+    <input hidden="hidden" id="Unit" name="Unit" value="@ViewBag.Unit" />
+    <input hidden="hidden" id="SetupLevel" name="SetupLevel" value="@ViewBag.SetupLevel" />
+    <input hidden="hidden" id="Leader" name="Leader" value="" />
+    <input hidden="hidden" id="LeaderTypeUnit" name="LeaderTypeUnit" value="" />
+    <input hidden="hidden" id="UNIT_ID" name="UNIT_ID" value="@ViewBag.UnitId" />
+
+    <div id="LeaderInfo">
+
+    </div>
+    <div class="form-bottom-submit" style="text-align:right;">
+        <input type="hidden" id="msg" value="@ViewBag.Message" />
+        <div class="layui-inline">
+            <button type="button" class="layui-btn" onclick="save();">确定</button>
+            <button type="reset" class="layui-btn layui-btn-primary" onclick="CloseForm();">关闭</button>
+        </div>
+    </div>
+</form>
+<script src="~/Views/AjtmLeaderUnit/JS/Edit.js?v=20210314"></script>

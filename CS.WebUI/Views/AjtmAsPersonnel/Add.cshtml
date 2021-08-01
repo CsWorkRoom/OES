@@ -172,7 +172,9 @@
                 <select name="ACCESS_MODE_ID" id="ACCESS_MODE_ID" lay-filter="sAccessMode">
                     <option value=""></option>
                 </select>
+
             </div>
+            <span type="reset" class="layui-btn layui-btn-primary btnAction LeaderBtn" onclick="OpenUnit()">领导配置</span>
         </div>
 
     </div>
@@ -349,4 +351,12 @@
         <button type="reset" class="layui-btn layui-btn-primary" onclick="CloseForm();">关闭</button>
     </div>
 </div>
-<script src="~/Views/AjtmAsPersonnel/JS/Add.js?v=20210724"></script>
+<script src="~/Views/AjtmAsPersonnel/JS/Add.js?v=20210824"></script>
+<script>
+    function OpenUnit() {
+        var unitId = parseInt($("#UNIT_ID").val());
+        if (!isNaN(unitId)) {
+            OpenTopWindow("领导配置信息", 1050, 600, "/AjtmLeaderUnit/Edit?unitId=" + unitId + "");
+        }
+    }
+</script>

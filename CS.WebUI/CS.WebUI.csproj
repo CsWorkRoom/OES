@@ -1930,6 +1930,7 @@
     <Content Include="Views\AjtmAsPersonnel\JS\Edit.js" />
     <Content Include="Views\AjtmConsideration\JS\Approval.js" />
     <Content Include="Views\AjtmConsideration\JS\Index.js" />
+    <Content Include="Views\AjtmLeaderUnit\JS\Edit.js" />
     <Content Include="Views\AjtmLeaderUnit\JS\Index.js" />
     <Content Include="Views\AjtmLeader\JS\Edit.js" />
     <Content Include="Views\AjtmUnit\JS\Edit.js" />
@@ -1976,6 +1977,7 @@
     <Compile Include="Controllers\AJTM\AjtmAsDetailController.cs" />
     <Compile Include="Controllers\AJTM\AjtmAsPersonnelController.cs" />
     <Compile Include="Controllers\AJTM\AjtmConsiderationController.cs" />
+    <Compile Include="Controllers\AJTM\AjtmEduacationHisController.cs" />
     <Compile Include="Controllers\AJTM\AjtmFileManageController.cs" />
     <Compile Include="Controllers\AJTM\AjtmLeaderController.cs" />
     <Compile Include="Controllers\AJTM\AjtmLeaderUnitController.cs" />
@@ -2234,6 +2236,8 @@
     <Content Include="Views\AjtmFileManage\List.cshtml" />
     <Content Include="Views\AjtmFileManage\Read.cshtml" />
     <Content Include="Views\AjtmEduacation\Look.cshtml" />
+    <Content Include="Views\AjtmEduacationHis\Look.cshtml" />
+    <Content Include="Views\AjtmLeaderUnit\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

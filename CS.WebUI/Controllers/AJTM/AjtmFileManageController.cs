@@ -71,10 +71,18 @@ namespace CS.WebUI.Controllers.AJTM
             else
             {
                 string kw = search.Replace('\'', ' ');
-                count = AJTM_FILE_MANAGE.Instance.GetCount("(TITLE LIKE '%" + kw + "%' OR CONTENT LIKE '%" + kw + "%')", new object[] { });
+                count = AJTM_FILE_MANAGE.Instance.GetCount("(TITLE LIKE '%" + kw + "%' OR CONTENT_REG LIKE '%" + kw + "%')", new object[] { });
                 dt = AJTM_FILE_MANAGE.Instance.GetTablePage(pageSize, pageIndex, order,
-                    " (TITLE LIKE '%" + kw + "%' OR CONTENT LIKE '%" + kw + "%')", new object[] { });
+                    " (TITLE LIKE '%" + kw + "%' OR CONTENT_REG LIKE '%" + kw + "%')", new object[] { });
             }
+            Dictionary<int, DataTable> file = new Dictionary<int, DataTable>();
+            foreach(DataRow dr in dt.Rows)
+            {
+                var id = Convert.ToInt32(dr["ID"]);
+                var ndt = AJTM_FILE.Instance.GetTable(id);
+                file.Add(id, ndt);
+            }
+            ViewBag.FILE = file;
             ViewBag.COUNT = count;
             ViewBag.TABLE = dt;
             ViewBag.PAGE_SIZE = pageSize;

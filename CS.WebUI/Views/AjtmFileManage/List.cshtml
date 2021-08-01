@@ -124,8 +124,8 @@
     }
 
     .news-pic-l img {
-        width: 240px;
-        height: 150px
+        width: 120px;
+        height: 120px
     }
 
     .page {
@@ -200,16 +200,23 @@
                                 foreach (var row in ViewBag.TABLE.Rows)
                                 {
                                     var createtime = Convert.ToDateTime(row["CREATE_TIME"]).ToString("yyyy-MM-dd");
+                                    var file = ViewBag.FILE[Convert.ToInt32(row["ID"])];
                                     <li>
-                                        <div class="layui-row newContent" data-content="@row["CONTENT"]">
+                                        <div class="layui-row newContent" data-content-reg="@row["CONTENT_REG"]" data-content="@row["CONTENT"]">
                                             <div class="news-pic-l">
-                                                <a href="../AjtmFileManage/Read?id=@row["ID"]" target="_blank"><img class="loadimg" src="../Content/images/none.png" onerror="javascript:this.src='../Content/images/none.png';" title="@row["TITLE"]" style=""></a>
+                                                <a href="../AjtmFileManage/Read?id=@row["ID"]" target="_blank"><img class="loadimg" src="../Content/images/FILE.jpeg" onerror="javascript:this.src='../Content/images/FILE.jpeg';" title="@row["TITLE"]" style=""></a>
                                             </div>
                                             <div class="con_m">
-                                                <div><a href="../AjtmFileManage/Read?id=@row["ID"]" target="_blank" class="tit_c">@row["TITLE"]</a></div>
-                                                <div class="tit_t"><span>创建时间:</span><span>@createtime</span></div>
+                                                <div><a href="../AjtmFileManage/Read?id=@row["ID"]" target="_blank" class="tit_c SeacrhTitle">@row["TITLE"]</a></div>
+                                                <div class="tit_t">
+                                                    <span>创建时间:</span><span style="margin-right:100px">@createtime</span>
+                                                    @foreach (var fdr in file.Rows)
+                                                    {
+                                                        <a  data-type="@fdr["FILE_TYPE"]" href='../AjtmFileManage/Download?id=@fdr["ID"]' target="_blank" class="layui-btn layui-btn-normal layui-btn-sm layui-btn-radius FileLoad" style="height:20px;line-height:20px">@fdr["NAME"]</a>
+                                                    }
+                                                </div>
                                                 <div class="tit_n">
-                                                    <a class="NContent" href="../AjtmFileManage/Read?id=@row["ID"]" target="_blank">
+                                                    <a class="NContent SeacrhContent" href="../AjtmFileManage/Read?id=@row["ID"]" target="_blank">
                                                         描述
                                                     </a>
                                                 </div>
@@ -268,6 +275,29 @@
     }
 
 
+    if ('@ViewBag.Search'.length > 0) {
+        var search = '@ViewBag.Search';
+        var html = $(".SeacrhTitle").html();
+        $(".SeacrhTitle").each(function (i, e) {
+            var html = $(e).html();
+            $(e).html(searchByKey(search, html));
+        }); 
+    }
+
+    function searchByKey(search, html) {
+        if (html.indexOf(search) > -1) {
+            var index = html.indexOf(search);
+            var search1 = [
+                "<span style='color:red;font-weight:bold'>",
+                html.substr(index, search.length),
+                "</span>"
+            ].join("");
+            html = html.replace(search, search1);
+            return html;
+        }
+        return html;
+    }
+
     //获取内容首张图片
     function imgUrlFun(content) {
         var data = '';
@@ -280,17 +310,70 @@
         }
         return data
     }
-    $(".loadimg").each(function (i, e) {
-        var content = $(e).closest(".newContent");
-        var imgurl = imgUrlFun(content.attr("data-content"));
-        $(e).attr("src", imgurl);
-    })
+    //$(".loadimg").each(function (i, e) {
+    //    var content = $(e).closest(".newContent");
+    //    var imgurl = imgUrlFun(content.attr("data-content"));
+    //    $(e).attr("src", imgurl);
+    //})
+    $(function () {
+        setTimeout(function () {
+            $(".layui-laypage-prev").html("上一页")
+        },1000);
+    });
+    function newContentFindFile(newContent) {
+        var zflle = newContent.find(".FileLoad");
+        if (zflle && zflle.length > 0) {
+            var zes = zflle.eq(0);
+            var dataType = zes.attr("data-type");
+            if ('xls,xlsx,xlsm,xlst'.indexOf(dataType) > -1) {
+                newContent.find(".loadimg").attr("src", "../Content/images/XLSX.jpeg");
+                return;
+            }
+            if ('doc,docx,dot,docm'.indexOf(dataType) > -1) {
+                newContent.find(".loadimg").attr("src", "../Content/images/WORD.jpeg");
+                return;
+            }
+            if ("pdf".indexOf(dataType) > -1) {
+                newContent.find(".loadimg").attr("src", "../Content/images/PDF.jpeg");
+                return;
+            }
+            newContent.find(".loadimg").attr("src", "../Content/images/FILE.jpeg");
+        }
+    }
 
     $(".NContent").each(function (i, e) {
         var content = $(e).closest(".newContent");
-        var con = ContentFunc(content.attr("data-content"));
-        con = con.length > 100 ? con.substr(0, 100) : con;
+        var con = ContentFunc(content.attr("data-content-reg"));
+        console.log(con);
+        //
+        var search = '@ViewBag.Search';
+        if (con.indexOf(search) < -1 || search == "") {
+            con = con.length > 100 ? con.substr(0, 100) : con;
+            
+        } else {
+            var index = con.indexOf(search);
+            var begindex = index > 50 ? index - 50 : 0;
+            //
+            var TLength = 120 - begindex;
+            TLength = TLength > con.length? con.length: TLength;
+            //
+            var endIndex = index + search.length;
+            endLength = TLength - endIndex;
+            //
+            var begin = con.substr(begindex, index);
+            var end = con.substr(endIndex, endLength);
+            var search = [
+                "<span style='color:red;font-weight:bold'>",
+                con.substr(index, search.length),
+                "</span>"
+            ].join("");
+            console.log(begin, search, end);
+            con = begin + search + end;
+        }
+        con = con + "...";
         $(e).html(con);
+
+        newContentFindFile(content);
     });
 
     //获取内容简介
@@ -300,7 +383,6 @@
         content = content.replace(/[ | ]*\n/g, '\n'); //去除行尾空白
         content = content.replace(/ /ig, '');//去掉
 
-        if (content.length > 100) return content.substr(0, 160) + "...";
-        return content.substr(0, content.length);
+        return content;
     }
 </script>

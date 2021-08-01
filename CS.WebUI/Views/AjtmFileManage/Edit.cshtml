@@ -20,7 +20,7 @@
                 <label class="layui-form-label"></label>
                 <div class="layui-input-inline">
                     <button type="button" class="layui-btn" id="upload">
-                        <i class="layui-icon">&#xe67c;</i>上传图片
+                        <i class="layui-icon">&#xe67c;</i>上传附件
                     </button>
                 </div>
             </div>
@@ -71,6 +71,7 @@
         var uploadInst = upload.render({
             elem: '#upload' //绑定元素
             , url: '/AjtmFileManage/upload' //上传接口
+            , accept:"file"
             , done: function (res) {
                 //上传完毕回调
                 console.log(res);

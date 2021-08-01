@@ -43,6 +43,11 @@ namespace CS.BLL.Model
             public string CONTENT { get; set; }
 
             /// <summary>
+            /// 除去标签内容
+            /// </summary>
+            public string CONTENT_REG { get; set; }
+
+            /// <summary>
             /// 创建用户
             /// </summary>
             public int CREATE_UID { get; set; }
@@ -67,6 +72,13 @@ namespace CS.BLL.Model
 
             public short IS_USE { get; set; }
         }
+
+        public string ContentReg(string content)
+        {
+            var contentleg = System.Text.RegularExpressions.Regex.Replace(content, "<[^>]*>", "");
+            return contentleg;
+        }
+
         /// <summary>
         /// 添加
         /// </summary>
@@ -79,10 +91,12 @@ namespace CS.BLL.Model
             Dictionary<string, object> dic = new Dictionary<string, object>();
             dic.Add("TITLE", tilte);
             dic.Add("CONTENT", content);
+            dic.Add("CONTENT_REG", ContentReg(content));
             dic.Add("IS_USE", 1);
             dic.Add("CREATE_UID", SystemSession.UserID);
             dic.Add("UPDATE_UID", SystemSession.UserID);
             dic.Add("CREATE_TIME", DateTime.Now);
+      
             dic.Add("UPDATE_TIME", DateTime.Now);
 
             return Add(dic, true);
@@ -100,6 +114,7 @@ namespace CS.BLL.Model
             Dictionary<string, object> dic = new Dictionary<string, object>();
             dic.Add("TITLE", title);
             dic.Add("CONTENT", content);
+            dic.Add("CONTENT_REG", ContentReg(content));
             dic.Add("UPDATE_UID", SystemSession.UserID);
             dic.Add("CREATE_TIME", DateTime.Now);
 
