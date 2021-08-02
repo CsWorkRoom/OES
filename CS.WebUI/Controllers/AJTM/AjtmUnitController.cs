@@ -207,6 +207,7 @@ namespace CS.WebUI.Controllers.AJTM
                 }
             }
             ViewBag.UnitInfo = userInfo;
+            ViewBag.LeaderType = AJTM_LEADER_TYPE.Instance.GetListEntity();
             ViewBag.UnitAs = AJTM_UNIT_AS.Instance.GetListByUnitId(unitid);
             ViewBag.Leader = AJTM_LEADER.Instance.GetListEntityByUnitId(unitid);
             ViewBag.leaderUnit = AJTM_LEADER_UNIT.Instance.GetListEntityByUnitId(unitid);
