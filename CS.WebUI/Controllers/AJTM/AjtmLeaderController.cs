@@ -37,7 +37,7 @@ namespace CS.WebUI.Controllers.AJTM
         {
             JsonResultData result = new JsonResultData();
             entity.LEADER_TYPE = AJTM_LEADER_TYPE.Instance.GetStringValueByKey(entity.LEADER_TYPE_ID, "NAME");
-            entity.LEADER_LEVEL = AJTM_LEADER_TYPE.Instance.GetStringValueByKey(entity.LAEDER_LEVEL_ID, "NAME");
+            entity.LEADER_LEVEL = AJTM_SETUP_LEVEL.Instance.GetStringValueByKey(entity.LAEDER_LEVEL_ID, "NAME");
             if (entity.ID > 0)
             {
                 var model = AJTM_LEADER.Instance.GetEntityByKey<Model.Leader>(entity.ID);
