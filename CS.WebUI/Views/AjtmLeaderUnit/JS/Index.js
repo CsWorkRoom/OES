@@ -173,9 +173,9 @@ function TempLeaderByRow(r) {
     </tr>`);
     var tds = temp.find("td");
     tds.eq(0).append("<span>" + r.LEADER_TYPE + "</span>");
-    tds.eq(1).append(`<input type="text" value="` + r.LEADER_JOB + `" autocomplete="off" class="layui-input">`);
+    tds.eq(1).append(`<input type="text" value="` + (r.LEADER_JOB === null ? `` : r.LEADER_JOB) + `" autocomplete="off" class="layui-input">`);
     tds.eq(2).append(tempSelectSetupLevel(r.LAEDER_LEVEL_ID));
-    tds.eq(3).append(`<input type="text" value="` + r.LEADER_NAME + `" autocomplete="off" class="layui-input">`);
+    tds.eq(3).append(`<input type="text" value="` + (r.LEADER_NAME === null ? `` : r.LEADER_NAME) + `" autocomplete="off" class="layui-input">`);
     tds.eq(4).append(tempSelectByIF(r.IS_AS));
     tds.eq(5).append(tempSelectByIF(r.IS_ORG));
     tds.eq(6).append(tempSelectByIF(r.IS_CONCURREENT_POST));

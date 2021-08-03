@@ -225,6 +225,7 @@
             <div class="layui-tab-item" style="height:100%">
                 <div class="layui-btn-group">
                     <button type="button" onclick="Open('Leader','@dicInfo["ID"]','@dicInfo["NAME"]')" class="layui-btn layui-btn-primary layui-btn-sm" title="初始化"><i class="layui-icon layui-icon-edit"></i> 初始化</button>
+                    <button type="button" onclick="Open('LeaderAdd','@dicInfo["ID"]','@dicInfo["NAME"]')" class="layui-btn layui-btn-primary layui-btn-sm" title="初始化"><i class="layui-icon layui-icon-add"></i> 新增</button>
                 </div>
                 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
                     <legend>单位领导信息</legend>
@@ -248,17 +249,21 @@
                                 var leaderList = ViewBag.Leader as IList<CS.BLL.Model.AJTM_LEADER.Entity>;
                                 var leaderUnitList = ViewBag.leaderUnit as List<CS.BLL.Model.AJTM_LEADER_UNIT.Entity>;
                             }
-                            @foreach (var item in leaderUnitList)
+                            @foreach (var Litem in ViewBag.LeaderType)
                             {
-                                var first = leaderList.FirstOrDefault(x => x.LEADER_TYPE_ID == item.LEADER_TYPE_ID);
-                                var list = leaderList.Where(x => x.LEADER_TYPE_ID == item.LEADER_TYPE_ID).ToList();
+                                var first = leaderList.FirstOrDefault(x => x.LEADER_TYPE_ID == Litem.ID);
+                                if (first == null) { continue; }
+                                var list = leaderList.Where(x => x.LEADER_TYPE_ID == Litem.ID).ToList();
+                                int num = 0;
+                                var item = leaderUnitList.FirstOrDefault(x => x.LEADER_TYPE_ID == Litem.ID);
+                                if (item != null) { num = item.NUM; }
                                 var leaderjoib = "";
                                 var leaderName = "";
                                 if (first != null) { leaderjoib = first.LEADER_JOB; leaderName = first.LEADER_NAME; }
                                 <tr>
-                                    <td rowspan="@item.NUM">@item.LEADER_TYPE</td>
-                                    <td rowspan="@item.NUM">@item.NUM</td>
-                                    <td rowspan="@item.NUM">@list.Where(x => x.IS_USE == 1).Count()</td>
+                                    <td rowspan="@list.Count">@first.LEADER_TYPE</td>
+                                    <td rowspan="@list.Count">@num</td>
+                                    <td rowspan="@list.Count">@list.Where(x => x.IS_USE == 1).Count()</td>
                                     <td>
                                         @leaderjoib
                                     </td>
@@ -286,4 +291,4 @@
         text-align: center
     }
 </style>
-<script src="~/Views/AjtmUnit/JS/Show.js?v=20210610"></script>
+<script src="~/Views/AjtmUnit/JS/Show.js?v=20210710"></script>

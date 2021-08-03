@@ -31,6 +31,9 @@ function Open(type, id, title) {
         case "Leader":
             if (!title) title = "领导信息编辑";
             return OpenTopWindow(title, 1500, 800, "/AjtmLeaderUnit/Index?unitId=" + id + "");
+        case "LeaderAdd":
+            if (!title) title = "领导信息新增";
+            return OpenTopWindow(title, 1100, 600, '/AjtmLeader/Edit');
         case "Remark":
             return OpenTopWindow("备注", 1050, 600, "/AfForm/Template?formId=61&op=1&rowkey=" + id + "");
         default:
