@@ -262,6 +262,7 @@ namespace CS.BLL.Extension
             var row = GetRow(rowIndex);
             //获取列
             var cell = GetCell(row, colIndex);
+            if (value == null) value = "";
             //设置值
             cell.SetCellValue(value.ToString());
             //设置样式

@@ -51,10 +51,12 @@ namespace CS.BLL.Extension
             //1 col
             wrContent("序号", 1, 0, 3, 0);
             //2 col
+            SetColumnWidth(1, 30);
             wrContent("主管单位", 1, 1, 3, 0);
             //3 col
             wrContent("单位名称", 1, 2, 0, 2);
             wrContent("单位名称", 2, 2, 2, 2);
+            SetColumnWidth(4, 30);
             //4-7 col
             wrContent("机构信息", 1, 5, 0, 4);
             //4,5,6,7 col
@@ -140,13 +142,18 @@ namespace CS.BLL.Extension
             wrContent("正科", 4, 49, 0, 0);
             wrContent("副科", 4, 50, 0, 0);
             //49 
+            SetColumnWidth(51, 30);
             wrContent("备注", 1, 51, 3, 0);
             //50-53 col 1 row
             wrContent("备注分类别基础数据", 1, 52, 0, 3);
+            SetColumnWidth(52, 40);
             //50,51,52,53 col 2 row
             wrContent("待上编备注", 2, 52, 2, 0);
+            SetColumnWidth(53, 40);
             wrContent("领导预留备注", 2, 53, 2, 0);
+            SetColumnWidth(54, 40);
             wrContent("其他预留备注", 2, 54, 2, 0);
+            SetColumnWidth(55, 40);
             wrContent("其他备注", 2, 55, 2, 0);
         }
 
@@ -193,7 +200,7 @@ namespace CS.BLL.Extension
                     wrCell(dr["NO2"].ToString());
                     wrCell(dr["NAME"].ToString());
                 }
-                wrCell(dr["SETUP_TYPE"].ToString());
+                wrCell(dr["SETUP_RANGE"].ToString());
                 wrCell(dr["SETUP_LEVEL"].ToString());
                 wrCell(dr["OUTLAY_MODE"].ToString());
                 wrCell(dr["SETUP_NATRUE"].ToString());
@@ -218,12 +225,12 @@ namespace CS.BLL.Extension
                 wrCell(dr["P_YR_KY_NUM"].ToString());
                 wrCell(dr["LEADER_RESVEST_NUM"].ToString());
                 wrCell(dr["D_XZ_NUM"].ToString());
-                wrCell(dr["D_SY_YBSY_NUM"].ToString());
+                wrCell(dr["D_SY_NUM"].ToString());
                 //wrCell(dr["D_SY_CGSY_NUM"].ToString());
                 wrCell(dr["D_GQ_KZ_NUM"].ToString());
                 wrCell(dr["D_ZF_KY_NUM"].ToString());
                 wrCell(dr["RESERVE_NUM"].ToString());
-                wrCell("空缺编制");
+                wrCell(dr["VACANCY_NUM"].ToString());
                 wrCell(dr["LEADER_UNIT_NUM"].ToString());
                 wrCell(dr["LEADER_SJ_NUM"].ToString());
                 wrCell(dr["LEADER_NULL_NUM"].ToString());

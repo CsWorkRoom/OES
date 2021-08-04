@@ -16,7 +16,7 @@
 </style>
 <div>
     <div class="ReportTitle"><span>市本级机关事业单位机构编制职数情况一览表</span><a target="_blank" href="../AjtmUnit/Export" class="layui-btn layui-btn-sm" style="margin-left:80px"><i class="layui-icon layui-icon-exl layui-icon-small"></i>下载</a></div>
-    <table class="layui-table" lay-size="sm" style="text-align:center;width:4000px">
+    <table class="layui-table" lay-size="sm" style="text-align:center;width:4500px">
         <colgroup>
             <col width="10">
             <col width="250">
@@ -69,11 +69,11 @@
             <col width="60">
             <col width="60">
             <col width="60">
-            <col width="250">
-            <col width="250">
-            <col width="250">
-            <col width="250">
-            <col width="250">
+            <col width="450">
+            <col width="450">
+            <col width="450">
+            <col width="450">
+            <col width="450">
         </colgroup>
         <thead>
             <tr>
@@ -242,73 +242,73 @@
             @foreach (System.Data.DataRow row in ViewBag.UnitInfo.Rows)
             {
                 var isBool = (row["PARENT_ID"].ToString() == row["ID"].ToString()) ? true : false;
-            <tr>
-                <td>@row["ID"]</td>
-                @if (isBool)
-                {
-                    <td>@row["PANRET_NAME"]</td>
-                    <td colspan="3" data-index='@row["PARENT_ID"]'>@row["NAME"]</td>
-                }
-                else
-                {
-                    <td>@row["NO1"]</td>
-                    <td>@row["NO2"]</td>
-                    <td data-count="@row["PARENT_ID"]">@row["NAME"]</td>
-                }
-                <td>@row["SETUP_TYPE"]</td>
-                <td>@row["SETUP_LEVEL"]</td>
-                <td>@row["OUTLAY_MODE"]</td>
-                <td>@row["SETUP_NATRUE"]</td>
-                <td>@row["IS_PUBLIC"]</td>
-                <td>@row["XZ_YBXZ_NUM"]</td>
-                <td>@row["XZ_ZFZX_NUM"]</td>
-                <td>@row["SY_YBSY_NUM"]</td>
-                <td>@row["SY_CGSY_NUM"]</td>
-                <td>@row["SY_CBSY_NUM"]</td>
-                <td>@row["SY_ZZSY_NUM"]</td>
-                <td>@row["GQ_KZ_NUM"]</td>
-                <td>@row["ZF_KY_NUM"]</td>
-                <td>@row["YR_KY_NUM"]</td>
-                <td>@row["P_XZ_YBXZ_NUM"]</td>
-                <td>@row["P_XZ_ZFZX_NUM"]</td>
-                <td>@row["P_SY_YBSY_NUM"]</td>
-                <td>@row["P_SY_CGSY_NUM"]</td>
-                <td>@row["P_SY_CBSY_NUM"]</td>
-                <td>@row["P_SY_ZZSY_NUM"]</td>
-                <td>@row["P_GQ_KZ_NUM"]</td>
-                <td>@row["P_ZF_KY_NUM"]</td>
-                <td>@row["P_YR_KY_NUM"]</td>
-                <td>@row["LEADER_RESVEST_NUM"]</td>
-                <td>@row["D_XZ_NUM"]</td>
-                <td>@row["D_SY_YBSY_NUM"]</td>
-                @*<td>@row["D_SY_CGSY_NUM"]</td>*@
-                <td>@row["D_GQ_KZ_NUM"]</td>
-                <td>@row["D_ZF_KY_NUM"]</td>
-                <td>@row["RESERVE_NUM"]</td>
-                <td>空缺编制</td>
-                <td>@row["LEADER_UNIT_NUM"]</td>
-                <td>@row["LEADER_SJ_NUM"]</td>
-                <td>@row["LEADER_NULL_NUM"]</td>
-                @*<td>@row["OFFICE_MIAN_NUM"]</td>*@
-                <td>@row["OFFICE_VICE_NUM"]</td>
-                <td>@row["COUNTY_MIAN_L"]</td>
-                <td>@row["COUNTY_VICE_L"]</td>
-                <td>@row["VILLAGE_MIAN_L"]</td>
-                <td>@row["VILLAGE_VICE_L"]</td>
-                <td>@row["WITHIN_MAIN_NUM"]</td>
-                <td>@row["WITHIN_MAIN_SP_NUM"]</td>
-                <td>@row["WITHIN_VICE_NUM"]</td>
-                <td>@row["WITHIN_VICE_SP_NUM"]</td>
-                <td>@row["COUNTY_MIAN_MR"]</td>
-                <td>@row["COUNTY_VICE_MR"]</td>
-                <td>@row["VILLAGE_MIAN_MR"]</td>
-                <td>@row["VILLAGE_VICE_MR"]</td>
-                <td>@row["TOTAL_REMARK"]</td>
-                <td>@row["AS_DETAIL_REAMRK"]</td>
-                <td>@row["LEADER_REAMRK"]</td>
-                <td>@row["RESERVE_REAMRK"]</td>
-                <td>@row["REMARK"]</td>
-            </tr>
+                <tr>
+                    <td>@row["ID"]</td>
+                    @if (isBool)
+                    {
+                        <td>@row["PANRET_NAME"]</td>
+                        <td colspan="3" data-index='@row["PARENT_ID"]'>@row["NAME"]</td>
+                    }
+                    else
+                    {
+                        <td>@row["NO1"]</td>
+                        <td>@row["NO2"]</td>
+                        <td data-count="@row["PARENT_ID"]">@row["NAME"]</td>
+                    }
+                    <td>@row["SETUP_RANGE"]</td>
+                    <td>@row["SETUP_LEVEL"]</td>
+                    <td>@row["OUTLAY_MODE"]</td>
+                    <td>@row["SETUP_NATRUE"]</td>
+                    <td>@row["IS_PUBLIC"]</td>
+                    <td>@row["XZ_YBXZ_NUM"]</td>
+                    <td>@row["XZ_ZFZX_NUM"]</td>
+                    <td>@row["SY_YBSY_NUM"]</td>
+                    <td>@row["SY_CGSY_NUM"]</td>
+                    <td>@row["SY_CBSY_NUM"]</td>
+                    <td>@row["SY_ZZSY_NUM"]</td>
+                    <td>@row["GQ_KZ_NUM"]</td>
+                    <td>@row["ZF_KY_NUM"]</td>
+                    <td>@row["YR_KY_NUM"]</td>
+                    <td>@row["P_XZ_YBXZ_NUM"]</td>
+                    <td>@row["P_XZ_ZFZX_NUM"]</td>
+                    <td>@row["P_SY_YBSY_NUM"]</td>
+                    <td>@row["P_SY_CGSY_NUM"]</td>
+                    <td>@row["P_SY_CBSY_NUM"]</td>
+                    <td>@row["P_SY_ZZSY_NUM"]</td>
+                    <td>@row["P_GQ_KZ_NUM"]</td>
+                    <td>@row["P_ZF_KY_NUM"]</td>
+                    <td>@row["P_YR_KY_NUM"]</td>
+                    <td>@row["LEADER_RESVEST_NUM"]</td>
+                    <td>@row["D_XZ_NUM"]</td>
+                    <td>@row["D_SY_NUM"]</td>
+                    @*<td>@row["D_SY_CGSY_NUM"]</td>*@
+                    <td>@row["D_GQ_KZ_NUM"]</td>
+                    <td>@row["D_ZF_KY_NUM"]</td>
+                    <td>@row["RESERVE_NUM"]</td>
+                    <td>@row["VACANCY_NUM"]</td>
+                    <td>@row["LEADER_UNIT_NUM"]</td>
+                    <td>@row["LEADER_SJ_NUM"]</td>
+                    <td>@row["LEADER_NULL_NUM"]</td>
+                    @*<td>@row["OFFICE_MIAN_NUM"]</td>*@
+                    <td>@row["OFFICE_VICE_NUM"]</td>
+                    <td>@row["COUNTY_MIAN_L"]</td>
+                    <td>@row["COUNTY_VICE_L"]</td>
+                    <td>@row["VILLAGE_MIAN_L"]</td>
+                    <td>@row["VILLAGE_VICE_L"]</td>
+                    <td>@row["WITHIN_MAIN_NUM"]</td>
+                    <td>@row["WITHIN_MAIN_SP_NUM"]</td>
+                    <td>@row["WITHIN_VICE_NUM"]</td>
+                    <td>@row["WITHIN_VICE_SP_NUM"]</td>
+                    <td>@row["COUNTY_MIAN_MR"]</td>
+                    <td>@row["COUNTY_VICE_MR"]</td>
+                    <td>@row["VILLAGE_MIAN_MR"]</td>
+                    <td>@row["VILLAGE_VICE_MR"]</td>
+                    <td align="left">@row["TOTAL_REMARK"]</td>
+                    <td align="left">@row["AS_DETAIL_REAMRK"]</td>
+                    <td align="left">@row["LEADER_REAMRK"]</td>
+                    <td align="left">@row["RESERVE_REAMRK"]</td>
+                    <td align="left">@row["REMARK"]</td>
+                </tr>
             }
 
         </tbody>
@@ -322,5 +322,16 @@
         var id = $(e).attr("data-index");
         var count = $("td[data-count='" + id + "']").length;
         $(e).prev().attr("rowspan", count + 1);
+    });
+
+    $(function () {
+        $("td").each(function (i, e) {
+            var value = $(e).html();
+            if (value == "0") return $(e).html("");
+            if (value.indexOf("\r\n") > -1) value = value.replace("\r\n", "<br/>");
+            if (value.indexOf("\r") > -1) value = value.replace("\r", "<br/>");
+            if (value.indexOf("\n") > -1) value = value.replace("\n", "<br/>");
+            $(e).html(value);
+        })
     });
 </script>

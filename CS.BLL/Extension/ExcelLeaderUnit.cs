@@ -157,25 +157,27 @@ namespace CS.BLL.Extension
                 IList<AJTM_LEADER.Entity> leaderNum1 = leaderList.Where(x => x.LEADER_TYPE_ID == 1 && x.UNIT_ID == unitId).ToList();
                 var luNum1 = leaderUitList.Where(x => x.LEADER_TYPE_ID == 1 && x.UNIT_ID == unitId).Sum(x => x.NUM);
                 var luValue1 = leaderNum1.Select(x => x.LEADER_JOB).ToList();
-                var luHS1 = leaderNum1.Select(x => 1.ToString()).ToList();
+                var luHS1 = leaderNum1.Select(x => x.LEADER_NAME).ToList();
                 //领导副职
                 IList<AJTM_LEADER.Entity> leaderNum2 = leaderList.Where(x => x.LEADER_TYPE_ID == 2 && x.UNIT_ID == unitId).ToList();
                 var luNum2 = leaderUitList.Where(x => x.LEADER_TYPE_ID == 2 && x.UNIT_ID == unitId).Sum(x => x.NUM);
                 var luValue2 = leaderNum2.Select(x => x.LEADER_JOB).ToList();
-                var luHS2 = leaderNum2.Select(x => 1.ToString()).ToList();
+                var luHS2 = leaderNum2.Select(x => x.LEADER_NAME).ToList();
                 //纪委
                 IList<AJTM_LEADER.Entity> leaderNum3 = leaderList.Where(x => x.LEADER_TYPE_ID == 4 && x.UNIT_ID == unitId).ToList();
                 var luNum3 = leaderUitList.Where(x => x.LEADER_TYPE_ID == 4 && x.UNIT_ID == unitId).Sum(x => x.NUM);
                 var luValue3 = leaderNum3.Count;
+                var luHS3 = leaderNum3.Select(x => x.LEADER_NAME).ToList();
                 //机关
                 IList<AJTM_LEADER.Entity> leaderNum4 = leaderList.Where(x => x.LEADER_TYPE_ID == 3 && x.UNIT_ID == unitId).ToList();
                 var luNum4 = leaderUitList.Where(x => x.LEADER_TYPE_ID == 3 && x.UNIT_ID == unitId).Sum(x => x.NUM);
                 var luValue4 = leaderNum4.Count;
+                var luHS4 = leaderNum4.Select(x => x.LEADER_NAME).ToList();
                 //其他
                 IList<AJTM_LEADER.Entity> leaderNUm5 = leaderList.Where(x => !typeArr.Contains(x.LEADER_TYPE_ID) && x.UNIT_ID == unitId).ToList();
                 var luNum5 = leaderUitList.Where(x => !typeArr.Contains(x.LEADER_TYPE_ID) && x.UNIT_ID == unitId).Sum(x => x.NUM);
                 var luValue5 = leaderNUm5.Select(x => x.LEADER_JOB).ToList();
-                var luHS5 = leaderNUm5.Select(x => 1.ToString()).ToList();
+                var luHS5 = leaderNUm5.Select(x => x.LEADER_NAME).ToList();
                 //计算最大值
                 var leaderNumArr = new int[] { leaderNum1.Count(), leaderNum2.Count(), leaderNum3.Count(), leaderNum4.Count(), leaderNUm5.Count() };
                 var maxCount = leaderNumArr.Max(); //
@@ -201,10 +203,10 @@ namespace CS.BLL.Extension
                 wrCell(luHS2, mergeRCount);
                 //纪委
                 wrCell(luNum3.ToString(), mergeRCount);
-                wrCell(luValue3.ToString(), mergeRCount);
+                wrCell(luHS3, mergeRCount);
                 //机关
                 wrCell(luNum4.ToString(), mergeRCount);
-                wrCell(luValue4.ToString(), mergeRCount);
+                wrCell(luHS4, mergeRCount);
                 //其他
                 wrCell(luNum5.ToString(), mergeRCount);
                 wrCell(luValue5, mergeRCount);
@@ -226,7 +228,7 @@ namespace CS.BLL.Extension
         }
 
         private void wrCell(IList<string> value,int MergeRowNum)
-        {
+        { 
             if (value.Count == 0) value.Add(string.Empty);
             wrCellMerge(_rowIndex, _colIndex, value, MergeRowNum);
             //下一列
