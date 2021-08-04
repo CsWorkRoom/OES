@@ -166,6 +166,8 @@ namespace CS.BLL.Extension
             int mergeR = 0;
             int beginIndex = _rowIndex;
             int num = 0;
+
+            CreateExcelTable(_rowIndex, _rowIndex + dt.Rows.Count, 0, _colIndexMax);
             foreach(DataRow dr in dt.Rows)
             {
                 num += 1;
