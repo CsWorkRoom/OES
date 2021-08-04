@@ -149,7 +149,7 @@ namespace CS.BLL.Model
         /// <returns></returns>
         public DataTable GetCrateAsDetail(int UnitId)
         {
-            return GetTableFields("ID,AS_APPLY_ID,AS_APPLY_NO,AS_TYPE_ID,AS_TYPE,AS_NO", " UNIT_ID=? AND USE_TIME IS NULL AND CANCEL_TIME IS NULL", new object[] { UnitId });
+            return GetTableFields("ID,AS_APPLY_ID,AS_APPLY_NO,AS_TYPE_ID,AS_TYPE,AS_NO", " UNIT_ID=? AND STATUS = '创建'", new object[] { UnitId});
         }
         /// <summary>
         /// 获取正在使用得带上编
@@ -158,7 +158,7 @@ namespace CS.BLL.Model
         /// <returns></returns>
         public DataTable GetCancelAsDetail(int UnitId)
         {
-            return GetTableFields("ID,AS_APPLY_ID,AS_APPLY_NO,AS_TYPE_ID,AS_TYPE,AS_NO", " UNIT_ID=? AND USE_TIME IS NOT NULL AND CANCEL_TIME IS NULL", new object[] { UnitId });
+            return GetTableFields("ID,AS_APPLY_ID,AS_APPLY_NO,AS_TYPE_ID,AS_TYPE,AS_NO", " UNIT_ID=? AND STATUS = '使用'", new object[] { UnitId });
         }
 
         public string GetAsNo(int i)
@@ -218,7 +218,7 @@ namespace CS.BLL.Model
         /// <param name="entity"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public int UpdateByKey(Entity entity,int keyId)
+        public int UpdateByKey(Entity entity, int keyId)
         {
             Dictionary<string, object> dic = new Dictionary<string, object>();
             if (entity.APPROVAL_TIME > Convert.ToDateTime("1990-01-01"))
