@@ -87,7 +87,7 @@ namespace CS.BLL.Model
         /// <param name="path"></param>
         /// <param name="down"></param>
         /// <returns></returns>
-        public int Add(int eduacationId, string title, string excel, string path, string down)
+        public int Add(int eduacationId, string title, string excel, string path, string down,int DISTRICT_ID)
         {
             Dictionary<string, object> dic = new Dictionary<string, object>();
             dic.Add("TITLE", title);
@@ -99,7 +99,7 @@ namespace CS.BLL.Model
             dic.Add("UPDATE_UID", SystemSession.UserID);
             dic.Add("CREATE_TIME", DateTime.Now);
             dic.Add("UPDATE_TIME", DateTime.Now);
-
+            dic.Add("DISTRICT_ID", DISTRICT_ID);
             return Add(dic, true);
         }
     }

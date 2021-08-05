@@ -43,6 +43,10 @@ namespace CS.BLL.Model
             /// </summary>
             public int ID { get; set; }
             /// <summary>
+            /// 
+            /// </summary>
+            public int DISTRICT_ID { get; set; }
+            /// <summary>
             /// 标题
             /// </summary>
             public string TITLE { get; set; }
@@ -84,7 +88,7 @@ namespace CS.BLL.Model
         /// <param name="path"></param>
         /// <param name="down"></param>
         /// <returns></returns>
-        public int Add(string title, string excel, string path, string down)
+        public int Add(string title, string excel, string path, string down, int districtId)
         {
             Dictionary<string, object> dic = new Dictionary<string, object>();
             dic.Add("TITLE", title);
@@ -95,7 +99,7 @@ namespace CS.BLL.Model
             dic.Add("UPDATE_UID", SystemSession.UserID);
             dic.Add("CREATE_TIME", DateTime.Now);
             dic.Add("UPDATE_TIME", DateTime.Now);
-
+            dic.Add("DISTRICT_ID", districtId);
             return Add(dic, true);
         }
         /// <summary>
@@ -107,7 +111,7 @@ namespace CS.BLL.Model
         /// <param name="path"></param>
         /// <param name="down"></param>
         /// <returns></returns>
-        public int Update(int id, string title, string excel, string path, string down)
+        public int Update(int id, string title, string excel, string path, string down,int districtId)
         {
             Dictionary<string, object> dic = new Dictionary<string, object>();
             dic.Add("TITLE", title);
@@ -116,6 +120,7 @@ namespace CS.BLL.Model
             dic.Add("EXCEL_DOWN", down);
             dic.Add("UPDATE_UID", SystemSession.UserID);
             dic.Add("UPDATE_TIME", DateTime.Now);
+            dic.Add("DISTRICT_ID", districtId);
             return UpdateByKey(dic, id);
         }
     }

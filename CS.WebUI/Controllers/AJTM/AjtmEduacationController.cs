@@ -17,6 +17,7 @@ namespace CS.WebUI.Controllers.AJTM
             {
                 entity = AJTM_EDUACATION.Instance.GetEntityByKey<Model.Eduacation>(id);
             }
+            entity.DistriactDropTree = SerializeObject(AJTM_DISTRICT.Instance.GetDropTree());
             return View(entity);
         }
         /// <summary>
@@ -25,7 +26,7 @@ namespace CS.WebUI.Controllers.AJTM
         /// <returns></returns>
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult Edit(HttpPostedFileBase file, string excelJson = "", string excelName = "", int id = 0)
+        public ActionResult Edit(HttpPostedFileBase file, string excelJson = "", string excelName = "", int id = 0, int DISTRICT_ID = 0)
         {
             string basePath = AJTM_EDUACATION.PATH;
             string rootPath = Server.MapPath(basePath);
@@ -63,14 +64,14 @@ namespace CS.WebUI.Controllers.AJTM
                 if (entity.ID > 0)
                 {
                     if (file == null) excelPath = entity.EXCEL_PATH;
-                    AJTM_EDUACATION.Instance.Update(id, excelName, excelJson, excelPath, excelDown);
-                    AJTM_EDUACATION_HIS.Instance.Add(id, excelName, excelJson, excelPath, excelDown);
+                    AJTM_EDUACATION.Instance.Update(id, excelName, excelJson, excelPath, excelDown, DISTRICT_ID);
+                    AJTM_EDUACATION_HIS.Instance.Add(id, excelName, excelJson, excelPath, excelDown, DISTRICT_ID);
                 }
             }
             else
             {
-                id = AJTM_EDUACATION.Instance.Add(excelName, excelJson, excelPath, excelDown);
-                AJTM_EDUACATION_HIS.Instance.Add(id, excelName, excelJson, excelPath, excelDown);
+                id = AJTM_EDUACATION.Instance.Add(excelName, excelJson, excelPath, excelDown, DISTRICT_ID);
+                AJTM_EDUACATION_HIS.Instance.Add(id, excelName, excelJson, excelPath, excelDown, DISTRICT_ID);
             }
             result.IsSuccess = true;
             result.Message = "提交成功!";
@@ -147,6 +148,6 @@ namespace CS.WebUI.Controllers.Model
 {
     public class Eduacation : BLL.Model.AJTM_EDUACATION.Entity
     {
-
+        public string DistriactDropTree { get; set; }
     }
 }

@@ -10,14 +10,20 @@
 <script src="~/Content/Luckysheet/luckysheet.umd.js"></script>
 <script src="~/Content/Luckysheet/plugins/js/plugin.js"></script>
 <link href="~/Content/Luckysheet/assets/iconfont/iconfont.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="~/Content/layui/css/layui.css?v=20181218" media="all">
+<script type="text/javascript" src="~/Content/zTree/jquery.ztree.all.min.js"></script>
+<link rel="stylesheet" type="text/css" href="~/Content/zTree/zTreeStyle.css">
+<script src="~/Content/FW/LayuiZtree.js?v=20210610"></script>
 @*<script src="https://cdn.jsdelivr.net/npm/luckyexcel/dist/luckyexcel.umd.js"></script>*@
 <script src="~/Content/Luckysheet/luckyexcel.umd.js"></script>
 <form id="form" action="" method="post" enctype="multipart/form-data">
     <input hidden="hidden" id="id" name="id" value="@Model.ID" />
     <input hidden="hidden" id="excelJson" name="excelJson" value="@Model.LUCKY_EXCEL" />
     <input hidden="hidden" id="excelName" name="excelName" value="@Model.TITLE" />
+    <input hidden="hidden" id="DistriactDropTree" name="DistriactDropTree" value="@Model.DistriactDropTree" />
     <input id="file" hidden="hidden" type="file" name="file" placeholder="导入" />
-    <div id="luckysheet" style="margin:0px;padding:0px;position:absolute;width:100%;height:100%;left: 0px;top: 0px;"></div>
+    <input type="text" name="DISTRICT_ID" id="DISTRICT_ID" value="@Model.DISTRICT_ID">
+    <div id="luckysheet" style="margin:0px;padding:0px;position:absolute;width:100%;height:100%;left: 0px;top: 40px;"></div>
 </form>
 <script>
     $(function () {
@@ -28,7 +34,8 @@
         } else {
             luckysheet.create(luckySheetData());
         }
-        
+        initTree("DistriactDropTree", "DISTRICT_ID");
+
     })
     //监听文件上传
     $("#file").bind("change", importExcel);
@@ -97,6 +104,7 @@
             window.luckysheet.destroy();
             var _object = luckySheetData(exportJson.sheets, exportJson.info.name, exportJson.info.name.creator)
             window.luckysheet.create(_object);
+            initTree("DistriactDropTree", "DISTRICT_ID");
         });
 
     }
@@ -126,7 +134,18 @@
         if (data) obj.data = data;
         if (title) obj.title = title.replace(".xlsx", "");
         if (userInfo) obj.userInfo = userInfo;
-        console.log(obj);
         return obj;
+    }
+
+
+    //通用方法
+    function initTree(inputId, treeId, onClick) {
+        if (typeof onClick !== "function") onClick = function (event, treeId, treeNode) { };
+        var json = $("#" + inputId).val();
+        if (json) {
+            var node = JSON.parse(json);
+            let obj = $.comboztree(treeId, { ztreenode: node, onClick: onClick });
+            $("#" + treeId).data("ztree", obj);
+        }
     }
 </script>
