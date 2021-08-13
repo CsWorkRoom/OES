@@ -59,6 +59,10 @@ namespace CS.BLL.FW
             /// </summary>
             [Field(IsNotNull = true, Comment = "事件名称 ")]
             public string EVENT_NAME { get; set; }
+            /// <summary>
+            /// 事件条件
+            /// </summary>
+            public string EVENT_CONDITION { get; set; }
 
             /// <summary>
             /// 按钮顺序（数字越小排越前面）

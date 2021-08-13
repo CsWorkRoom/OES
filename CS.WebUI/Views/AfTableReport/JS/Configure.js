@@ -6,15 +6,16 @@
         , even: true
         , size: 'sm'
         , cols: [[
-          { field: 'EN_NAME', title: '字段英文名', minWidth: 180, sort: true }
-          , { field: 'CN_NAME', title: '字段中文名', edit: 'text', minWidth: 150 }
-          , { field: 'FIELD_DATA_TYPE', title: '数据类型', width: 120, templet: '#fieldDataType' }
-          , { field: 'IS_SHOW', title: '是否显示', templet: '#checkboxShow', minWidth: 100 }
-          , { field: 'IS_FIXED', title: '是否冻结', templet: '#checkboxFixed', minWidth: 100 }
-          , { field: 'IS_SORT', title: '是否排序', templet: '#checkboxSort', minWidth: 100 }
-          , { field: 'IS_ENCRYPT', title: '是否加密', templet: '#checkboxEncrypt', minWidth: 100 }          
-          , { field: 'SHOW_WIDTH', title: '显示宽度', edit: 'text', width: 100 }
-          , { field: 'SORT', title: '排序', edit: 'text', minWidth: 80 }]]
+            { field: 'EN_NAME', title: '字段英文名', minWidth: 180, sort: true }
+            , { field: 'CN_NAME', title: '字段中文名', edit: 'text', minWidth: 150 }
+            , { field: 'FIELD_DATA_TYPE', title: '数据类型', width: 120, templet: '#fieldDataType' }
+            , { field: 'IS_SHOW', title: '是否显示', templet: '#checkboxShow', minWidth: 100 }
+            , { field: 'IS_FIXED', title: '是否冻结', templet: '#checkboxFixed', minWidth: 100 }
+            , { field: 'IS_SORT', title: '是否排序', templet: '#checkboxSort', minWidth: 100 }
+            , { field: 'IS_ENCRYPT', title: '是否加密', templet: '#checkboxEncrypt', minWidth: 100 }
+            , { field: 'ALIGN', title: '位置', templet: '#selectAlign', minWidth: 100 }
+            , { field: 'SHOW_WIDTH', title: '显示宽度', edit: 'text', width: 100 }
+            , { field: 'SORT', title: '排序', edit: 'text', minWidth: 80 }]]
         , data: fieldData
         , limit: fieldData.length
     });
@@ -38,8 +39,12 @@
         fieldData[this.value][this.name] = obj.elem.checked ? 1 : 0;
         //layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
     });
+
 });
 
+function changeTableAlign(index, obj) {
+    fieldData[index]["ALIGN"] = obj.value;
+}
 //----------------------------------------筛选配置------------------------------------------
 var selectQueryInfo = new Object();
 selectQueryInfo.dbID = 0;
@@ -60,12 +65,12 @@ function showFilterData() {
             , size: 'sm'
             , cols: [[
                 { field: 'FILTER_TYPE', title: '位置', width: 80, templet: '#switchType' }
-              , { field: 'FIELD_NAME', title: '筛选字段', width: 200, templet: '#selectField' }
-              , { field: 'FILTER_NAME', title: '字段名称', width: 150, edit: 'text' }
-              , { field: 'FORM_QUERY_TYPE', title: '搜索框类型', width: 160, templet: '#selectQueryType' }
-              , { field: 'DEFAULT_VALUE', title: '默认值 <span class="layui-badge layui-bg-green showSqlHelp_a" onclick="ShowSqlHelp();">Help</span>', minWidth: 180, edit: 'text' }
-              , { field: 'INPUT_WIDTH', title: '输入框宽度', width: 120, edit: 'text' }
-              , { title: '增/删', width: 80, templet: '#addordel' }]]
+                , { field: 'FIELD_NAME', title: '筛选字段', width: 200, templet: '#selectField' }
+                , { field: 'FILTER_NAME', title: '字段名称', width: 150, edit: 'text' }
+                , { field: 'FORM_QUERY_TYPE', title: '搜索框类型', width: 160, templet: '#selectQueryType' }
+                , { field: 'DEFAULT_VALUE', title: '默认值 <span class="layui-badge layui-bg-green showSqlHelp_a" onclick="ShowSqlHelp();">Help</span>', minWidth: 180, edit: 'text' }
+                , { field: 'INPUT_WIDTH', title: '输入框宽度', width: 120, edit: 'text' }
+                , { title: '增/删', width: 80, templet: '#addordel' }]]
             , data: filterData
             , limit: filterData.length
 
@@ -372,15 +377,16 @@ function showEventData() {
             , size: 'sm'
             , cols: [[
                 { field: 'EVENT_TYPE', title: '类型', width: 80, templet: '#switchEventType' }
-              , { field: 'EVENT_NAME', title: '事件名称', width: 120, edit: 'text' }
-              , { field: 'BUTTON_TEXT', title: '按钮文字', width: 120, edit: 'text' }
-              , { field: 'REQUEST_MODE', title: '请求模式', width: 200, templet: '#selectRequestMode' }
-              , { field: 'REQUEST_URL', title: '请求URL地址 <span class="layui-badge layui-bg-green showSqlHelp_a" onclick="ShowSqlHelp();">Help</span>', minWidth: 400, edit: 'text' }
-              , { field: 'STYLE_TYPE', title: '按钮样式', templet: '#tempStyleType', width: 120 }
-              //, { field: 'EVENT_STYLE', title: '样式内容',  minWidth: 100 }
-              , { field: 'SHOW_WIDTH', title: '窗口宽度', width: 80, edit: 'text' }
-              , { field: 'SHOW_HEIGHT', title: '窗口高度', width: 80, edit: 'text' }
-              , { title: '增/删', width: 80, templet: '#addDelEvent' }]]
+                , { field: 'EVENT_NAME', title: '事件名称', width: 120, edit: 'text' }
+                , { field: 'BUTTON_TEXT', title: '按钮文字', width: 120, edit: 'text' }
+                , { field: 'REQUEST_MODE', title: '请求模式', width: 200, templet: '#selectRequestMode' }
+                , { field: 'EVENT_CONDITION', title: '满足条件', width: 280, edit: 'text' }
+                , { field: 'REQUEST_URL', title: '请求URL地址 <span class="layui-badge layui-bg-green showSqlHelp_a" onclick="ShowSqlHelp();">Help</span>', minWidth: 400, edit: 'text' }
+                , { field: 'STYLE_TYPE', title: '按钮样式', templet: '#tempStyleType', width: 120 }
+                //, { field: 'EVENT_STYLE', title: '样式内容',  minWidth: 100 }
+                , { field: 'SHOW_WIDTH', title: '窗口宽度', width: 80, edit: 'text' }
+                , { field: 'SHOW_HEIGHT', title: '窗口高度', width: 80, edit: 'text' }
+                , { title: '增/删', width: 80, templet: '#addDelEvent' }]]
             , data: eventData
             , limit: eventData.length
 
@@ -440,12 +446,12 @@ function SetDiv(rowId) {
         layer.open({
             type: 1
             , title: "选择按钮样式"
-             , area: ['363px', '425px']
-                , offset: 0
-                , id: 'layerIcon' + rowId
-                , content: '<div style="padding: 10px 10px">' + contentHtml + '</div>'
-                , btnAlign: 'c' //按钮居中
-                , shade: 0 //不显示遮罩
+            , area: ['363px', '425px']
+            , offset: 0
+            , id: 'layerIcon' + rowId
+            , content: '<div style="padding: 10px 10px">' + contentHtml + '</div>'
+            , btnAlign: 'c' //按钮居中
+            , shade: 0 //不显示遮罩
         });
 
         ShowHideSelectIconDiv(rowId);//加载图标

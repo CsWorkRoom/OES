@@ -478,6 +478,10 @@ namespace CS.WebUI.Controllers.FW
                 string en = col.ColumnName.ToUpper();
                 if (dicReportFields.ContainsKey(en) == true)
                 {
+                    if (dicReportFields[en] != null)
+                    {
+                        if (string.IsNullOrEmpty(dicReportFields[en].ALIGN)) dicReportFields[en].ALIGN = "center";
+                    }
                     listReportFields.Add(dicReportFields[en]);
                 }
                 else
@@ -501,6 +505,7 @@ namespace CS.WebUI.Controllers.FW
 
                     Models.FW.TbrShowFieldModel model = new Models.FW.TbrShowFieldModel();
                     model.EN_NAME = en;
+                    model.ALIGN = "center";
                     model.FIELD_DATA_TYPE = (short)dataType.GetHashCode();
                     if (dicSystemFields.ContainsKey(en))
                     {
@@ -1092,8 +1097,10 @@ namespace CS.WebUI.Controllers.FW
                                 fun = "OpenTopWindow('" + te.BUTTON_TEXT + "', " + te.SHOW_WIDTH + ", " + te.SHOW_HEIGHT + ", '" + te.REQUEST_URL + "');";
                                 break;
                         }
-                        sb.AppendLine(GetEventBut(te.BUTTON_STYLE, te.BUTTON_ICON, te.EVENT_NAME, te.BUTTON_TEXT, "onclick =\"" + fun + "\"", "layui-btn"));//顶部按钮
-                                                                                                                                                            // sb.AppendLine("<button class='layui-btn linksAdd_btn' onclick=\"" + fun + "\" ><i class='layui-icon layui-icon-help'></i>" + te.BUTTON_TEXT + "</button>");
+                        //顶部按钮
+                        sb.AppendLine(GetTopEventButton(te, fun));
+                        //sb.AppendLine(GetEventBut(te.BUTTON_STYLE, te.BUTTON_ICON, te.EVENT_NAME, te.BUTTON_TEXT, "onclick =\"" + fun + "\"", "layui-btn"));//顶部按钮
+                        // sb.AppendLine("<button class='layui-btn linksAdd_btn' onclick=\"" + fun + "\" ><i class='layui-icon layui-icon-help'></i>" + te.BUTTON_TEXT + "</button>");
                     }
                 }
             }
@@ -1208,6 +1215,7 @@ namespace CS.WebUI.Controllers.FW
                     {
                         string fix = col.IS_FIXED == 1 ? ", fixed:'left'" : "";
                         string sort = col.IS_SORT == 1 ? ", sort:true" : "";
+                        string align = string.IsNullOrEmpty(col.ALIGN) ? "" : ", align:'" + col.ALIGN + "'";
                         if (i > 0)
                         {
                             sb.Append(",");
@@ -1215,11 +1223,11 @@ namespace CS.WebUI.Controllers.FW
                         i++;
                         if (i == fieldList.Count)
                         {
-                            sb.AppendLine("{field:'" + col.EN_NAME + "', title: '" + col.CN_NAME + "', minWidth:" + col.SHOW_WIDTH + fix + sort + "}");
+                            sb.AppendLine("{field:'" + col.EN_NAME + "', title: '" + col.CN_NAME + "', minWidth:" + col.SHOW_WIDTH + fix + sort + align+ "}");
                         }
                         else
                         {
-                            sb.AppendLine("{field:'" + col.EN_NAME + "', title: '" + col.CN_NAME + "', width:" + col.SHOW_WIDTH + fix + sort + "}");
+                            sb.AppendLine("{field:'" + col.EN_NAME + "', title: '" + col.CN_NAME + "', width:" + col.SHOW_WIDTH + fix + sort + align + "}");
                         }
                     }
                 }
@@ -1275,15 +1283,34 @@ namespace CS.WebUI.Controllers.FW
             foreach (var re in rowEventList)
             {
                 string url = string.IsNullOrWhiteSpace(re.REQUEST_URL) ? string.Empty : re.REQUEST_URL;
+                string urlTemp = url;
                 Match match = regField.Match(url);
                 while (match.Success == true)
                 {
                     string field = match.Result("${fn}");
                     url = url.Replace("[" + field + "]", "' + data." + field + " + '");
+                    urlTemp = urlTemp.Replace("[" + field + "]", "0");
                     match = match.NextMatch();
                 }
 
-                sbTemplate.AppendLine(GetEventBut(re.BUTTON_STYLE, re.BUTTON_ICON, re.EVENT_NAME, re.BUTTON_TEXT, ""));//行事件按钮样式
+                //#region 验证事件权限
+                //string parentMenu, menu;
+                //urlTemp = urlTemp.ToLower();
+                //int index = urlTemp.IndexOf('?');
+                //string path = index > 0 ? urlTemp.Substring(0, index) : urlTemp;
+                //try
+                //{
+                //    ABaseController.CheckPermission(path, urlTemp, out parentMenu, out menu);
+                //}
+                //catch
+                //{
+                //    continue;
+                //}
+                //#endregion
+
+                //sbTemplate.AppendLine(GetEventBut(re.BUTTON_STYLE, re.BUTTON_ICON, re.EVENT_NAME, re.BUTTON_TEXT, ""));//行事件按钮样式
+                //行事件按钮样式
+                sbTemplate.AppendLine(GetRowEventButton(re));
                 if (i > 0)
                 {
                     sbEvent.Append("else ");
@@ -1362,6 +1389,86 @@ namespace CS.WebUI.Controllers.FW
             code = Functions.Instance.ExecuteFunction(code);
             return SystemSession.TransParams(code);
         }
+
+        #region 生成事件按钮样式
+
+        /// <summary>
+        /// 顶部事件
+        /// </summary>
+        /// <param name="te">事件</param>
+        /// <param name="function">JS函数</param>
+        /// <returns></returns>
+        private string GetTopEventButton(BF_TB_REPORT_EVENT.Entity te, string function = "")
+        {
+            //re.BUTTON_STYLE, re.BUTTON_ICON, re.EVENT_NAME, re.BUTTON_TEXT,
+            return string.Format("<span class='layui-btn {0}' lay-event='{1}' onclick =\"{2}\"><i class='layui-icon {3}'></i>{4}</span>", te.BUTTON_STYLE, te.EVENT_NAME, function, te.BUTTON_ICON, te.BUTTON_TEXT);
+        }
+
+        /// <summary>
+        /// 生成事件按钮样式
+        /// </summary>
+        /// <param name="te">事件</param>
+        /// <returns></returns>
+        private string GetRowEventButton(BF_TB_REPORT_EVENT.Entity te)
+        {
+            string result = "";
+            if (string.IsNullOrEmpty(te.EVENT_CONDITION) == false)
+            {
+                result = "{{#  if(" + te.EVENT_CONDITION + "){ }}\r\n";
+            }
+
+            result += string.Format("<span class='layui-badge {0}' lay-event='{1}'><i class='layui-icon {2}'></i>{3}</span>", te.BUTTON_STYLE, te.EVENT_NAME, te.BUTTON_ICON, te.BUTTON_TEXT);
+
+            if (string.IsNullOrEmpty(te.EVENT_CONDITION) == false)
+            {
+                result += "\r\n{{#  } }}";
+            }
+
+            return result;
+        }
+
+
+
+        /// <summary>
+        /// 生成事件按钮样式
+        /// </summary>
+        /// <param name="buttonStyle">按钮样式</param>
+        /// <param name="buttonIcon">图标样式</param>
+        /// <param name="enentName">字段名称</param>
+        /// <param name="butName">按钮名称</param>
+        /// <param name="clickFun">按钮事件</param>
+        /// <param name="ButSize">按钮大小</param>
+        /// <returns></returns>
+        private string GetEventBut(string condition, string buttonStyle, string buttonIcon, string enentName, string butName, string clickFun = "", string ButDefaultClass = "layui-badge")
+        {
+            string reResult = "";
+            if (string.IsNullOrEmpty(condition) == false)
+            {
+                reResult = "{{#  if(" + condition + "){ }}\r\n";
+            }
+            reResult += "<span " + clickFun + " class='layui-bg-green " + ButDefaultClass + "' lay-event='" + enentName + "'>" + butName + "</span>";
+            if (string.IsNullOrWhiteSpace(buttonStyle) && string.IsNullOrWhiteSpace(buttonIcon))
+            {
+                if (string.IsNullOrEmpty(condition) == false)
+                {
+                    reResult = "\r\n{{#  } }}";
+                }
+                return reResult;
+            }
+
+            if (string.IsNullOrWhiteSpace(buttonStyle))
+                reResult += "<i " + clickFun + " class='layui-icon " + buttonIcon + "' lay-event='" + enentName + "'></i>";
+            else
+                reResult += "<span " + clickFun + " class='" + buttonStyle + " " + ButDefaultClass + "' lay-event='" + enentName + "'><i class='layui-icon " + buttonIcon + "'></i>" + butName + "</span>";
+
+            if (string.IsNullOrEmpty(condition) == false)
+            {
+                reResult += "\r\n{{#  } }}";
+            }
+
+            return reResult;
+        }
+        #endregion
 
         #region 生成事件按钮样式
         /// <summary>

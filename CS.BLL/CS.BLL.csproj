@@ -85,6 +85,7 @@
     <Compile Include="Extension\Excel.cs" />
     <Compile Include="Extension\ExcelFile.cs" />
     <Compile Include="Extension\ExcelLeaderUnit.cs" />
+    <Compile Include="Extension\ExcelTest.cs" />
     <Compile Include="Extension\ExcelUnit.cs" />
     <Compile Include="Extension\LuckSheetByExcel.cs" />
     <Compile Include="Extension\UnitLeaderExcel.cs" />

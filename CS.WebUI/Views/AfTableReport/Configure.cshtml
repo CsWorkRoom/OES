@@ -106,6 +106,16 @@
     <input type="checkbox" name="IS_ENCRYPT" value="{{d.LAY_TABLE_INDEX}}" title="加密" lay-filter="fltEncrypt" {{ d.IS_ENCRYPT == 1 ? 'checked' : '' }}>
 </script>
 
+<script type="text/html" id="selectAlign">
+    <select name="ALIGN" lay-ignore onchange="changeTableAlign({{d.LAY_TABLE_INDEX}},this)">
+        <option value="left" {{ d.ALIGN == 'left' ? 'selected' : '' }}>偏左</option>
+        <option value="center" {{ d.ALIGN == 'center' ? 'selected' : '' }}>居中</option>
+        <option value="right" {{ d.ALIGN == 'right' ? 'selected' : '' }}>偏右</option>
+    </select>
+
+
+</script>
+
 <!----------------------------------------筛选配置------------------------------------------>
 <script type="text/html" id="switchType">
     <input type="checkbox" name="FILTER_TYPE" value="{{d.LAY_TABLE_INDEX}}" lay-skin="switch" lay-text="默认|高级" lay-filter="filterType" {{ d.FILTER_TYPE == 1 ? 'checked' : '' }}>
@@ -247,5 +257,5 @@
     <span class="layui-badge layui-bg-green" href="#" onclick="addEvent({{d.LAY_TABLE_INDEX + 1}});">+</span>
     <span class="layui-badge layui-bg-green" href="#" onclick="deleteEvent({{d.LAY_TABLE_INDEX}});">-</span>
 </script>
-<link href="~/Views/AfTableReport/CSS/Configure.css?v=20190122" rel="stylesheet" />
-<script src="~/Views/AfTableReport/JS/Configure.js?v=20190122"></script>
+<link href="~/Views/AfTableReport/CSS/Configure.css?v=20170122" rel="stylesheet" />
+<script src="~/Views/AfTableReport/JS/Configure.js?v=20170122"></script>

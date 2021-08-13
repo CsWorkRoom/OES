@@ -55,5 +55,9 @@ namespace CS.WebUI.Models.FW
         /// </summary>
         public Int16 SORT { get; set; }
 
+        /// <summary>
+        /// 排列
+        /// </summary>
+        public string ALIGN { get; set; }
     }
 }

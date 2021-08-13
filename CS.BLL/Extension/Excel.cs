@@ -26,7 +26,10 @@ namespace CS.BLL.Extension
         /// 
         /// </summary>
         protected ISheet _sheet;
-
+        /// <summary>
+        /// 
+        /// </summary>
+        private ICellStyle _CellStyle;
         #region 公开
         /// <summary>
         /// 构造函数
@@ -42,6 +45,7 @@ namespace CS.BLL.Extension
             _rootPath = new DirectoryInfo(path).FullName;
             _workbook = new XSSFWorkbook();
             _sheet = _workbook.CreateSheet(sheet);
+            _CellStyle = getStyle();
         }
         /// <summary>
         /// 保存
@@ -130,7 +134,7 @@ namespace CS.BLL.Extension
             //获取列
             var cell = GetCell(row, colIndex);
             //设置样式
-            cell.CellStyle = getStyle();
+            cell.CellStyle = _CellStyle;
         }
         /// <summary>
         /// 批量写入单元格
@@ -173,6 +177,7 @@ namespace CS.BLL.Extension
             _fontName = fontName;
             _fontSize = fontSize;
             _isCenter = isCenter;
+            _CellStyle = getStyle();
         }
         /// <summary>
         /// 设置列宽度
@@ -190,6 +195,7 @@ namespace CS.BLL.Extension
         private string _fontName = "方正小标宋_GBK";
         private int _fontSize = 24;
         private bool _isCenter = true;
+
         private ICellStyle getStyle()
         {
             //样式
@@ -197,7 +203,8 @@ namespace CS.BLL.Extension
             if (_isCenter)
             {
                 style.VerticalAlignment = VerticalAlignment.Center;
-                style.Alignment = HorizontalAlignment.CenterSelection;//垂直居中
+                //style.Alignment = HorizontalAlignment.CenterSelection;//垂直居中
+                style.Alignment = HorizontalAlignment.Center;
             }
             //自动换行
             style.WrapText = true;
@@ -246,7 +253,7 @@ namespace CS.BLL.Extension
                 int rn = 0;
                 if (row.LastCellNum != -1) rn = row.LastCellNum;
                 ICell cell = row.CreateCell(rn);
-                cell.CellStyle = getStyle();
+                cell.CellStyle = _CellStyle;
             }
             return row.GetCell(i);
         }
@@ -266,7 +273,7 @@ namespace CS.BLL.Extension
             //设置值
             cell.SetCellValue(value.ToString());
             //设置样式
-            cell.CellStyle = getStyle();
+            cell.CellStyle = _CellStyle;
         }
         #endregion
     }

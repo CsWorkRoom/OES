@@ -210,8 +210,8 @@ commit;
             //work.ReplaceKeyword(dic);
             //work.Save("E:\\OES\\CS.TestForm\\test\\temp_" + DateTime.Now.Ticks + ".doc");
 
+            //CS.BLL.Extension.ExcelTest excel = new BLL.Extension.ExcelTest("E:\\垃圾\\", "text");
             CS.BLL.Extension.ExcelUnit excel = new BLL.Extension.ExcelUnit("E:\\垃圾\\", "text");
-
             excel.Save();
         }
 
